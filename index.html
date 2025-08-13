@@ -3,98 +3,382 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Infografía: Modelo Lineal y Datos Sintéticos en IMC</title>
+<title>Infografía — Datos Sintéticos + Regresión Lineal (IMC)</title>
 <style>
   :root{
-    --bg:#0f1724; --card:#0b1220; --accent:#06b6d4; --muted:#94a3b8; --text:#e6eef6;
-    --glass: rgba(255,255,255,0.03);
+    --bg:#0b1220; --panel:#0e1729; --ink:#e7eef7; --muted:#9fb0c6; --accent:#22d3ee; --accent-2:#7dd3fc;
+    --grid: rgba(255,255,255,0.05);
   }
-  body {
-    margin:0; padding:0; font-family:Inter, "Segoe UI", Roboto, Arial; background:
-    linear-gradient(180deg,#071029 0%, #081227 40%, #06121a 100%); color:var(--text);
-  }
-  .wrap {max-width:1000px; margin:24px auto; padding:18px;}
-  header{margin-bottom:16px;}
-  header h1{font-size:1.8rem; margin-bottom:4px;}
-  header p{color:var(--muted); margin-top:0;}
-  .grid{display:grid; grid-template-columns:1fr 300px; gap:20px;}
-  .card{background:var(--card); border-radius:12px; padding:18px; box-shadow:0 6px 20px rgba(0,0,0,0.5);}
-  .flow {background:linear-gradient(90deg, rgba(6,182,212,0.06), transparent); padding:14px; border-radius:10px;}
-  svg{width:100%; height:auto;}
-  pre{background:var(--glass); color:var(--text); padding:12px; border-radius:8px; overflow:auto; font-size:0.9rem;}
-  .small{font-size:0.9rem; color:var(--muted);}
-  .btn{margin-top:12px; padding:8px 12px; background:transparent; border:1px solid rgba(255,255,255,0.1);
-       border-radius:8px; cursor:pointer; color:var(--text);}
-  .legend{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px;}
-  .chip{background:rgba(255,255,255,0.05); padding:6px 10px; border-radius:8px; font-size:0.85rem;}
+  *{box-sizing:border-box}
+  body{margin:0; font-family:Inter, ui-sans-serif, system-ui, Segoe UI, Roboto, Arial; background:radial-gradient(1000px 500px at 10% -10%, #0f1b34, #0b1220 60%);}
+  .wrap{max-width:1200px; margin:28px auto; padding:24px; color:var(--ink)}
+  header{display:grid; gap:8px; margin-bottom:18px}
+  h1{margin:0; font-size:clamp(20px,4vw,34px); letter-spacing:-0.3px}
+  p.lead{margin:0; color:var(--muted)}
+  .grid{display:grid; grid-template-columns: 1.2fr 1fr; gap:18px}
+  .card{background:linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); border:1px solid rgba(255,255,255,0.06); border-radius:14px; box-shadow:0 10px 35px rgba(0,0,0,0.35); padding:16px}
+  .badge{display:inline-block; font-size:12px; color:#02121f; background:linear-gradient(90deg,var(--accent),var(--accent-2)); padding:4px 8px; border-radius:999px; font-weight:700; letter-spacing:.3px}
+  .row{display:grid; grid-template-columns: 1fr 1fr; gap:12px}
+  .small{color:var(--muted); font-size:14px}
+  .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace}
+  .chip{display:inline-flex; align-items:center; gap:8px; padding:8px 10px; border-radius:12px; border:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.03); font-size:13px; color:var(--muted)}
+  .chips{display:flex; flex-wrap:wrap; gap:8px}
+  .flow{display:grid; gap:8px; margin-top:8px}
+  .flow svg{width:100%; height:auto}
+  .btn{appearance:none; border:1px solid rgba(255,255,255,0.12); background:transparent; color:var(--ink); padding:10px 12px; border-radius:10px; cursor:pointer}
+  .btn:hover{border-color:rgba(255,255,255,0.35)}
+  .btn.primary{border:none; background:linear-gradient(90deg,var(--accent),var(--accent-2)); color:#002233; font-weight:700}
+  .kpi{display:grid; grid-template-columns: repeat(3,1fr); gap:10px; margin-top:8px}
+  .kpi .box{background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:12px; padding:10px}
+  .kpi .val{font-weight:800; font-size:20px}
+  .code{background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:12px; overflow:auto}
+  canvas{width:100%; height:280px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.08); border-radius:12px}
+  .panel-title{display:flex; align-items:center; justify-content:space-between; gap:10px}
+  .controls{display:flex; flex-wrap:wrap; gap:8px}
+  input[type=range]{width:180px}
+  .grid-bg{background-image: linear-gradient(to right, var(--grid) 1px, transparent 1px), linear-gradient(to bottom, var(--grid) 1px, transparent 1px); background-size: 22px 22px}
+  @media (max-width: 980px){ .grid{grid-template-columns:1fr} .row{grid-template-columns:1fr} .kpi{grid-template-columns:1fr 1fr} }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <h1>Enfoque en Regresión Lineal y Datos Sintéticos</h1>
-    <p>Explicación visual del uso de datos aleatorios y modelo lineal en el cálculo predictivo del IMC.</p>
+    <span class="badge">IMC — Datos sintéticos + Regresión lineal</span>
+    <h1>Cómo funciona: <em>genero datos</em> → <em>entreno un modelo lineal</em> → <em>predigo y clasifico el IMC</em></h1>
+    <p class="lead">Esta infografía reproduce la idea de tu script: usar <span class="mono">numpy.random.uniform</span> para fabricar datos (peso/altura), entrenar una <strong>regresión lineal</strong> y predecir el IMC. Incluye gráficos en vivo y coeficientes calculados en el navegador.</p>
   </header>
-  <div class="grid">
-    <!-- Columna principal con diagrama -->
+
+  <section class="grid">
+    <!-- Columna izquierda: explicación + gráficos -->
     <div class="card">
-      <h2>Flujo centrado en regresión lineal + datos sintéticos</h2>
+      <div class="panel-title">
+        <h2 style="margin:0">1) Datos sintéticos y entrenamiento</h2>
+        <div class="controls">
+          <button id="regen" class="btn">Regenerar datos</button>
+          <label class="chip">n=<span id="nOut">100</span></label>
+        </div>
+      </div>
+
+      <div class="chips" style="margin:8px 0 12px">
+        <span class="chip">peso ~ U(50, 100) kg</span>
+        <span class="chip">altura ~ U(1.5, 2.0) m</span>
+        <span class="chip">imc = peso / altura²</span>
+        <span class="chip mono">X = [peso, altura]; y = imc</span>
+      </div>
+
       <div class="flow">
-        <svg viewBox="0 0 900 260" aria-hidden="true">
-          <defs><style>.t{font:600 13px/1.2rem sans-serif;fill:#e6eef6}.s{font:400 12px/1.1rem sans-serif;fill:#bfcbd8}</style></defs>
-          <!-- Rectángulos -->
-          <rect x="20" y="20" width="260" height="70" rx="8" fill="#022235"/><text x="40" y="44" class="t">1) Datos sintéticos</text><text x="40" y="64" class="s">peso & altura aleatorios → IMC</text>
-          <rect x="320" y="20" width="260" height="70" rx="8" fill="#022235"/><text x="340" y="44" class="t">2) Regresión lineal (LinearRegression)</text><text x="340" y="64" class="s">ajuste a función lineal IMC ~ peso + altura</text>
-          <rect x="620" y="20" width="260" height="70" rx="8" fill="#022235"/><text x="640" y="44" class="t">3) Modelo entrenado</text><text x="640" y="64" class="s">coeficientes para predicción</text>
-          <!-- Flechas -->
-          <defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#06b6d4"/></marker></defs>
-          <path d="M280 55 H320" stroke="#06b6d4" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-          <path d="M580 55 H620" stroke="#06b6d4" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+        <svg viewBox="0 0 920 110" aria-hidden="true">
+          <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#7dd3fc"/></linearGradient></defs>
+          <g>
+            <rect x="10" y="12" width="280" height="86" rx="12" fill="rgba(255,255,255,0.04)" stroke="url(#g)"/>
+            <text x="28" y="40" fill="#e7eef7" style="font-weight:700">Datos sintéticos</text>
+            <text x="28" y="64" fill="#9fb0c6" style="font-size:13px">numpy.random.uniform → peso y altura</text>
+          </g>
+          <g>
+            <rect x="320" y="12" width="280" height="86" rx="12" fill="rgba(255,255,255,0.04)" stroke="url(#g)"/>
+            <text x="338" y="40" fill="#e7eef7" style="font-weight:700">Regresión lineal (OLS)</text>
+            <text x="338" y="64" fill="#9fb0c6" style="font-size:13px">minimiza Σ(y - ŷ)² → coef_, intercept_</text>
+          </g>
+          <g>
+            <rect x="630" y="12" width="280" height="86" rx="12" fill="rgba(255,255,255,0.04)" stroke="url(#g)"/>
+            <text x="648" y="40" fill="#e7eef7" style="font-weight:700">Modelo entrenado</text>
+            <text x="648" y="64" fill="#9fb0c6" style="font-size:13px">ŷ = w₀ + w₁·peso + w₂·altura</text>
+          </g>
         </svg>
       </div>
-      <h3>Detalles importantes</h3>
-      <ul class="small">
-        <li><strong>Datos sintéticos:</strong> generados con `numpy.random`, permiten entrenar sin datos reales. Útiles cuando los datos auténticos son escasos o sensibles. :contentReference[oaicite:0]{index=0}</li>
-        <li><strong>Regresión lineal:</strong> modelo supervisado que ajusta una línea (o plano en 2 variables) que mejor aproxima la relación entre variables predictoras (peso, altura) e IMC. :contentReference[oaicite:1]{index=1}</li>
-        <li><strong>Ventajas combinadas:</strong> rapidez en generar datos, control total sobre el rango utilizado, entrenamiento eficiente e interpretable. :contentReference[oaicite:2]{index=2}</li>
-      </ul>
-      <h3>Limitaciones</h3>
+
+      <div class="row">
+        <div class="card grid-bg">
+          <div class="panel-title">
+            <h3 style="margin:0">Dispersión: IMC vs peso (altura fija)</h3>
+            <div class="controls small">
+              <label>Altura fija: <strong><span id="hOut">1.75</span> m</strong></label>
+              <input type="range" id="hSlider" min="1.50" max="2.00" step="0.01" value="1.75" />
+            </div>
+          </div>
+          <canvas id="scatter"></canvas>
+          <p class="small">Se muestra una rebanada del conjunto: para una <em>altura</em> fija, el IMC crece linealmente con el <em>peso</em>. La línea superpuesta es la predicción de la regresión entrenada.</p>
+        </div>
+
+        <div class="card grid-bg">
+          <div class="panel-title">
+            <h3 style="margin:0">Distribución sintética de IMC</h3>
+            <div class="controls small">
+              <label>Bins: <strong><span id="binsOut">12</span></strong></label>
+              <input type="range" id="bins" min="6" max="24" step="1" value="12" />
+            </div>
+          </div>
+          <canvas id="hist"></canvas>
+          <p class="small">El histograma surge de los datos generados. Cambiar la semilla o los rangos modificaría su forma.</p>
+        </div>
+      </div>
+
+      <div class="kpi">
+        <div class="box"><div class="small">coef peso (w₁)</div><div class="val mono" id="coefW"></div></div>
+        <div class="box"><div class="small">coef altura (w₂)</div><div class="val mono" id="coefH"></div></div>
+        <div class="box"><div class="small">intercepto (w₀)</div><div class="val mono" id="interc"></div></div>
+      </div>
+    </div>
+
+    <!-- Columna derecha: código + predicción -->
+    <div class="card">
+      <h2 style="margin-top:0">2) De la teoría al uso</h2>
+
       <p class="small">
-        Al ser datos totalmente generados, pueden no reflejar la variabilidad real de una población. Además, la regresión lineal solo captura relaciones lineales simples. :contentReference[oaicite:3]{index=3}
+        La <strong>regresión lineal</strong> ajusta un modelo <span class="mono">ŷ = w₀ + w₁ x₁ + w₂ x₂</span> minimizando el error cuadrático (OLS). Aquí, <span class="mono">x₁=peso</span>, <span class="mono">x₂=altura</span>, y <span class="mono">ŷ=IMC</span>. Entrenamos con datos <em>sintéticos</em> para demostrar el flujo sin datos reales.
+      </p>
+
+      <div class="code small">
+<pre># Fragmento equivalente (Python)
+peso = np.random.uniform(50, 100, n)
+altura = np.random.uniform(1.5, 2.0, n)
+imc = peso / (altura**2)
+
+X = np.column_stack((peso, altura))
+model = LinearRegression().fit(X, imc)
+
+# Predicción GUI (tkinter):
+imc_pred = model.predict(np.array([[p, a]]))[0]</pre>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <div class="panel-title">
+          <h3 style="margin:0">3) Mini demo de predicción</h3>
+        </div>
+        <div class="row" style="margin-top:8px">
+          <div>
+            <label class="small">Peso (kg)</label>
+            <input id="pesoIn" type="number" value="75" step="0.1" class="btn" style="width:100%">
+          </div>
+          <div>
+            <label class="small">Altura (m)</label>
+            <input id="altIn" type="number" value="1.75" step="0.01" class="btn" style="width:100%">
+          </div>
+        </div>
+        <div style="margin-top:10px; display:flex; gap:8px">
+          <button id="pred" class="btn primary">Predecir IMC</button>
+          <button id="copy" class="btn">Copiar coeficientes</button>
+        </div>
+        <div class="chips" style="margin-top:10px">
+          <span class="chip">IMC predicho: <strong id="predOut">—</strong></span>
+          <span class="chip">Categoría: <strong id="catOut">—</strong></span>
+        </div>
+        <p class="small" style="margin-top:6px">Las categorías son solo de referencia para adultos (IMC &lt;18.5: bajo peso; 18.5–&lt;25: normal; 25–&lt;30: sobrepeso; ≥30: obesidad I–III).</p>
+      </div>
+
+      <div style="display:flex; gap:8px; margin-top:12px">
+        <button id="download" class="btn">Descargar esta página</button>
+        <a id="raw" class="btn" href="#" download="infografia_imc_lineal_sintetico.html">Descarga directa</a>
+      </div>
+
+      <hr style="border:none; border-top:1px solid rgba(255,255,255,0.08); margin:14px 0">
+      <p class="small">Referencias rápidas:
+        <br>• <a href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html" target="_blank" rel="noreferrer">LinearRegression (scikit-learn)</a>
+        <br>• <a href="https://numpy.org/doc/2.2/reference/random/generated/numpy.random.uniform.html" target="_blank" rel="noreferrer">numpy.random.uniform</a>
+        <br>• <a href="https://d2l.ai/chapter_linear-regression/synthetic-regression-data.html" target="_blank" rel="noreferrer">Datos sintéticos para regresión (D2L)</a>
+        <br>• <a href="https://www.cdc.gov/bmi/adult-calculator/bmi-categories.html" target="_blank" rel="noreferrer">Categorías IMC (CDC)</a>
       </p>
     </div>
+  </section>
 
-    <!-- Columna lateral con código + resumen -->
-    <div>
-      <div class="card">
-        <h3>Snippet clave</h3>
-        <pre>
-#  Generación de datos sintéticos
-peso_train = np.random.uniform(50,100,n)
-altura_train = np.random.uniform(1.5,2.0,n)
-imc_train = peso_train / (altura_train**2)
-
-# Entrenamiento de regresión lineal
-X_train = np.column_stack((peso_train, altura_train))
-model = LinearRegression()
-model.fit(X_train, imc_train)
-
-# Predicción IMC usando modelo entrenado
-X_new = np.array([[peso, altura]])
-imc_pred = model.predict(X_new)[0]
-        </pre>
-      </div>
-      <div class="card" style="margin-top:14px;">
-        <h3>Resumen rápido</h3>
-        <p class="small">
-          - Se crean datos “fake” que siguen distribuciones controladas. <br>
-          - El modelo aprende la relación IMC ≈ coef1·peso + coef2·altura + intercepto. <br>
-          - Permite predecir IMC sin disponer de datos reales, ideal para prototipos o pruebas.
-        </p>
-      </div>
-    </div>
-  </div>
+  <section class="card" style="margin-top:16px">
+    <h2 style="margin:6px 0">Notas y limitaciones</h2>
+    <ul class="small">
+      <li>Los datos son <em>sintéticos</em>: útiles para docencia y pruebas, pero no sustituyen datos reales del dominio.</li>
+      <li>La regresión lineal captura relaciones lineales; puede ser insuficiente si hay no-linealidades (p.ej. transformaciones o modelos no lineales).</li>
+      <li>GitHub Pages aloja este HTML tal cual: no requiere backend ni librerías externas.</li>
+    </ul>
+  </section>
 </div>
+
+<script>
+/* ========= utilidades de álgebra para OLS =========
+   Dado X (n x p) y y (n), resolvemos w = (X^T X)^{-1} X^T y
+   Aquí p=2 (peso, altura); agregamos columna de 1s para el intercepto.
+*/
+function transpose(A){ return A[0].map((_,i)=>A.map(r=>r[i])) }
+function matmul(A,B){ // A(m x n) * B(n x p)
+  const m=A.length, n=A[0].length, p=B[0].length; const C=Array.from({length:m},()=>Array(p).fill(0));
+  for(let i=0;i<m;i++){ for(let k=0;k<n;k++){ const a=A[i][k]; for(let j=0;j<p;j++){ C[i][j]+=a*B[k][j]; } } }
+  return C;
+}
+function inv2x2(M){ const [[a,b],[c,d]] = M; const det=a*d-b*c; return [[ d/det, -b/det], [-c/det, a/det]] }
+function inv3x3(M){ // adjunta / determinante (suficiente aquí)
+  const m=M, a=m[0][0], b=m[0][1], c=m[0][2], d=m[1][0], e=m[1][1], f=m[1][2], g=m[2][0], h=m[2][1], i=m[2][2];
+  const A =  (e*i - f*h), B = -(d*i - f*g), C =  (d*h - e*g);
+  const D = -(b*i - c*h), E =  (a*i - c*g), F = -(a*h - b*g);
+  const G =  (b*f - c*e), H = -(a*f - c*d), I =  (a*e - b*d);
+  const det = a*A + b*B + c*C;
+  return [[A/det, D/det, G/det],[B/det, E/det, H/det],[C/det, F/det, I/det]];
+}
+
+function ols(X,y){ // X: n x 2 (peso, altura) -> devuelve {w0,w1,w2}
+  const n=X.length;
+  const Xb = X.map(r=>[1, r[0], r[1]]);      // añadir intercepto
+  const Xt = transpose(Xb);
+  const XtX = matmul(Xt, Xb);
+  const XtXinv = inv3x3(XtX);
+  const ycol = y.map(v=>[v]);
+  const Xt_y = matmul(Xt, ycol);
+  const W = matmul(XtXinv, Xt_y);            // (3x1)
+  return { w0:W[0][0], w1:W[1][0], w2:W[2][0] };
+}
+
+/* ========= generación de datos sintéticos ========= */
+let state = { n:100, seed:0, X:[], y:[], W:{w0:0,w1:0,w2:0} };
+function rand(seed){ // LCG simple, solo para reproducibilidad en la demo
+  let s = (seed>>>0) || 1;
+  return ()=> (s = (1664525*s + 1013904223) >>> 0) / 2**32;
+}
+function genData(n=100, seed=0){
+  const r = rand(seed);
+  const peso = Array.from({length:n},()=> 50 + (100-50)*r());
+  const altura = Array.from({length:n},()=> 1.5 + (2.0-1.5)*r());
+  const X = peso.map((p,i)=>[p, altura[i]]);
+  const y = X.map(([p,a])=> p/(a*a)); // IMC verdadero
+  const W = ols(X,y); // entrenar regresión lineal
+  state = { n, seed, X, y, W };
+  document.getElementById('nOut').textContent = n;
+  document.getElementById('coefW').textContent = state.W.w1.toFixed(4);
+  document.getElementById('coefH').textContent = state.W.w2.toFixed(4);
+  document.getElementById('interc').textContent = state.W.w0.toFixed(4);
+  drawAll();
+}
+
+/* ========= gráficos (canvas puro) ========= */
+const scatter = document.getElementById('scatter');
+const hist = document.getElementById('hist');
+function sizeCanvas(c){ const dpr = window.devicePixelRatio || 1; const r = c.getBoundingClientRect(); c.width = r.width*dpr; c.height = 280*dpr; const ctx=c.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0); return ctx; }
+
+function drawScatter(){
+  const ctx = sizeCanvas(scatter);
+  const w = scatter.getBoundingClientRect().width, h = 280;
+  ctx.clearRect(0,0,w,h);
+  // ejes
+  ctx.strokeStyle='rgba(255,255,255,0.15)'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(46,10); ctx.lineTo(46,h-28); ctx.lineTo(w-10,h-28); ctx.stroke();
+
+  // datos filtrados por altura fija
+  const hf = parseFloat(document.getElementById('hSlider').value);
+  const points = state.X.map(([p,a],i)=> ({x:p, y: p/(hf*hf)})); // mostrar BMI vs peso para altura fija
+  const xMin=50, xMax=100;
+  const yMin=50/(hf*hf), yMax=100/(hf*hf);
+  const x2px = x=> 46 + (x - xMin)/(xMax-xMin)*(w-56);
+  const y2px = y=> (h-28) - (y - yMin)/(yMax-yMin)*(h-48);
+
+  // puntos (muestra de 120 para no saturar)
+  ctx.fillStyle='rgba(125, 211, 252, 0.85)';
+  for (let i=0;i<state.n;i+=Math.max(1, Math.floor(state.n/120))){
+    const pt = points[i];
+    ctx.beginPath(); ctx.arc(x2px(pt.x), y2px(pt.y), 3, 0, Math.PI*2); ctx.fill();
+  }
+
+  // línea de regresión proyectada (ŷ = w0 + w1*peso + w2*hf)
+  ctx.strokeStyle='rgba(34, 211, 238, 0.95)'; ctx.lineWidth=2.2;
+  ctx.beginPath();
+  for(let px=50; px<=100; px+=0.5){
+    const yhat = state.W.w0 + state.W.w1*px + state.W.w2*hf;
+    const X = x2px(px), Y = y2px(yhat);
+    if (px===50) ctx.moveTo(X,Y); else ctx.lineTo(X,Y);
+  }
+  ctx.stroke();
+
+  // etiquetas
+  ctx.fillStyle='rgba(255,255,255,0.65)'; ctx.font='12px ui-sans-serif';
+  ctx.fillText('Peso (kg)', w-86, h-10);
+  ctx.save(); ctx.translate(14, h/2); ctx.rotate(-Math.PI/2); ctx.fillText('IMC', 0, 0); ctx.restore();
+}
+
+function drawHist(){
+  const ctx = sizeCanvas(hist);
+  const w = hist.getBoundingClientRect().width, h = 280;
+  ctx.clearRect(0,0,w,h);
+  ctx.strokeStyle='rgba(255,255,255,0.15)'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(46,10); ctx.lineTo(46,h-28); ctx.lineTo(w-10,h-28); ctx.stroke();
+
+  const bins = parseInt(document.getElementById('bins').value, 10);
+  const y = state.y.slice().sort((a,b)=>a-b);
+  const yMin = y[0], yMax = y[y.length-1];
+  const width = (yMax - yMin)/bins;
+  const histo = Array.from({length:bins},()=>0);
+  y.forEach(v=>{
+    let idx = Math.floor((v - yMin)/width);
+    if (idx===bins) idx=bins-1;
+    histo[idx]++;
+  });
+
+  const maxCount = Math.max(...histo);
+  const x2px = i=> 46 + i*( (w-56)/bins );
+  const y2px = c=> (h-28) - (c/maxCount)*(h-48);
+
+  ctx.fillStyle='rgba(34, 211, 238, 0.25)';
+  for(let i=0;i<bins;i++){
+    const x = x2px(i)+1, barW = (w-56)/bins - 2;
+    const ytop = y2px(histo[i]);
+    ctx.fillRect(x, ytop, barW, (h-28) - ytop);
+  }
+
+  ctx.fillStyle='rgba(255,255,255,0.65)'; ctx.font='12px ui-sans-serif';
+  ctx.fillText('IMC (bins)', w-92, h-10);
+}
+
+function drawAll(){ drawScatter(); drawHist(); }
+window.addEventListener('resize', drawAll);
+
+/* ========= wire-up controles ========= */
+document.getElementById('hSlider').addEventListener('input', e=>{
+  document.getElementById('hOut').textContent = parseFloat(e.target.value).toFixed(2);
+  drawScatter();
+});
+document.getElementById('bins').addEventListener('input', e=>{
+  document.getElementById('binsOut').textContent = e.target.value;
+  drawHist();
+});
+document.getElementById('regen').addEventListener('click', ()=>{
+  genData(state.n, Math.floor(Math.random()*1e9));
+});
+
+/* ========= predicción + clasificación ========= */
+function classifyBMI(bmi){
+  if (bmi < 18.5) return "Bajo peso";
+  if (bmi < 25) return "Peso normal";
+  if (bmi < 30) return "Sobrepeso";
+  if (bmi < 35) return "Obesidad I";
+  if (bmi < 40) return "Obesidad II";
+  return "Obesidad III";
+}
+document.getElementById('pred').addEventListener('click', ()=>{
+  const p = parseFloat(document.getElementById('pesoIn').value);
+  const a = parseFloat(document.getElementById('altIn').value);
+  if (!(p>0 && a>0)){ alert('Ingrese valores positivos.'); return; }
+  const yhat = state.W.w0 + state.W.w1*p + state.W.w2*a;
+  document.getElementById('predOut').textContent = yhat.toFixed(2);
+  document.getElementById('catOut').textContent = classifyBMI(yhat);
+});
+
+/* ========= copiar coeficientes ========= */
+document.getElementById('copy').addEventListener('click', async ()=>{
+  const t = `w0=${state.W.w0.toFixed(6)}, w1(peso)=${state.W.w1.toFixed(6)}, w2(altura)=${state.W.w2.toFixed(6)}`;
+  await navigator.clipboard.writeText(t);
+  alert('Coeficientes copiados al portapapeles.');
+});
+
+/* ========= descargar HTML ========= */
+document.getElementById('download').addEventListener('click', ()=>{
+  const blob = new Blob([document.documentElement.outerHTML], {type:'text/html'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'infografia_imc_lineal_sintetico.html';
+  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+});
+document.getElementById('raw').addEventListener('click', e=>{
+  const blob = new Blob([document.documentElement.outerHTML], {type:'text/html'});
+  e.currentTarget.href = URL.createObjectURL(blob);
+});
+
+/* ========= init ========= */
+genData(100, 0);
+</script>
 </body>
 </html>
 
