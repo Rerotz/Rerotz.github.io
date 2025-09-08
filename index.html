@@ -1,231 +1,255 @@
-<!DOCTYPE html>
-<html lang="es">
+<!DOCTYPE html><html lang="es">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Infografía | Modelos Supervisados</title>
+  <title>Infografía | Árbol de Decisión vs Random Forest</title>
+  <!-- Tipografías -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet" />
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <!-- MathJax para fórmulas -->
+  <script>
+    window.MathJax = { tex: { inlineMath: [["$","$"],["\","\"]], displayMath: [["$$","$$"]] } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
   <style>
     :root{
-      --bg:#0f172a;         /* slate-900 */
-      --card:#111827;       /* gray-900 */
-      --muted:#94a3b8;      /* slate-400 */
-      --text:#e5e7eb;       /* gray-200 */
-      --accent:#22d3ee;     /* cyan-400 */
-      --accent-2:#a78bfa;   /* violet-400 */
-      --accent-3:#34d399;   /* emerald-400 */
-      --ring: rgba(34,211,238,.35);
+      --bg:#0b0b11; /* fondo base */
+      --panel:#121223e6; /* card */
+      --ink:#f6f7fb; /* texto */
+      --muted:#a6a8b8; /* texto secundario */
+      --brand:#7c3aed; /* morado principal */
+      --brand-2:#facc15; /* amarillo acento */
+      --ok:#22c55e; /* verde */
+      --warn:#f59e0b; /* ámbar (evitar rojo) */
+      --grid:#23233a66;
+      --chip:#262649;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
     }
     *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; font-family: ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Helvetica Neue",Arial;
-      background: radial-gradient(1200px 600px at 10% -20%, rgba(34,211,238,.08), transparent 60%),
-                  radial-gradient(1200px 600px at 90% 10%, rgba(167,139,250,.08), transparent 60%),
-                  var(--bg);
-      color:var(--text);
-      line-height:1.6;
+    html,body{margin:0;height:100%;background: radial-gradient(1200px 600px at 20% -10%, #221a42 0%, transparent 60%), radial-gradient(1000px 500px at 110% 10%, #2b2153 0%, transparent 60%), var(--bg); color:var(--ink); font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial}
+    a{color:var(--brand-2); text-decoration:none}
+    .wrap{max-width:1200px; margin:0 auto; padding:32px}
+    header{display:grid; grid-template-columns: 1fr auto; gap:16px; align-items:center; margin-bottom:24px}
+    .hero{
+      background: linear-gradient(160deg, rgba(124,58,237,.28), rgba(42,30,78,.2));
+      border:1px solid #3a2f62; border-radius: var(--radius);
+      padding:28px; box-shadow: var(--shadow);
     }
-    .container{max-width:1100px;margin:0 auto;padding:32px 20px 60px}
-    .title{
-      display:flex;align-items:center;gap:14px;flex-wrap:wrap
-    }
-    .title .badge{font-size:12px;color:#0f172a;background:var(--accent);padding:4px 10px;border-radius:999px;font-weight:700;letter-spacing:.4px}
-    h1{font-size:clamp(26px,2.8vw,36px);margin:4px 0 8px;line-height:1.2}
-    .subtitle{color:var(--muted);max-width:70ch}
+    .title{font-family:"Space Grotesk"; font-size: clamp(24px, 4vw, 44px); line-height:1.05; margin:0}
+    .subtitle{margin:8px 0 0; color:var(--muted)}
+    .badges{display:flex; flex-wrap:wrap; gap:8px; margin-top:14px}
+    .badge{background:var(--chip); color:#dcdcf9; border: 1px solid #3a2f62; padding:8px 10px; border-radius:999px; font-size:12px; letter-spacing:.3px}.grid{display:grid; gap:18px}
+@media(min-width:900px){ .grid.cols-3{grid-template-columns:repeat(3,1fr)} .grid.cols-2{grid-template-columns:1.2fr .8fr} }
 
-    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:26px}
-    @media (max-width:960px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel); border:1px solid #26264a; border-radius:var(--radius); padding:20px; box-shadow:var(--shadow)}
+.card h3{margin:0 0 8px; font-family:"Space Grotesk"; font-weight:700; letter-spacing:.2px}
+.card p{margin: 6px 0; color:var(--muted)}
+.chip{display:inline-flex; align-items:center; gap:8px; background:#1a1932; border:1px solid #2d2a56; padding:8px 12px; border-radius:12px; font-size:12px}
 
-    .card{
-      background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
-      border:1px solid rgba(255,255,255,.06);
-      border-radius:18px; padding:20px; position:relative; overflow:hidden;
-    }
-    .card:focus-within{outline:2px solid var(--ring)}
-    .card h2{margin:0 0 6px; font-size:20px}
-    .chip{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--bg);background:#fff;border-radius:999px;padding:4px 10px;font-weight:600}
-    .chip svg{width:16px;height:16px}
+.kpi{display:grid; grid-template-columns: auto 1fr auto; align-items:center; gap:10px; background:#13132a; border:1px dashed #2b2a5a; padding:10px 12px; border-radius:12px; margin-top:10px}
+.kpi .val{font-weight:800; font-size:18px; color:#fff}
+.mono{font-family: ui-monospace, Menlo, Consolas, monospace}
 
-    .pill{display:inline-block; font-size:11px; padding:3px 8px; border-radius:999px; color:#0b1220; background: #c7d2fe; font-weight:700; letter-spacing:.3px}
-    .pill.cyan{background:#a5f3fc}
-    .pill.violet{background:#ddd6fe}
-    .pill.emerald{background:#a7f3d0}
+.two-col{display:grid; gap:18px}
+@media(min-width:1000px){ .two-col{grid-template-columns:1fr 1fr} }
 
-    .kpts{display:grid; grid-template-columns:1.1fr .9fr; gap:14px; margin-top:10px}
-    @media (max-width:640px){.kpts{grid-template-columns:1fr}}
-    .kpts ul{margin:0;padding:0 0 0 18px}
-    .kpts li{margin:4px 0}
+/* Confusion matrix grid */
+.cm{display:grid; grid-template-columns: 100px repeat(2, 1fr); grid-template-rows: 100px repeat(2, 1fr); gap:6px;}
+.cm .cell{display:flex; align-items:center; justify-content:center; border-radius:12px; background:#15152d; border:1px solid #2a2a52; position:relative; overflow:hidden}
+.cm .cell[data-v]{background: linear-gradient(180deg, rgba(124,58,237,.16), transparent), #14142b}
+.cm .hdr{background:#100f23; border:1px solid #2a2a52; color:#bdbef4; font-weight:700}
+.cm .diag::after{content:""; position:absolute; inset:0; background:linear-gradient(135deg, transparent 48%, rgba(250,204,21,.15) 49%, rgba(250,204,21,.15) 51%, transparent 52%) }
 
-    .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.legend{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
+.key{display:flex; align-items:center; gap:8px}
+.swatch{width:16px; height:16px; border-radius:4px; background:var(--brand)}
 
-    details{margin-top:12px; border-top:1px dashed rgba(255,255,255,.08); padding-top:10px}
-    summary{cursor:pointer; color:var(--muted); font-weight:700}
+/* Formula block */
+.formula{background:#111026; border:1px solid #26264a; border-radius:12px; padding:14px; margin:8px 0}
+code{background:#171739; border:1px solid #2d2a56; color:#eaeaff; padding:2px 6px; border-radius:8px}
 
-    .footer{
-      margin-top:34px; padding:16px; border-radius:14px; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.06);
-      display:grid; gap:8px
-    }
-    .legend{display:flex;flex-wrap:wrap;gap:8px}
+footer{margin:40px 0 16px; text-align:center; color:#979acb}
 
-    .figure-placeholder{border:1px dashed rgba(255,255,255,.15); border-radius:12px; padding:10px; color:var(--muted); font-size:13px}
   </style>
 </head>
 <body>
-  <main class="container">
-    <div class="title">
-      <span class="badge">Infografía</span>
-      <h1>Modelos Supervisados aplicados a tres datasets</h1>
+  <div class="wrap">
+    <header class="hero">
+      <div>
+        <h1 class="title">Infografía · Árbol de Decisión vs Random Forest</h1>
+        <p class="subtitle">Datasets: <b>Iris</b> (multiclase), <b>Titanic</b> (binaria) y guía para <b>CreditCard</b> (fraude, desbalanceado). Diseño en morado/amarillo (sin rojos) y gráficos interactivos.</p>
+        <div class="badges">
+          <span class="badge">Scikit-learn</span>
+          <span class="badge">Chart.js</span>
+          <span class="badge">MathJax</span>
+          <span class="badge">Pipelines & Métricas</span>
+        </div>
+      </div>
+      <div class="chip">⚙️ Reproducibilidad: <span class="mono">random_state=42</span></div>
+    </header><!-- Métricas y fórmulas -->
+<section class="grid cols-3">
+  <article class="card">
+    <h3>Fórmulas Clave</h3>
+    <div class="formula">$$Accuracy = \frac{TP + TN}{TP + TN + FP + FN}$$</div>
+    <div class="formula">$$Precision = \frac{TP}{TP + FP}$$</div>
+    <div class="formula">$$Recall = \frac{TP}{TP + FN}$$</div>
+    <div class="formula">$$F1 = 2\cdot \frac{Precision\cdot Recall}{Precision + Recall}$$</div>
+    <div class="formula">$$TPR = \frac{TP}{TP+FN},\quad FPR = \frac{FP}{FP+TN}$$
+      <p style="margin:6px 0 0; color:var(--muted)">AUC(ROC) = área bajo la curva TPR vs FPR; PR-AUC = área bajo Precisión–Recall (preferible en <i>fraude</i>).</p>
     </div>
-    <p class="subtitle">Resumen visual de qué hace cada modelo, qué datos utiliza y cómo se evalúa su desempeño. Incluye espacios para incorporar tus propias figuras y gráficos.</p>
+  </article>
 
-    <section class="grid" aria-label="Tarjetas de modelos">
-      <!-- Card 1: Regresión Lineal -->
-      <article class="card" aria-labelledby="lin-title">
-        <div class="meta">
-          <span class="chip" title="Tipo de tarea">
-            <!-- line icon -->
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 3v18h18"/><path d="M4 16l6-6 4 4 6-6"/></svg>
-            Regresión Lineal
-          </span>
-          <span class="pill cyan">Dataset: Coffee Sales</span>
-          <span class="pill">Target: Daily Revenue</span>
-        </div>
-        <h2 id="lin-title">¿Qué hace?</h2>
-        <p>Modela una relación <strong>lineal</strong> entre variables de negocio (clientes, ticket promedio, horas, empleados, marketing, tráfico) y los <em>ingresos diarios</em>. Permite estimar el revenue esperado y entender la contribución aproximada de cada factor.</p>
+  <article class="card">
+    <h3>Iris · Árbol de Decisión</h3>
+    <p><b>Accuracy</b> ≈ 0.98 · <b>Macro/Weighted</b> ≈ 0.98</p>
+    <div class="kpi"><span>🌸 Setosa</span><span></span><span class="val">P=1.00 · R=1.00</span></div>
+    <div class="kpi"><span>🟢 Versicolor</span><span></span><span class="val">P=1.00 · R=0.93</span></div>
+    <div class="kpi"><span>🟣 Virginica</span><span></span><span class="val">P=0.94 · R=1.00</span></div>
+    <p class="mono" style="margin-top:8px">Criterio: <b>gini</b> · max_depth=3 · <b>interpretabilidad</b> alta</p>
+  </article>
 
-        <div class="kpts">
-          <div>
-            <h3 style="margin:6px 0">Variables clave</h3>
-            <ul>
-              <li>Número de clientes por día</li>
-              <li>Valor promedio de orden</li>
-              <li>Horas de operación y empleados</li>
-              <li>Gasto en marketing</li>
-              <li>Tráfico peatonal</li>
-            </ul>
-          </div>
-          <div>
-            <h3 style="margin:6px 0">Métricas</h3>
-            <ul>
-              <li>MSE / RMSE</li>
-              <li>R² (explicación de varianza)</li>
-            </ul>
-          </div>
-        </div>
+  <article class="card">
+    <h3>Titanic · Random Forest</h3>
+    <p><b>Accuracy</b> ≈ 0.821 · <b>Precision</b> ≈ 0.809 · <b>Recall</b> ≈ 0.743 · <b>F1</b> ≈ 0.775</p>
+    <div class="kpi"><span>🌊 AUC(ROC)</span><span></span><span class="val">0.90</span></div>
+    <p class="mono" style="margin-top:8px">100 árboles · <b>bootstrap</b> · max_depth=None</p>
+  </article>
+</section>
 
-        <details>
-          <summary>Flujo de trabajo</summary>
-          <ul>
-            <li>Split 80/20 (train/test)</li>
-            <li>Ajuste con <code>LinearRegression</code></li>
-            <li>Predicción de ingresos y evaluación con MSE, RMSE y R²</li>
-            <li>Entrada manual para estimar revenue de un nuevo día</li>
-          </ul>
-        </details>
+<!-- Comparativa global -->
+<section class="grid cols-2" style="margin-top:18px">
+  <article class="card">
+    <h3>Comparación de Métricas (Global)</h3>
+    <canvas id="cmpGlobal" height="220"></canvas>
+    <p class="muted">Valores Iris ≈ promedios (macro/weighted); Titanic = valores reportados.</p>
+  </article>
+  <article class="card">
+    <h3>ROC & PR-AUC (Resumen)</h3>
+    <div class="legend">
+      <div class="key"><span class="swatch" style="background:var(--ok)"></span> AUC ROC Titanic ≈ <b>0.90</b></div>
+      <div class="key"><span class="swatch" style="background:var(--brand)"></span> ROC Iris (multiclase): <b>por clase</b> (según ejecución)</div>
+      <div class="key"><span class="swatch" style="background:var(--warn)"></span> PR-AUC (recomendado para <b>CreditCard</b>)</div>
+    </div>
+    <p style="margin-top:8px;color:var(--muted)">Para fraude se prioriza <b>Recall</b> y <b>PR-AUC</b>; ajustar umbral t según coste de FP/FN.</p>
+  </article>
+</section>
 
-        <div class="figure-placeholder" role="img" aria-label="Espacio para gráfica de real vs. predicho">
-        </div>
-      </article>
+<!-- Detalle por dataset: Confusion matrices y per-class -->
+<section class="two-col" style="margin-top:18px">
+  <article class="card">
+    <h3>Matriz de Confusión · Titanic (RF)</h3>
+    <div class="cm" id="cmTitanic">
+      <div class="cell hdr"></div>
+      <div class="cell hdr">Pred: No sobrevivió</div>
+      <div class="cell hdr">Pred: Sobrevivió</div>
+      <div class="cell hdr" style="writing-mode:vertical-rl; transform:rotate(180deg)">Real: No sobrevivió</div>
+      <div class="cell diag" data-v><div><b>TN</b><br><span class="val">92</span></div></div>
+      <div class="cell" data-v><div><b>FP</b><br><span class="val">13</span></div></div>
+      <div class="cell hdr" style="writing-mode:vertical-rl; transform:rotate(180deg)">Real: Sobrevivió</div>
+      <div class="cell" data-v><div><b>FN</b><br><span class="val">19</span></div></div>
+      <div class="cell diag" data-v><div><b>TP</b><br><span class="val">55</span></div></div>
+    </div>
+    <p class="mono" style="margin-top:8px">Errores más frecuentes: <b>FN</b> (sobrevivientes no detectados).</p>
+  </article>
 
-      <!-- Card 2: Regresión Polinómica -->
-      <article class="card" aria-labelledby="poly-title">
-        <div class="meta">
-          <span class="chip" title="Tipo de tarea">
-            <!-- curve icon -->
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 20s4-14 10-14 8 14 8 14"/></svg>
-            Regresión Polinómica
-          </span>
-          <span class="pill violet">Dataset: Auto MPG</span>
-          <span class="pill">Target: MPG</span>
-        </div>
-        <h2 id="poly-title">¿Qué hace?</h2>
-        <p>Captura <strong>relaciones no lineales</strong> entre características del vehículo (cilindros, peso, horsepower, etc.) y el <em>consumo de combustible</em>. Amplía la flexibilidad del modelo mediante <em>características polinomiales</em>.</p>
+  <article class="card">
+    <h3>Métricas por Clase · Iris (Árbol)</h3>
+    <canvas id="irisPerClass" height="240"></canvas>
+    <p class="mono" style="margin-top:8px">Clases: Setosa · Versicolor · Virginica</p>
+  </article>
+</section>
 
-        <div class="kpts">
-          <div>
-            <h3 style="margin:6px 0">Variables clave</h3>
-            <ul>
-              <li>Cilindros, desplazamiento, horsepower</li>
-              <li>Peso y aceleración</li>
-              <li>Año del modelo, origen y marca</li>
-            </ul>
-          </div>
-          <div>
-            <h3 style="margin:6px 0">Métricas</h3>
-            <ul>
-              <li>MSE / RMSE (train y test)</li>
-              <li>R² (comparar con grado 1)</li>
-            </ul>
-          </div>
-        </div>
+<!-- Sección CreditCard (guía de métricas y pipeline) -->
+<section class="grid cols-3" style="margin-top:18px">
+  <article class="card">
+    <h3>CreditCard · Recomendaciones</h3>
+    <ul>
+      <li>División estratificada: <code>train_test_split(..., stratify=y)</code></li>
+      <li>Escalar <code>Time</code> y <code>Amount</code> (StandardScaler)</li>
+      <li>Usar <b>SMOTE</b> o <code>class_weight='balanced'</code></li>
+      <li>Optimizar por <b>PR-AUC</b> / <b>Recall</b> de fraude</li>
+    </ul>
+    <p class="mono">Métricas clave: Precision (fraude), Recall (fraude), F1 (fraude), PR-AUC, ROC-AUC</p>
+  </article>
+  <article class="card">
+    <h3>Checklist de Métricas</h3>
+    <ul>
+      <li>Iris: Accuracy, Prec/Rec/F1 por clase, Matriz de Confusión</li>
+      <li>Titanic: Accuracy, Prec/Rec/F1, Matriz de Confusión, AUC</li>
+      <li>CreditCard: Prec/Rec/F1 (fraude), PR-AUC, ROC-AUC</li>
+    </ul>
+    <p class="mono">Evitar depender sólo de Accuracy en desbalance.</p>
+  </article>
+  <article class="card">
+    <h3>Hiperparámetros (resumen)</h3>
+    <ul>
+      <li><b>DecisionTree</b>: <code>criterion={'gini','entropy'}</code>, <code>max_depth</code>, <code>min_samples_leaf</code></li>
+      <li><b>RandomForest</b>: <code>n_estimators</code>, <code>max_depth</code>, <code>max_features</code>, <code>min_samples_leaf</code></li>
+      <li>Pipelines y <b>validación cruzada</b> con <code>RandomizedSearchCV</code></li>
+    </ul>
+  </article>
+</section>
 
-        <details>
-          <summary>Flujo de trabajo</summary>
-          <ul>
-            <li>Imputación, escalado y <code>PolynomialFeatures</code> (grado configurable)</li>
-            <li>One-Hot Encoding para categóricas (origen, marca)</li>
-            <li>Evaluación en train/test y curva MSE vs. grado</li>
-            <li>Perfiles parciales (p.ej., MPG vs. horsepower)</li>
-          </ul>
-        </details>
+<footer>
+  <small>Fuentes: código y resultados del informe del equipo (Iris, Titanic). Este HTML está listo para imprimirse o publicarse como GitHub Pages.</small>
+</footer>
 
-        <div class="figure-placeholder" role="img" aria-label="Espacio para gráficas polinomiales">
-        </div>
-      </article>
+  </div>  <script>
+    // ======== Datos (del informe) ========
+    // Titanic (binario): métricas globales
+    const titanic = { accuracy: 0.821, precision: 0.809, recall: 0.743, f1: 0.775, auc: 0.90, cm: {tn:92, fp:13, fn:19, tp:55} };
+    // Iris (multiclase): promedios globales aproximados y por-clase
+    const iris = {
+      accuracy: 0.978, precision: 0.98, recall: 0.98, f1: 0.98,
+      perClass: [ // [Precision, Recall] por clase en orden Setosa, Versicolor, Virginica
+        {label:'Setosa', p:1.00, r:1.00},
+        {label:'Versicolor', p:1.00, r:0.93},
+        {label:'Virginica', p:0.94, r:1.00}
+      ]
+    };
 
-      <!-- Card 3: Regresión Logística -->
-      <article class="card" aria-labelledby="logit-title">
-        <div class="meta">
-          <span class="chip" title="Tipo de tarea">
-            <!-- target icon -->
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v6M12 15v6M21 12h-6M9 12H3"/></svg>
-            Regresión Logística
-          </span>
-          <span class="pill emerald">Dataset: Pima Indians Diabetes</span>
-          <span class="pill">Target: Outcome (0/1)</span>
-        </div>
-        <h2 id="logit-title">¿Qué hace?</h2>
-        <p>Estima la <strong>probabilidad</strong> de que una persona <em>tenga diabetes</em> (1) o no la tenga (0) a partir de variables clínicas (glucosa, presión, BMI, etc.). Permite ajustar el <em>umbral</em> de decisión según el balance entre falsos positivos y falsos negativos.</p>
+    // ======== Gráfico Comparativo Global ========
+    const ctxCmp = document.getElementById('cmpGlobal');
+    new Chart(ctxCmp, {
+      type: 'bar',
+      data: {
+        labels: ['Accuracy','Precision','Recall','F1-Score'],
+        datasets: [
+          { label: 'Iris (Árbol)', data: [iris.accuracy, iris.precision, iris.recall, iris.f1], borderWidth:1 },
+          { label: 'Titanic (RF)', data: [titanic.accuracy, titanic.precision, titanic.recall, titanic.f1], borderWidth:1 }
+        ]
+      },
+      options: {
+        scales: {
+          y: { beginAtZero: true, max: 1, grid: {color:getComputedStyle(document.documentElement).getPropertyValue('--grid')} },
+          x: { grid: {color: 'transparent'} }
+        },
+        plugins: { legend: { labels:{ color:'#e6e7ff' } }, tooltip:{ callbacks:{ label: ctx=> `${ctx.dataset.label}: ${(ctx.parsed.y).toFixed(3)}` } } },
+        animation: { duration: 900 }
+      }
+    });
 
-        <div class="kpts">
-          <div>
-            <h3 style="margin:6px 0">Variables clave</h3>
-            <ul>
-              <li>Embarazos, Glucosa, Presión, Piel, Insulina</li>
-              <li>BMI, Árbol genealógico diabético, Edad</li>
-            </ul>
-          </div>
-          <div>
-            <h3 style="margin:6px 0">Métricas</h3>
-            <ul>
-              <li>Accuracy, Precision, Recall, F1-score</li>
-              <li>ROC–AUC y Curva ROC</li>
-              <li>Matriz de confusión</li>
-            </ul>
-          </div>
-        </div>
-
-        <details>
-          <summary>Flujo de trabajo</summary>
-          <ul>
-            <li>Imputación (mediana) y escalado</li>
-            <li>Entrenamiento con <code>LogisticRegression</code> (clase balanceada)</li>
-            <li>Evaluación en test y validación cruzada estratificada</li>
-            <li>Predicción individual y por lotes con umbral configurable</li>
-          </ul>
-        </details>
-
-        <div class="figure-placeholder" role="img" aria-label="Espacio para curva ROC y matriz de confusión">
-        </div>
-      </article>
-    </section>
-
-    
-  </main>
-</body>
+    // ======== Iris per-class (Precision vs Recall) ========
+    const ctxIris = document.getElementById('irisPerClass');
+    new Chart(ctxIris, {
+      type: 'bar',
+      data: {
+        labels: iris.perClass.map(c=>c.label),
+        datasets: [
+          { label: 'Precision', data: iris.perClass.map(c=>c.p) },
+          { label: 'Recall', data: iris.perClass.map(c=>c.r) }
+        ]
+      },
+      options: {
+        scales: {
+          y: { beginAtZero: true, max: 1, grid: {color:getComputedStyle(document.documentElement).getPropertyValue('--grid')} },
+          x: { grid: {color: 'transparent'} }
+        },
+        plugins: { legend: { labels:{ color:'#e6e7ff' } }, tooltip:{ callbacks:{ label: ctx=> `${ctx.dataset.label}: ${(ctx.parsed.y).toFixed(2)}` } } },
+        animation: { duration: 900 }
+      }
+    });
+  </script></body>
 </html>
-
-
-
-
-
