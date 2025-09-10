@@ -207,6 +207,31 @@
         </div>
         <p style="margin-top:10px;color:var(--muted)">Interpretación: mayor número de FN (sobrevivientes no detectados) → enfoque para mejorar Recall.</p>
       </article>
+      <article class="card">
+        <h3>🌸 Iris · Matriz de Confusión (Árbol)</h3>
+        <div class="cm" style="grid-template-columns: 100px repeat(3, 1fr); grid-template-rows: 100px repeat(3, 1fr);">
+          <div class="cell hdr"></div>
+          <div class="cell hdr">Pred: Setosa</div>
+          <div class="cell hdr">Pred: Versicolor</div>
+          <div class="cell hdr">Pred: Virginica</div>
+      
+          <div class="cell hdr" style="writing-mode:vertical-rl; transform:rotate(180deg)">Real: Setosa</div>
+          <div class="cell diag" data-v><div><b>16</b></div></div>
+          <div class="cell" data-v><div>0</div></div>
+          <div class="cell" data-v><div>0</div></div>
+      
+          <div class="cell hdr" style="writing-mode:vertical-rl; transform:rotate(180deg)">Real: Versicolor</div>
+          <div class="cell" data-v><div>0</div></div>
+          <div class="cell diag" data-v><div><b>13</b></div></div>
+          <div class="cell" data-v><div>1</div></div>
+      
+          <div class="cell hdr" style="writing-mode:vertical-rl; transform:rotate(180deg)">Real: Virginica</div>
+          <div class="cell" data-v><div>0</div></div>
+          <div class="cell" data-v><div>0</div></div>
+          <div class="cell diag" data-v><div><b>15</b></div></div>
+        </div>
+        <p class="mono" style="margin-top:8px">Error notable: 1 Versicolor clasificada como Virginica.</p>
+    </article>
 
       <article class="card">
         <h3>💳 CreditCard — Matriz de Confusión (reporte)</h3>
@@ -642,4 +667,5 @@ print("MSE:", mse, "MAE:", mae, "R2:", r2)
   </script>
 </body>
 </html>
+
 
