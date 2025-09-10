@@ -46,6 +46,18 @@
     .grid{display:grid; gap:16px}
     @media(min-width:980px){ .grid.cols-3{grid-template-columns:repeat(3,1fr)} .grid.cols-2{grid-template-columns:1.2fr .8fr} }
 
+    .formulas {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 10px;
+}
+.formula {
+  font-size: 18px;
+  text-align: center;
+  padding: 6px 0;
+}
+
     .card{background:var(--panel); border:1px solid #26264a; border-radius:var(--radius); padding:var(--card-padding); box-shadow: var(--shadow)}
     .card h3{margin:0 0 8px; font-family:"Space Grotesk"; font-weight:700; letter-spacing:.2px}
     .card p{margin: 6px 0; color:var(--muted)}
@@ -100,15 +112,17 @@
 
     <!-- Formulas -->
     <section class="card">
-      <h3>📐 Fórmulas principales</h3>
-      <div style="display:flex;flex-direction:column;gap:8px">
-        <div class="mono">$$Accuracy = \\frac{TP + TN}{TP + TN + FP + FN}$$</div>
-        <div class="mono">$$Precision = \\frac{TP}{TP + FP}$$</div>
-        <div class="mono">$$Recall = \\frac{TP}{TP + FN}$$</div>
-        <div class="mono">$$F1 = 2\\cdot \\frac{Precision\\cdot Recall}{Precision + Recall}$$</div>
-        <p style="margin:6px 0 0;color:var(--muted)">TPR = Recall; FPR = FP/(FP+TN). Para problemas desbalanceados (fraude) priorizar <b>PR-AUC</b> y <b>Recall</b>.</p>
-      </div>
-    </section>
+  <h3>📐 Fórmulas principales</h3>
+  <div class="formulas">
+    <div class="formula">$$Accuracy = \frac{TP + TN}{TP + TN + FP + FN}$$</div>
+    <div class="formula">$$Precision = \frac{TP}{TP + FP}$$</div>
+    <div class="formula">$$Recall = \frac{TP}{TP + FN}$$</div>
+    <div class="formula">$$F1 = 2 \cdot \frac{Precision \cdot Recall}{Precision + Recall}$$</div>
+  </div>
+  <p style="margin-top:10px;color:var(--muted)">
+    📌 Nota: en datasets desbalanceados (fraude), <b>PR-AUC</b> y <b>Recall</b> son más relevantes que Accuracy.
+  </p>
+</section>
 
     <!-- Overview cards -->
     <section class="grid cols-3" style="margin-top:16px">
@@ -628,3 +642,4 @@ print("MSE:", mse, "MAE:", mae, "R2:", r2)
   </script>
 </body>
 </html>
+
