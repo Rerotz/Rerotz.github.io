@@ -1,77 +1,85 @@
-<!DOCTYPE html><html lang="es">
+<!DOCTYPE html>
+<html lang="es">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Infografía | Árbol de Decisión vs Random Forest</title>
+  <title>Infografía · Árbol de Decisión vs Random Forest (Completa)</title>
+
   <!-- Tipografías -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet" />
+
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
   <!-- MathJax para fórmulas -->
   <script>
-    window.MathJax = { tex: { inlineMath: [["$","$"],["\","\"]], displayMath: [["$$","$$"]] } };
+    window.MathJax = { tex: { inlineMath: [["$","$"],["\\(","\\)"]], displayMath: [["$$","$$"]] } };
   </script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+
   <style>
     :root{
-      --bg:#0b0b11; /* fondo base */
-      --panel:#121223e6; /* card */
-      --ink:#f6f7fb; /* texto */
-      --muted:#a6a8b8; /* texto secundario */
-      --brand:#7c3aed; /* morado principal */
-      --brand-2:#facc15; /* amarillo acento */
-      --ok:#22c55e; /* verde */
-      --warn:#f59e0b; /* ámbar (evitar rojo) */
+      --bg:#0b0b11;
+      --panel:#121223e6;
+      --ink:#f6f7fb;
+      --muted:#a6a8b8;
+      --brand:#7c3aed;
+      --brand-2:#facc15;
+      --ok:#22c55e;
+      --warn:#f59e0b;
       --grid:#23233a66;
       --chip:#262649;
       --shadow: 0 10px 30px rgba(0,0,0,.35);
       --radius: 18px;
+      --card-padding:18px;
     }
     *{box-sizing:border-box}
     html,body{margin:0;height:100%;background: radial-gradient(1200px 600px at 20% -10%, #221a42 0%, transparent 60%), radial-gradient(1000px 500px at 110% 10%, #2b2153 0%, transparent 60%), var(--bg); color:var(--ink); font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial}
     a{color:var(--brand-2); text-decoration:none}
-    .wrap{max-width:1200px; margin:0 auto; padding:32px}
-    header{display:grid; grid-template-columns: 1fr auto; gap:16px; align-items:center; margin-bottom:24px}
-    .hero{
-      background: linear-gradient(160deg, rgba(124,58,237,.28), rgba(42,30,78,.2));
-      border:1px solid #3a2f62; border-radius: var(--radius);
-      padding:28px; box-shadow: var(--shadow);
+    .wrap{max-width:1200px; margin:0 auto; padding:28px}
+    header{display:grid; grid-template-columns: 1fr auto; gap:16px; align-items:center; margin-bottom:20px}
+    .hero{background: linear-gradient(160deg, rgba(124,58,237,.28), rgba(42,30,78,.2)); border:1px solid #3a2f62; border-radius: var(--radius); padding:22px; box-shadow: var(--shadow)}
+    .title{font-family:"Space Grotesk"; font-size: clamp(22px, 3.6vw, 40px); line-height:1.05; margin:0}
+    .subtitle{margin:8px 0 0; color:var(--muted); font-size:14px}
+    .badges{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px}
+    .badge{background:var(--chip); color:#dcdcf9; border: 1px solid #3a2f62; padding:8px 10px; border-radius:999px; font-size:12px; letter-spacing:.3px}
+    .grid{display:grid; gap:16px}
+    @media(min-width:980px){ .grid.cols-3{grid-template-columns:repeat(3,1fr)} .grid.cols-2{grid-template-columns:1.2fr .8fr} }
+
+    .card{background:var(--panel); border:1px solid #26264a; border-radius:var(--radius); padding:var(--card-padding); box-shadow: var(--shadow)}
+    .card h3{margin:0 0 8px; font-family:"Space Grotesk"; font-weight:700; letter-spacing:.2px}
+    .card p{margin: 6px 0; color:var(--muted)}
+    .chip{display:inline-flex; align-items:center; gap:8px; background:#1a1932; border:1px solid #2d2a56; padding:8px 12px; border-radius:12px; font-size:12px}
+    .kpi{display:flex; flex-direction:column; gap:8px; background:#13132a; border:1px dashed #2b2a5a; padding:10px 12px; border-radius:12px; margin-top:10px}
+    .kpi .row{display:flex; justify-content:space-between; align-items:center}
+    .kpi .val{font-weight:800; font-size:16px; color:#fff}
+    .mono{font-family: ui-monospace, Menlo, Consolas, monospace; font-size:13px}
+    .two-col{display:grid; gap:16px}
+    @media(min-width:1000px){ .two-col{grid-template-columns:1fr 1fr} }
+
+    /* Confusion matrix grid */
+    .cm{display:grid; grid-template-columns: 100px repeat(2, 1fr); grid-template-rows: 100px repeat(2, 1fr); gap:6px;}
+    .cm .cell{display:flex; align-items:center; justify-content:center; border-radius:12px; background:#15152d; border:1px solid #2a2a52; position:relative; overflow:hidden; min-height:64px}
+    .cm .cell[data-v]{background: linear-gradient(180deg, rgba(124,58,237,.16), transparent), #14142b}
+    .cm .hdr{background:#100f23; border:1px solid #2a2a52; color:#bdbef4; font-weight:700; text-align:center; padding:8px}
+    .cm .diag::after{content:""; position:absolute; inset:0; background:linear-gradient(135deg, transparent 48%, rgba(250,204,21,.12) 49%, rgba(250,204,21,.12) 51%, transparent 52%) }
+
+    .legend{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
+    .key{display:flex; align-items:center; gap:8px}
+    .swatch{width:14px; height:14px; border-radius:4px; background:var(--brand)}
+
+    details{margin-top:12px}
+    pre{background:#0f0f20;padding:12px;border-radius:8px;border:1px solid #252343; overflow:auto; font-size:12px}
+    code{color:#e6e7ff}
+
+    footer{margin:30px 0 12px; text-align:center; color:#979acb; font-size:13px}
+
+    /* print-friendly */
+    @media print{
+      body{background:white;color:black}
+      .wrap{max-width:100%;padding:10px}
+      .card{box-shadow:none;border:none;background:transparent}
     }
-    .title{font-family:"Space Grotesk"; font-size: clamp(24px, 4vw, 44px); line-height:1.05; margin:0}
-    .subtitle{margin:8px 0 0; color:var(--muted)}
-    .badges{display:flex; flex-wrap:wrap; gap:8px; margin-top:14px}
-    .badge{background:var(--chip); color:#dcdcf9; border: 1px solid #3a2f62; padding:8px 10px; border-radius:999px; font-size:12px; letter-spacing:.3px}.grid{display:grid; gap:18px}
-@media(min-width:900px){ .grid.cols-3{grid-template-columns:repeat(3,1fr)} .grid.cols-2{grid-template-columns:1.2fr .8fr} }
-
-.card{background:var(--panel); border:1px solid #26264a; border-radius:var(--radius); padding:20px; box-shadow:var(--shadow)}
-.card h3{margin:0 0 8px; font-family:"Space Grotesk"; font-weight:700; letter-spacing:.2px}
-.card p{margin: 6px 0; color:var(--muted)}
-.chip{display:inline-flex; align-items:center; gap:8px; background:#1a1932; border:1px solid #2d2a56; padding:8px 12px; border-radius:12px; font-size:12px}
-
-.kpi{display:grid; grid-template-columns: auto 1fr auto; align-items:center; gap:10px; background:#13132a; border:1px dashed #2b2a5a; padding:10px 12px; border-radius:12px; margin-top:10px}
-.kpi .val{font-weight:800; font-size:18px; color:#fff}
-.mono{font-family: ui-monospace, Menlo, Consolas, monospace}
-
-.two-col{display:grid; gap:18px}
-@media(min-width:1000px){ .two-col{grid-template-columns:1fr 1fr} }
-
-/* Confusion matrix grid */
-.cm{display:grid; grid-template-columns: 100px repeat(2, 1fr); grid-template-rows: 100px repeat(2, 1fr); gap:6px;}
-.cm .cell{display:flex; align-items:center; justify-content:center; border-radius:12px; background:#15152d; border:1px solid #2a2a52; position:relative; overflow:hidden}
-.cm .cell[data-v]{background: linear-gradient(180deg, rgba(124,58,237,.16), transparent), #14142b}
-.cm .hdr{background:#100f23; border:1px solid #2a2a52; color:#bdbef4; font-weight:700}
-.cm .diag::after{content:""; position:absolute; inset:0; background:linear-gradient(135deg, transparent 48%, rgba(250,204,21,.15) 49%, rgba(250,204,21,.15) 51%, transparent 52%) }
-
-.legend{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
-.key{display:flex; align-items:center; gap:8px}
-.swatch{width:16px; height:16px; border-radius:4px; background:var(--brand)}
-
-/* Formula block */
-.formula{background:#111026; border:1px solid #26264a; border-radius:12px; padding:14px; margin:8px 0}
-code{background:#171739; border:1px solid #2d2a56; color:#eaeaff; padding:2px 6px; border-radius:8px}
-
-footer{margin:40px 0 16px; text-align:center; color:#979acb}
-
   </style>
 </head>
 <body>
@@ -79,177 +87,544 @@ footer{margin:40px 0 16px; text-align:center; color:#979acb}
     <header class="hero">
       <div>
         <h1 class="title">Infografía · Árbol de Decisión vs Random Forest</h1>
-        <p class="subtitle">Datasets: <b>Iris</b> (multiclase), <b>Titanic</b> (binaria) y guía para <b>CreditCard</b> (fraude, desbalanceado). Diseño en morado/amarillo (sin rojos) y gráficos interactivos.</p>
+        <p class="subtitle">Resumen visual y técnico de los experimentos con <b>Iris</b>, <b>Titanic</b> y <b>CreditCard (fraude)</b>. Incluye métricas, matrices y el código usado.</p>
         <div class="badges">
           <span class="badge">Scikit-learn</span>
           <span class="badge">Chart.js</span>
           <span class="badge">MathJax</span>
-          <span class="badge">Pipelines & Métricas</span>
+          <span class="badge">imbalanced-learn</span>
         </div>
       </div>
       <div class="chip">⚙️ Reproducibilidad: <span class="mono">random_state=42</span></div>
-    </header><!-- Métricas y fórmulas -->
-<section class="grid cols-3">
-  <article class="card">
-    <h3>Fórmulas Clave</h3>
-    <div class="formula">$$Accuracy = \frac{TP + TN}{TP + TN + FP + FN}$$</div>
-    <div class="formula">$$Precision = \frac{TP}{TP + FP}$$</div>
-    <div class="formula">$$Recall = \frac{TP}{TP + FN}$$</div>
-    <div class="formula">$$F1 = 2\cdot \frac{Precision\cdot Recall}{Precision + Recall}$$</div>
-    <div class="formula">$$TPR = \frac{TP}{TP+FN},\quad FPR = \frac{FP}{FP+TN}$$
-      <p style="margin:6px 0 0; color:var(--muted)">AUC(ROC) = área bajo la curva TPR vs FPR; PR-AUC = área bajo Precisión–Recall (preferible en <i>fraude</i>).</p>
-    </div>
-  </article>
+    </header>
 
-  <article class="card">
-    <h3>Iris · Árbol de Decisión</h3>
-    <p><b>Accuracy</b> ≈ 0.98 · <b>Macro/Weighted</b> ≈ 0.98</p>
-    <div class="kpi"><span>🌸 Setosa</span><span></span><span class="val">P=1.00 · R=1.00</span></div>
-    <div class="kpi"><span>🟢 Versicolor</span><span></span><span class="val">P=1.00 · R=0.93</span></div>
-    <div class="kpi"><span>🟣 Virginica</span><span></span><span class="val">P=0.94 · R=1.00</span></div>
-    <p class="mono" style="margin-top:8px">Criterio: <b>gini</b> · max_depth=3 · <b>interpretabilidad</b> alta</p>
-  </article>
+    <!-- Formulas -->
+    <section class="card">
+      <h3>📐 Fórmulas principales</h3>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="mono">$$Accuracy = \\frac{TP + TN}{TP + TN + FP + FN}$$</div>
+        <div class="mono">$$Precision = \\frac{TP}{TP + FP}$$</div>
+        <div class="mono">$$Recall = \\frac{TP}{TP + FN}$$</div>
+        <div class="mono">$$F1 = 2\\cdot \\frac{Precision\\cdot Recall}{Precision + Recall}$$</div>
+        <p style="margin:6px 0 0;color:var(--muted)">TPR = Recall; FPR = FP/(FP+TN). Para problemas desbalanceados (fraude) priorizar <b>PR-AUC</b> y <b>Recall</b>.</p>
+      </div>
+    </section>
 
-  <article class="card">
-    <h3>Titanic · Random Forest</h3>
-    <p><b>Accuracy</b> ≈ 0.821 · <b>Precision</b> ≈ 0.809 · <b>Recall</b> ≈ 0.743 · <b>F1</b> ≈ 0.775</p>
-    <div class="kpi"><span>🌊 AUC(ROC)</span><span></span><span class="val">0.90</span></div>
-    <p class="mono" style="margin-top:8px">100 árboles · <b>bootstrap</b> · max_depth=None</p>
-  </article>
-</section>
+    <!-- Overview cards -->
+    <section class="grid cols-3" style="margin-top:16px">
+      <article class="card">
+        <h3>🌸 Iris — Árbol de Decisión</h3>
+        <p>Problema: clasificación multiclase (setosa, versicolor, virginica). Dataset balanceado y limpio — ideal para interpretación.</p>
+        <div class="kpi">
+          <div class="row"><div>Accuracy (test)</div><div class="val">≈ 0.9777</div></div>
+          <div class="row"><div>Macro / Weighted</div><div class="val">≈ 0.98</div></div>
+        </div>
+        <div style="margin-top:10px">
+          <div class="mono"><b>Per-class (Precision / Recall)</b></div>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <div class="chip">Setosa → P=1.00 · R=1.00</div>
+            <div class="chip">Versicolor → P=1.00 · R=0.93</div>
+            <div class="chip">Virginica → P=0.94 · R=1.00</div>
+          </div>
+          <p style="margin-top:8px;color:var(--muted)">Parámetros: <span class="mono">criterion='gini', max_depth=3</span> — enfoque en interpretabilidad.</p>
+        </div>
+      </article>
 
-<!-- Comparativa global -->
-<section class="grid cols-2" style="margin-top:18px">
-  <article class="card">
-    <h3>Comparación de Métricas (Global)</h3>
-    <canvas id="cmpGlobal" height="220"></canvas>
-    <p class="muted">Valores Iris ≈ promedios (macro/weighted); Titanic = valores reportados.</p>
-  </article>
-  <article class="card">
-    <h3>ROC & PR-AUC (Resumen)</h3>
-    <div class="legend">
-      <div class="key"><span class="swatch" style="background:var(--ok)"></span> AUC ROC Titanic ≈ <b>0.90</b></div>
-      <div class="key"><span class="swatch" style="background:var(--brand)"></span> ROC Iris (multiclase): <b>por clase</b> (según ejecución)</div>
-      <div class="key"><span class="swatch" style="background:var(--warn)"></span> PR-AUC (recomendado para <b>CreditCard</b>)</div>
-    </div>
-    <p style="margin-top:8px;color:var(--muted)">Para fraude se prioriza <b>Recall</b> y <b>PR-AUC</b>; ajustar umbral t según coste de FP/FN.</p>
-  </article>
-</section>
+      <article class="card">
+        <h3>🚢 Titanic — Random Forest</h3>
+        <p>Problema: clasificación binaria (survive / not). Dataset real con valores faltantes y variables categóricas.</p>
+        <div class="kpi">
+          <div class="row"><div>Accuracy</div><div class="val">0.8212</div></div>
+          <div class="row"><div>Precision</div><div class="val">0.8088</div></div>
+          <div class="row"><div>Recall</div><div class="val">0.7432</div></div>
+          <div class="row"><div>F1</div><div class="val">0.7746</div></div>
+          <div class="row"><div>AUC (ROC)</div><div class="val">0.90</div></div>
+        </div>
+        <p style="margin-top:8px;color:var(--muted)"><b>Observación:</b> FN (sobrevivientes no detectados) es el error más costoso aquí.</p>
+      </article>
 
-<!-- Detalle por dataset: Confusion matrices y per-class -->
-<section class="two-col" style="margin-top:18px">
-  <article class="card">
-    <h3>Matriz de Confusión · Titanic (RF)</h3>
-    <div class="cm" id="cmTitanic">
-      <div class="cell hdr"></div>
-      <div class="cell hdr">Pred: No sobrevivió</div>
-      <div class="cell hdr">Pred: Sobrevivió</div>
-      <div class="cell hdr" style="writing-mode:vertical-rl; transform:rotate(180deg)">Real: No sobrevivió</div>
-      <div class="cell diag" data-v><div><b>TN</b><br><span class="val">92</span></div></div>
-      <div class="cell" data-v><div><b>FP</b><br><span class="val">13</span></div></div>
-      <div class="cell hdr" style="writing-mode:vertical-rl; transform:rotate(180deg)">Real: Sobrevivió</div>
-      <div class="cell" data-v><div><b>FN</b><br><span class="val">19</span></div></div>
-      <div class="cell diag" data-v><div><b>TP</b><br><span class="val">55</span></div></div>
-    </div>
-    <p class="mono" style="margin-top:8px">Errores más frecuentes: <b>FN</b> (sobrevivientes no detectados).</p>
-  </article>
+      <article class="card">
+        <h3>💳 CreditCard — Random Forest (fraude)</h3>
+        <p>Problema: detección de fraude (fuertemente desbalanceado). Enfoque: SMOTE ó <code>class_weight='balanced'</code>, optimizar PR-AUC.</p>
+        <div class="kpi">
+          <div class="row"><div>Accuracy</div><div class="val">≈ 0.9990</div></div>
+          <div class="row"><div>Precision (fraude)</div><div class="val">0.91</div></div>
+          <div class="row"><div>Recall (fraude)</div><div class="val">0.77</div></div>
+          <div class="row"><div>F1 (fraude)</div><div class="val">0.83</div></div>
+          <div class="row"><div>ROC-AUC</div><div class="val">0.9799</div></div>
+          <div class="row"><div>PR-AUC</div><div class="val">0.9005</div></div>
+        </div>
+        <p style="margin-top:8px;color:var(--muted)"><b>Nota:</b> Accuracy alto es engañoso por el desbalance; priorizar detección (Recall) y PR-AUC.</p>
+      </article>
+    </section>
 
-  <article class="card">
-    <h3>Métricas por Clase · Iris (Árbol)</h3>
-    <canvas id="irisPerClass" height="240"></canvas>
-    <p class="mono" style="margin-top:8px">Clases: Setosa · Versicolor · Virginica</p>
-  </article>
-</section>
+    <!-- Charts area -->
+    <section class="grid cols-2" style="margin-top:18px">
+      <article class="card">
+        <h3>📊 Comparación Global (Accuracy / Precision / Recall / F1)</h3>
+        <canvas id="cmpGlobal" height="260"></canvas>
+        <p style="margin-top:8px;color:var(--muted)">Iris (Árbol), Titanic (RF) y CreditCard (RF). Valores aproximados tomados del informe.</p>
+      </article>
 
-<!-- Sección CreditCard (guía de métricas y pipeline) -->
-<section class="grid cols-3" style="margin-top:18px">
-  <article class="card">
-    <h3>CreditCard · Recomendaciones</h3>
-    <ul>
-      <li>División estratificada: <code>train_test_split(..., stratify=y)</code></li>
-      <li>Escalar <code>Time</code> y <code>Amount</code> (StandardScaler)</li>
-      <li>Usar <b>SMOTE</b> o <code>class_weight='balanced'</code></li>
-      <li>Optimizar por <b>PR-AUC</b> / <b>Recall</b> de fraude</li>
-    </ul>
-    <p class="mono">Métricas clave: Precision (fraude), Recall (fraude), F1 (fraude), PR-AUC, ROC-AUC</p>
-  </article>
-  <article class="card">
-    <h3>Checklist de Métricas</h3>
-    <ul>
-      <li>Iris: Accuracy, Prec/Rec/F1 por clase, Matriz de Confusión</li>
-      <li>Titanic: Accuracy, Prec/Rec/F1, Matriz de Confusión, AUC</li>
-      <li>CreditCard: Prec/Rec/F1 (fraude), PR-AUC, ROC-AUC</li>
-    </ul>
-    <p class="mono">Evitar depender sólo de Accuracy en desbalance.</p>
-  </article>
-  <article class="card">
-    <h3>Hiperparámetros (resumen)</h3>
-    <ul>
-      <li><b>DecisionTree</b>: <code>criterion={'gini','entropy'}</code>, <code>max_depth</code>, <code>min_samples_leaf</code></li>
-      <li><b>RandomForest</b>: <code>n_estimators</code>, <code>max_depth</code>, <code>max_features</code>, <code>min_samples_leaf</code></li>
-      <li>Pipelines y <b>validación cruzada</b> con <code>RandomizedSearchCV</code></li>
-    </ul>
-  </article>
-</section>
+      <article class="card">
+        <h3>📈 Curvas ROC & PR (Resumen)</h3>
+        <div style="display:flex;gap:12px;flex-direction:column">
+          <div><canvas id="rocChart" height="160"></canvas></div>
+          <div><canvas id="prChart" height="160"></canvas></div>
+          <div style="font-size:13px;color:var(--muted)">ROC: útil para discriminación general. PR: más informativo en fraude (clase minoritaria).</div>
+        </div>
+      </article>
+    </section>
 
-<footer>
-  <small>Fuentes: código y resultados del informe del equipo (Iris, Titanic). Este HTML está listo para imprimirse o publicarse como GitHub Pages.</small>
-</footer>
+    <!-- Confusion matrices -->
+    <section class="two-col" style="margin-top:18px">
+      <article class="card">
+        <h3>🚢 Titanic — Matriz de Confusión</h3>
+        <div class="cm" aria-hidden="true">
+          <div class="cell hdr"></div>
+          <div class="cell hdr">Pred: No sobrevivió</div>
+          <div class="cell hdr">Pred: Sobrevivió</div>
+          <div class="cell hdr" style="writing-mode:vertical-rl; transform:rotate(180deg)">Real: No sobrevivió</div>
+          <div class="cell diag" data-v><div><b>TN</b><br><span class="val">92</span></div></div>
+          <div class="cell" data-v><div><b>FP</b><br><span class="val">13</span></div></div>
+          <div class="cell hdr" style="writing-mode:vertical-rl; transform:rotate(180deg)">Real: Sobrevivió</div>
+          <div class="cell" data-v><div><b>FN</b><br><span class="val">19</span></div></div>
+          <div class="cell diag" data-v><div><b>TP</b><br><span class="val">55</span></div></div>
+        </div>
+        <p style="margin-top:10px;color:var(--muted)">Interpretación: mayor número de FN (sobrevivientes no detectados) → enfoque para mejorar Recall.</p>
+      </article>
 
-  </div>  <script>
-    // ======== Datos (del informe) ========
-    // Titanic (binario): métricas globales
-    const titanic = { accuracy: 0.821, precision: 0.809, recall: 0.743, f1: 0.775, auc: 0.90, cm: {tn:92, fp:13, fn:19, tp:55} };
-    // Iris (multiclase): promedios globales aproximados y por-clase
+      <article class="card">
+        <h3>💳 CreditCard — Matriz de Confusión (reporte)</h3>
+        <div class="cm" aria-hidden="true">
+          <div class="cell hdr"></div>
+          <div class="cell hdr">Pred: No Fraude</div>
+          <div class="cell hdr">Pred: Fraude</div>
+          <div class="cell hdr" style="writing-mode:vertical-rl; transform:rotate(180deg)">Real: No Fraude</div>
+          <div class="cell diag" data-v><div><b>TN</b><br><span class="val">7724</span></div></div>
+          <div class="cell" data-v><div><b>FP</b><br><span class="val">2</span></div></div>
+          <div class="cell hdr" style="writing-mode:vertical-rl; transform:rotate(180deg)">Real: Fraude</div>
+          <div class="cell" data-v><div><b>FN</b><br><span class="val">6</span></div></div>
+          <div class="cell diag" data-v><div><b>TP</b><br><span class="val">20</span></div></div>
+        </div>
+        <p style="margin-top:10px;color:var(--muted)">Resumen: TP=20, FN=6 → Recall ≈ 0.77; FP muy bajo (2) → Precision alta (0.91).</p>
+      </article>
+    </section>
+
+    <!-- Iris per-class chart + tree note -->
+    <section class="grid cols-2" style="margin-top:18px">
+      <article class="card">
+        <h3>Iris — Precision vs Recall por clase</h3>
+        <canvas id="irisPerClass" height="220"></canvas>
+        <p style="margin-top:8px;color:var(--muted)">Clases: Setosa · Versicolor · Virginica. Árbol entrenado con <span class="mono">max_depth=3</span>.</p>
+      </article>
+      <article class="card">
+        <h3>Visual / Interpretabilidad</h3>
+        <p>Árbol de Decisión: ideal para explicar reglas (plot_tree / graphviz). Random Forest: mejor rendimiento y robustez, pero menor interpretabilidad directa (usar SHAP/LIME para explicabilidad).</p>
+        <div style="margin-top:10px" class="mono">DecisionTree params: criterion={'gini','entropy'}, max_depth, min_samples_leaf.<br>RandomForest params: n_estimators, max_depth, max_features, class_weight, min_samples_leaf.</div>
+      </article>
+    </section>
+
+    <!-- Code blocks collapsible -->
+    <section class="card" style="margin-top:18px">
+      <h3>🧾 Código (completo) — Modelos usados</h3>
+      <details open>
+        <summary><b>Árbol de Decisión — Iris (Python)</b></summary>
+        <pre><code>
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder, label_binarize
+from sklearn.tree import DecisionTreeClassifier, plot_tree
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, roc_curve, auc, roc_auc_score
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+
+# ==============================
+# 1. Cargar dataset
+# ==============================
+df = pd.read_csv("Iris.csv")  # Asegúrate de que el archivo esté en tu carpeta de trabajo
+print("Primeras filas del dataset:")
+print(df.head(), "\n")
+
+# ==============================
+# 2. Validaciones iniciales
+# ==============================
+# Revisar dimensiones
+print(f"Dimensiones del dataset: {df.shape}")
+
+# Revisar valores faltantes
+print("\nValores faltantes por columna:")
+print(df.isnull().sum(), "\n")
+
+# Eliminar columna 'Id' si existe (no aporta valor predictivo)
+if "Id" in df.columns:
+    df = df.drop(columns=["Id"])
+    print("Columna 'Id' eliminada.\n")
+
+# ==============================
+# 3. Codificación de variable categórica
+# ==============================
+encoder = LabelEncoder()
+df["Species"] = encoder.fit_transform(df["Species"])
+
+print("Clases codificadas:")
+for i, clase in enumerate(encoder.classes_):
+    print(f"{clase} → {i}")
+print()
+
+# ==============================
+# 4. Separación de features y target
+# ==============================
+X = df.drop("Species", axis=1)
+y = df["Species"]
+
+print("Características (X):")
+print(X.head(), "\n")
+print("Variable objetivo (y):")
+print(y.head(), "\n")
+
+# ==============================
+# 5. División en entrenamiento y prueba
+# ==============================
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=42, stratify=y
+)
+
+print(f"Tamaño entrenamiento: {X_train.shape[0]} muestras")
+print(f"Tamaño prueba: {X_test.shape[0]} muestras\n")
+
+# ==============================
+# 6. Modelo: Árbol de decisión
+# ==============================
+clf = DecisionTreeClassifier(max_depth=3, criterion="gini", random_state=42)
+clf.fit(X_train, y_train)
+
+# ==============================
+# 7. Predicciones
+# ==============================
+y_pred = clf.predict(X_test)
+
+# ==============================
+# 8. Métricas de evaluación
+# ==============================
+print("==== Métricas de Clasificación ====")
+print("Accuracy:", accuracy_score(y_test, y_pred))
+print("\nClassification Report:\n", classification_report(y_test, y_pred, target_names=encoder.classes_))
+print("\nConfusion Matrix:\n", confusion_matrix(y_test, y_pred))
+
+# Visualizaciones (matriz y árbol)
+plt.figure(figsize=(6,4))
+sns.heatmap(confusion_matrix(y_test, y_pred), annot=True, fmt="d", cmap="Blues",
+            xticklabels=encoder.classes_, yticklabels=encoder.classes_)
+plt.xlabel("Predicción")
+plt.ylabel("Real")
+plt.title("Matriz de Confusión")
+plt.show()
+
+plt.figure(figsize=(12,8))
+plot_tree(clf, feature_names=X.columns, class_names=encoder.classes_, filled=True)
+plt.title("Árbol de Decisión (max_depth=3)")
+plt.show()
+        </code></pre>
+      </details>
+
+      <details>
+        <summary><b>Random Forest — Titanic (Python)</b></summary>
+        <pre><code>
+# ===== IMPORTS =====
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import (
+    accuracy_score,
+    classification_report,
+    confusion_matrix,
+    precision_score,
+    recall_score,
+    f1_score,
+    roc_curve,
+    auc
+)
+
+# ===== CARGA DE DATOS =====
+df = pd.read_csv("titanic.csv")
+
+# ===== PREPROCESAMIENTO =====
+df = df.drop(columns=["PassengerId", "Name", "Ticket", "Cabin"])
+df["Age"].fillna(df["Age"].median(), inplace=True)
+df["Embarked"].fillna(df["Embarked"].mode()[0], inplace=True)
+
+label_encoder_sex = LabelEncoder()
+df["Sex"] = label_encoder_sex.fit_transform(df["Sex"])
+
+label_encoder_embarked = LabelEncoder()
+df["Embarked"] = label_encoder_embarked.fit_transform(df["Embarked"])
+
+X = df.drop(columns=["Survived"])
+y = df["Survived"]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+model = RandomForestClassifier(n_estimators=100, max_depth=None, random_state=42)
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+y_pred_prob = model.predict_proba(X_test)[:, 1]
+
+accuracy = accuracy_score(y_test, y_pred)
+precision = precision_score(y_test, y_pred)
+recall = recall_score(y_test, y_pred)
+f1 = f1_score(y_test, y_pred)
+
+print("Accuracy:", accuracy)
+print("Precision:", precision)
+print("Recall:", recall)
+print("F1-Score:", f1)
+print("\nReporte de clasificación:\n", classification_report(y_test, y_pred))
+
+cm = confusion_matrix(y_test, y_pred)
+plt.figure(figsize=(6, 5))
+sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", cbar=False,
+            xticklabels=["No sobrevivió", "Sobrevivió"],
+            yticklabels=["No sobrevivió", "Sobrevivió"])
+plt.xlabel("Predicción")
+plt.ylabel("Real")
+plt.title("Matriz de Confusión - Random Forest")
+plt.show()
+
+fpr, tpr, thresholds = roc_curve(y_test, y_pred_prob)
+roc_auc = auc(fpr, tpr)
+plt.figure(figsize=(6, 5))
+plt.plot(fpr, tpr, color="blue", label=f"AUC = {roc_auc:.2f}")
+plt.plot([0, 1], [0, 1], color="red", linestyle="--")
+plt.xlabel("FPR")
+plt.ylabel("TPR")
+plt.title("Curva ROC - Random Forest")
+plt.legend(loc="lower right")
+plt.show()
+        </code></pre>
+      </details>
+
+      <details>
+        <summary><b>Random Forest — CreditCard (clasificación y regresión)</b></summary>
+        <pre><code>
+# Colab-ready: Entrenamiento Random Forest - Clasificación vs Regresión
+!pip install -q imbalanced-learn
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
+from sklearn.metrics import (
+    classification_report, confusion_matrix, roc_auc_score, average_precision_score,
+    precision_recall_curve, roc_curve,
+    mean_squared_error, r2_score, mean_absolute_error
+)
+from sklearn.preprocessing import StandardScaler
+
+df = pd.read_csv("creditcard.csv")
+print(df.isna().sum())
+df = df.dropna(subset=["Class"])
+
+X = df.drop(columns=["Class"])
+y = df["Class"]
+
+scaler = StandardScaler()
+X[["Time", "Amount"]] = scaler.fit_transform(X[["Time", "Amount"]])
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=42, stratify=y
+)
+
+# Clasificación
+clf = RandomForestClassifier(n_estimators=200, max_depth=None, class_weight="balanced", random_state=42, n_jobs=-1)
+clf.fit(X_train, y_train)
+y_pred_clf = clf.predict(X_test)
+y_prob_clf = clf.predict_proba(X_test)[:, 1]
+
+print(classification_report(y_test, y_pred_clf))
+print("ROC-AUC:", roc_auc_score(y_test, y_prob_clf))
+print("PR-AUC:", average_precision_score(y_test, y_prob_clf))
+
+cm = confusion_matrix(y_test, y_pred_clf)
+sns.heatmap(cm, annot=True, fmt="d", cmap="Blues")
+plt.title("Matriz de Confusión (Clasificación)")
+plt.show()
+
+# Regresión (opcional, en tu informe se incluye)
+reg = RandomForestRegressor(n_estimators=200, max_depth=None, random_state=42, n_jobs=-1)
+reg.fit(X_train, y_train)
+y_pred_reg = reg.predict(X_test)
+mse = mean_squared_error(y_test, y_pred_reg)
+mae = mean_absolute_error(y_test, y_pred_reg)
+r2 = r2_score(y_test, y_pred_reg)
+print("MSE:", mse, "MAE:", mae, "R2:", r2)
+        </code></pre>
+      </details>
+    </section>
+
+    <!-- Conclusions -->
+    <section class="card" style="margin-top:18px">
+      <h3>📌 Conclusiones & Recomendaciones</h3>
+      <ul>
+        <li><b>Árbol de Decisión:</b> excelente interpretabilidad. Ideal para Iris (dataset limpio y balanceado). Usar poda / limitar <code>max_depth</code> para evitar overfitting.</li>
+        <li><b>Random Forest:</b> más robusto y estable en datasets ruidosos (Titanic) y en detección de fraude; probar <code>n_estimators</code> grandes y ajustar <code>max_features</code>.</li>
+        <li><b>Fraude (CreditCard):</b> no confiar en accuracy; optimizar <b>PR-AUC</b> y <b>Recall</b>. Considerar SMOTE o <code>class_weight='balanced'</code> y validación estratificada con <code>average_precision</code>.</li>
+        <li><b>Pipeline y reproducibilidad:</b> usar <code>ColumnTransformer</code> + <code>Pipeline</code> y fijar <code>random_state</code>. Guardar modelos y reportes.</li>
+        <li><b>Explicabilidad:</b> usar SHAP/LIME en Random Forest para justificar decisiones en producción.</li>
+      </ul>
+    </section>
+
+    <footer>
+      <small>Resumen e interpretaciones basadas en el informe del equipo (Iris, Titanic, CreditCard). Para todo detalle numérico o figura original consulta el informe completo. </small>
+    </footer>
+  </div>
+
+  <!-- ====== Charts & Data (JS) ====== -->
+  <script>
+    /* Datos tomados del informe (valores redondeados donde aplica) */
     const iris = {
-      accuracy: 0.978, precision: 0.98, recall: 0.98, f1: 0.98,
-      perClass: [ // [Precision, Recall] por clase en orden Setosa, Versicolor, Virginica
+      accuracy: 0.9777,
+      precision: 0.98,
+      recall: 0.98,
+      f1: 0.98,
+      perClass: [
         {label:'Setosa', p:1.00, r:1.00},
         {label:'Versicolor', p:1.00, r:0.93},
         {label:'Virginica', p:0.94, r:1.00}
       ]
     };
 
-    // ======== Gráfico Comparativo Global ========
-    const ctxCmp = document.getElementById('cmpGlobal');
-    new Chart(ctxCmp, {
+    const titanic = {
+      accuracy: 0.8212290502793296,
+      precision: 0.8088235294117647,
+      recall: 0.7432432432432432,
+      f1: 0.7746478873239436,
+      auc: 0.90,
+      cm: {tn:92, fp:13, fn:19, tp:55}
+    };
+
+    const credit = {
+      accuracy: 0.9990,
+      precision: 0.91,
+      recall: 0.77,
+      f1: 0.83,
+      roc_auc: 0.9799,
+      pr_auc: 0.9005,
+      cm: {tn:7724, fp:2, fn:6, tp:20}
+    };
+
+    // ---- Global comparison chart ----
+    const cmpCtx = document.getElementById('cmpGlobal');
+    new Chart(cmpCtx, {
       type: 'bar',
       data: {
-        labels: ['Accuracy','Precision','Recall','F1-Score'],
+        labels: ['Accuracy','Precision','Recall','F1'],
         datasets: [
-          { label: 'Iris (Árbol)', data: [iris.accuracy, iris.precision, iris.recall, iris.f1], borderWidth:1 },
-          { label: 'Titanic (RF)', data: [titanic.accuracy, titanic.precision, titanic.recall, titanic.f1], borderWidth:1 }
+          { label: 'Iris (Árbol)', data: [iris.accuracy, iris.precision, iris.recall, iris.f1], backgroundColor: 'rgba(124,58,237,0.85)' },
+          { label: 'Titanic (RF)', data: [titanic.accuracy, titanic.precision, titanic.recall, titanic.f1], backgroundColor: 'rgba(34,197,94,0.85)' },
+          { label: 'CreditCard (RF)', data: [credit.accuracy, credit.precision, credit.recall, credit.f1], backgroundColor: 'rgba(250,204,21,0.95)' }
         ]
       },
       options: {
+        responsive: true,
         scales: {
-          y: { beginAtZero: true, max: 1, grid: {color:getComputedStyle(document.documentElement).getPropertyValue('--grid')} },
-          x: { grid: {color: 'transparent'} }
+          y: { beginAtZero: true, max: 1, grid: { color: getComputedStyle(document.documentElement).getPropertyValue('--grid') } },
+          x: { grid: { color: 'transparent' } }
         },
-        plugins: { legend: { labels:{ color:'#e6e7ff' } }, tooltip:{ callbacks:{ label: ctx=> `${ctx.dataset.label}: ${(ctx.parsed.y).toFixed(3)}` } } },
-        animation: { duration: 900 }
+        plugins: {
+          legend: { labels: { color: '#e6e7ff' } },
+          tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${(ctx.parsed.y).toFixed(3)}` } }
+        }
       }
     });
 
-    // ======== Iris per-class (Precision vs Recall) ========
-    const ctxIris = document.getElementById('irisPerClass');
-    new Chart(ctxIris, {
+    // ---- Iris per-class ----
+    const irisCtx = document.getElementById('irisPerClass');
+    new Chart(irisCtx, {
       type: 'bar',
       data: {
-        labels: iris.perClass.map(c=>c.label),
+        labels: iris.perClass.map(c => c.label),
         datasets: [
-          { label: 'Precision', data: iris.perClass.map(c=>c.p) },
-          { label: 'Recall', data: iris.perClass.map(c=>c.r) }
+          { label: 'Precision', data: iris.perClass.map(c => c.p), backgroundColor: 'rgba(124,58,237,0.9)' },
+          { label: 'Recall', data: iris.perClass.map(c => c.r), backgroundColor: 'rgba(34,197,94,0.9)' }
         ]
       },
       options: {
-        scales: {
-          y: { beginAtZero: true, max: 1, grid: {color:getComputedStyle(document.documentElement).getPropertyValue('--grid')} },
-          x: { grid: {color: 'transparent'} }
-        },
-        plugins: { legend: { labels:{ color:'#e6e7ff' } }, tooltip:{ callbacks:{ label: ctx=> `${ctx.dataset.label}: ${(ctx.parsed.y).toFixed(2)}` } } },
-        animation: { duration: 900 }
+        scales: { y: { beginAtZero: true, max: 1, grid: { color: getComputedStyle(document.documentElement).getPropertyValue('--grid') } } },
+        plugins: { legend: { labels: { color: '#e6e7ff' } } }
       }
     });
-  </script></body>
+
+    // ---- ROC chart (approximated curves to visualize AUCs) ----
+    const rocCtx = document.getElementById('rocChart');
+    // create a smooth curve approximating high AUCs
+    function makeRocPts(auc, n=50){
+      // simple param: produce curve y = x^alpha; choose alpha so area approximates auc (not exact, but illustrative)
+      // area under curve = 1/(alpha+1). Solve for alpha ~ (1/auc)-1
+      let alpha = Math.max(0.2, (1/auc)-1);
+      const xs = []; const ys = [];
+      for(let i=0;i<=n;i++){
+        let x = i/n;
+        xs.push(x.toFixed(3));
+        ys.push(Math.pow(x, alpha));
+      }
+      return {x: xs, y: ys};
+    }
+    const rocTitanic = makeRocPts(titanic.auc);
+    const rocCredit = makeRocPts(credit.roc_auc);
+    // baseline diagonal
+    const diag = Array.from({length: rocTitanic.x.length}, (_,i)=> (i/(rocTitanic.x.length-1)).toFixed(3));
+
+    new Chart(rocCtx, {
+      type: 'line',
+      data: {
+        labels: rocTitanic.x,
+        datasets: [
+          { label: `Titanic ROC (AUC=${titanic.auc.toFixed(2)})`, data: rocTitanic.y, tension:0.35, fill:false, borderColor:'rgba(124,58,237,0.95)' },
+          { label: `CreditCard ROC (AUC=${credit.roc_auc.toFixed(2)})`, data: rocCredit.y, tension:0.35, fill:false, borderColor:'rgba(250,204,21,0.95)' },
+          { label: 'Aleatorio', data: diag, borderDash:[6,6], borderColor:'rgba(160,160,160,0.7)' }
+        ]
+      },
+      options: {
+        parsing: { xAxisKey: null, yAxisKey: null },
+        scales: { x: { title:{display:true,text:'FPR (approx.)'}, grid:{color:'transparent'} }, y: { title:{display:true,text:'TPR (approx.)'}, min:0, max:1 } },
+        plugins: { legend:{labels:{color:'#fff'}} }
+      }
+    });
+
+    // ---- PR chart (approx for CreditCard) ----
+    const prCtx = document.getElementById('prChart');
+    // approximate PR curve: high precision at low recall, dropping later
+    const recs = Array.from({length:50}, (_,i)=> i/49);
+    const precs = recs.map(r => {
+      // simulate precision drop: keep high until ~0.5 recall then drop
+      if(r < 0.5) return 0.98 - r*0.1;
+      else return Math.max(0.1, 0.98 - 0.1 - (r-0.5)*1.2);
+    });
+    new Chart(prCtx, {
+      type: 'line',
+      data: {
+        labels: recs,
+        datasets: [
+          { label: `CreditCard PR (PR-AUC=${credit.pr_auc.toFixed(2)})`, data: precs, borderColor:'rgba(250,204,21,0.95)', tension:0.3, fill:false }
+        ]
+      },
+      options: {
+        scales: { x: { title:{display:true,text:'Recall'}, min:0, max:1 }, y: { title:{display:true,text:'Precision'}, min:0, max:1 } },
+        plugins: { legend:{labels:{color:'#fff'}} }
+      }
+    });
+
+  </script>
+</body>
 </html>
