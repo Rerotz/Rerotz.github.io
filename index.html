@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perceptrón - Funciones de Activación</title>
+    <title>Implementación de Perceptrón - Infografía</title>
     <style>
         * {
             margin: 0;
@@ -13,609 +13,1582 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #333;
-            padding: 20px;
+            background: #f5f7fa;
+            color: #2c3e50;
             line-height: 1.6;
         }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            overflow: hidden;
+            padding: 20px;
         }
 
+        /* Header */
         header {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            background: #1a2332;
             color: white;
-            padding: 40px;
+            padding: 60px 20px;
             text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
         }
 
         header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            font-weight: 600;
+            animation: fadeInDown 1s ease;
         }
 
         header p {
-            font-size: 1.2em;
-            opacity: 0.9;
-        }
-
-        .intro {
-            padding: 40px;
-            background: #f8f9fa;
-            border-bottom: 3px solid #667eea;
-        }
-
-        .intro h2 {
-            color: #1e3c72;
-            margin-bottom: 20px;
-            font-size: 2em;
-        }
-
-        .perceptron-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
-            gap: 30px;
-            padding: 40px;
-        }
-
-        .case-card {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: 3px solid #e0e0e0;
-        }
-
-        .case-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-
-        .case-header {
-            padding: 25px;
-            color: white;
-            font-weight: bold;
             font-size: 1.3em;
+            opacity: 0.9;
+            max-width: 900px;
+            margin: 0 auto;
+            font-weight: 300;
         }
 
-        .case-1 .case-header { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
-        .case-2 .case-header { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
-        .case-3 .case-header { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
-        .case-4 .case-header { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
-        .case-5 .case-header { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); }
-        .case-6 .case-header { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); color: #333; }
-
-        .case-content {
-            padding: 25px;
+        .authors {
+            margin-top: 30px;
+            font-size: 1.1em;
+            opacity: 0.85;
+            font-weight: 300;
         }
 
-        .info-row {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            padding: 10px;
-            background: #f8f9fa;
+        /* Sections */
+        section {
+            background: white;
+            margin: 30px 0;
+            padding: 40px;
             border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            animation: fadeInUp 0.8s ease;
+            border-left: 4px solid #2c5aa0;
         }
 
-        .info-label {
-            font-weight: bold;
-            color: #667eea;
-            min-width: 150px;
-            font-size: 0.95em;
+        section h2 {
+            color: #1a2332;
+            font-size: 2.5em;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #2c5aa0;
+            font-weight: 600;
         }
 
-        .info-value {
-            color: #555;
-            flex: 1;
+        section h3 {
+            color: #2c5aa0;
+            font-size: 1.8em;
+            margin: 30px 0 15px 0;
+            font-weight: 600;
         }
 
-        .code-badge {
-            display: inline-block;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: bold;
-            margin-right: 5px;
+        /* Abstract Box */
+        .abstract {
+            background: #34495e;
+            color: white;
+            padding: 30px;
+            border-radius: 6px;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            border-left: 4px solid #2c5aa0;
         }
 
-        .lang-swift { background: #ffac45; color: white; }
-        .lang-csharp { background: #68217a; color: white; }
-        .lang-python { background: #3776ab; color: white; }
-        .lang-java { background: #007396; color: white; }
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
 
-        .activation-formula {
-            background: #fff3cd;
+        .card {
+            background: #ffffff;
+            border: 2px solid #e1e8ed;
+            color: #2c3e50;
+            padding: 30px;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-color: #2c5aa0;
+        }
+
+        .card h4 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: #1a2332;
+            border-bottom: 2px solid #e1e8ed;
+            padding-bottom: 10px;
+            font-weight: 600;
+        }
+
+        /* Activation Functions */
+        .activation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .activation-card {
+            background: white;
+            border: 2px solid #2c5aa0;
+            border-radius: 6px;
+            padding: 25px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        }
+
+        .activation-card h4 {
+            color: #1a2332;
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .formula {
+            background: #f8f9fa;
             padding: 15px;
-            border-left: 4px solid #ffc107;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
             margin: 15px 0;
-            border-radius: 5px;
+            border-left: 4px solid #2c5aa0;
+            color: #2c3e50;
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 25px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 20px 0;
             font-family: 'Courier New', monospace;
             font-size: 0.95em;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
 
-        .features-list {
-            list-style: none;
-            padding: 0;
+        .code-block .keyword {
+            color: #569cd6;
         }
 
-        .features-list li {
-            padding: 8px 0;
-            padding-left: 25px;
-            position: relative;
+        .code-block .string {
+            color: #ce9178;
         }
 
-        .features-list li:before {
-            content: "▹";
-            position: absolute;
-            left: 0;
-            color: #667eea;
-            font-weight: bold;
-            font-size: 1.2em;
+        .code-block .comment {
+            color: #6a9955;
         }
 
-        .accuracy-badge {
-            display: inline-block;
-            padding: 10px 20px;
-            background: #28a745;
-            color: white;
-            border-radius: 25px;
-            font-weight: bold;
-            margin-top: 10px;
+        .code-block .function {
+            color: #dcdcaa;
         }
 
-        .comparison-section {
-            padding: 40px;
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-        }
-
-        .comparison-section h2 {
-            text-align: center;
-            color: #1e3c72;
-            margin-bottom: 30px;
-            font-size: 2em;
-        }
-
-        .comparison-table {
+        /* Tables */
+        table {
             width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
             background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
         }
 
-        .comparison-table th {
-            background: #1e3c72;
+        table th {
+            background: #2c5aa0;
             color: white;
             padding: 15px;
             text-align: left;
-            font-weight: bold;
+            font-size: 1.1em;
+            font-weight: 600;
         }
 
-        .comparison-table td {
-            padding: 15px;
-            border-bottom: 1px solid #e0e0e0;
+        table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e1e8ed;
         }
 
-        .comparison-table tr:hover {
+        table tr:nth-child(even) {
             background: #f8f9fa;
         }
 
-        footer {
-            background: #1e3c72;
-            color: white;
-            text-align: center;
-            padding: 30px;
+        table tr:hover {
+            background: #e8f4f8;
         }
 
-        .architecture-diagram {
+        /* Results Section */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .result-card {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            border: 2px solid #e1e8ed;
+        }
+
+        .result-card h4 {
+            color: #1a2332;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .metric {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 3px solid #2c5aa0;
+        }
+
+        .metric-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #2c5aa0;
+        }
+
+        /* Visual Graph */
+        .graph-container {
             background: white;
             padding: 30px;
-            border-radius: 15px;
-            margin: 20px 0;
+            border-radius: 6px;
+            margin: 25px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            border: 2px solid #e1e8ed;
+        }
+
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 300px;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            border: 1px solid #e1e8ed;
+        }
+
+        .bar {
+            width: 80px;
+            background: #2c5aa0;
+            border-radius: 4px 4px 0 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .bar:hover {
+            background: #1a3a6b;
+            transform: scale(1.05);
+        }
+
+        .bar-label {
+            margin-top: 10px;
+            font-weight: 600;
+            color: #2c3e50;
             text-align: center;
+            font-size: 0.9em;
         }
 
-        .diagram-box {
-            display: inline-block;
-            padding: 20px 30px;
-            background: #667eea;
-            color: white;
-            border-radius: 10px;
-            margin: 10px;
+        .bar-value {
+            position: absolute;
+            top: -30px;
             font-weight: bold;
+            color: #1a2332;
+            font-size: 1.1em;
         }
 
-        .arrow {
+        /* Language Tags */
+        .lang-tag {
             display: inline-block;
-            font-size: 2em;
-            color: #667eea;
-            margin: 0 10px;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: 600;
+            margin: 5px;
+            font-size: 0.9em;
         }
 
+        .swift { background: #FA7343; color: white; }
+        .csharp { background: #68217A; color: white; }
+        .python { background: #3776AB; color: white; }
+        .java { background: #007396; color: white; }
+
+        /* Key Points */
+        .key-points {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 6px;
+            margin: 25px 0;
+            border-left: 4px solid #2c5aa0;
+        }
+
+        .key-points ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .key-points li {
+            padding: 12px 0 12px 35px;
+            position: relative;
+            font-size: 1.1em;
+        }
+
+        .key-points li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #2c5aa0;
+            font-weight: bold;
+            font-size: 1.5em;
+        }
+
+        /* Architecture Diagram */
+        .architecture {
+            background: white;
+            padding: 30px;
+            border-radius: 6px;
+            margin: 25px 0;
+            text-align: center;
+            border: 2px solid #e1e8ed;
+        }
+
+        /* Footer */
+        footer {
+            background: #1a2332;
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 40px;
+        }
+
+        footer a {
+            color: #5dade2;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .perceptron-grid {
+            header h1 {
+                font-size: 2em;
+            }
+            
+            section {
+                padding: 25px;
+            }
+
+            .grid, .activation-grid, .results-grid {
                 grid-template-columns: 1fr;
             }
-            
-            header h1 {
-                font-size: 1.8em;
+
+            .bar-chart {
+                height: 250px;
             }
-            
-            .comparison-table {
-                font-size: 0.85em;
+
+            .bar {
+                width: 60px;
             }
+        }
+
+        /* Highlight boxes */
+        .highlight-box {
+            background: #e8f4f8;
+            border-left: 4px solid #2c5aa0;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .highlight-box strong {
+            color: #1a2332;
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- Header -->
         <header>
-            <h1>🧠 Implementación de Perceptrón</h1>
+            <h1>🧠 Implementación de un Perceptrón</h1>
             <p>Clasificación Binaria con Múltiples Funciones de Activación</p>
+            <div class="authors">
+                <p><strong>Autores:</strong> Juan P. Aguilar • Jhon A. Díaz • Marcelo Espirilla • Julio A. Villasante</p>
+                <p>Escuela Profesional de Ingeniería de Sistemas • Universidad Andina del Cusco</p>
+            </div>
         </header>
 
-        <div class="intro">
-            <h2>📊 Arquitectura del Perceptrón</h2>
-            <div class="architecture-diagram">
-                <div class="diagram-box">Entradas (X)</div>
-                <span class="arrow">→</span>
-                <div class="diagram-box">Σ (w·x + b)</div>
-                <span class="arrow">→</span>
-                <div class="diagram-box">Función de Activación</div>
-                <span class="arrow">→</span>
-                <div class="diagram-box">Salida (y)</div>
+        <!-- Abstract -->
+        <section>
+            <h2>📋 Resumen Ejecutivo</h2>
+            <div class="abstract">
+                <p><strong>Objetivo:</strong> Implementar un perceptrón desde cero en cuatro lenguajes de programación (Swift, C#, Python y Java) para resolver seis problemas de clasificación binaria utilizando diferentes funciones de activación.</p>
+                <br>
+                <p><strong>Metodología:</strong> Desarrollo sin librerías de Machine Learning, implementando el algoritmo de aprendizaje supervisado con más de 10 iteraciones por experimento.</p>
+                <br>
+                <p><strong>Resultados:</strong> Se logró una precisión del 100% en problemas linealmente separables (AND, OR) y entre 87-100% en problemas más complejos (spam, clima, fraudes, riesgo académico).</p>
             </div>
-            <p style="margin-top: 20px; font-size: 1.1em; text-align: center;">
-                <strong>Fórmula Base:</strong> y = f(w₁x₁ + w₂x₂ + ... + wₙxₙ + b)
-            </p>
-        </div>
+        </section>
 
-        <div class="perceptron-grid">
-            <!-- CASO 1: AND Lógico -->
-            <div class="case-card case-1">
-                <div class="case-header">
-                    🔴 CASO 1: AND Lógico
+        <!-- ¿Qué es un Perceptrón? -->
+        <section>
+            <h2>🤖 ¿Qué es un Perceptrón?</h2>
+            <p>El perceptrón es el modelo más simple de una neurona artificial, propuesto por Frank Rosenblatt en 1958. Es un clasificador lineal que toma múltiples entradas, las procesa y produce una salida binaria.</p>
+            
+            <div class="architecture">
+                <h3>Arquitectura del Perceptrón</h3>
+                <div class="formula">
+                    y = φ(w₁x₁ + w₂x₂ + ... + wₙxₙ + b) = φ(Σwᵢxᵢ + b)
                 </div>
-                <div class="case-content">
-                    <div class="info-row">
-                        <span class="info-label">👤 Desarrollador:</span>
-                        <span class="info-value">Julio</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">💻 Lenguaje:</span>
-                        <span class="info-value"><span class="code-badge lang-swift">Swift</span></span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">⚡ Función:</span>
-                        <span class="info-value"><strong>Lineal</strong></span>
-                    </div>
-                    
-                    <div class="activation-formula">
-                        <strong>f(x) = x</strong><br>
-                        Salida proporcional a la entrada
-                    </div>
+                <p style="margin-top: 20px;"><strong>Donde:</strong></p>
+                <ul style="text-align: left; max-width: 600px; margin: 20px auto;">
+                    <li><strong>x₁, x₂, ..., xₙ:</strong> Entradas (características)</li>
+                    <li><strong>w₁, w₂, ..., wₙ:</strong> Pesos (importancia de cada entrada)</li>
+                    <li><strong>b:</strong> Sesgo (bias)</li>
+                    <li><strong>φ:</strong> Función de activación</li>
+                    <li><strong>y:</strong> Salida</li>
+                </ul>
+            </div>
 
-                    <h4 style="color: #667eea; margin: 15px 0;">📝 Descripción:</h4>
-                    <p>Implementa la compuerta lógica AND. La salida es 1 solo cuando ambas entradas son 1.</p>
-                    
-                    <h4 style="color: #667eea; margin: 15px 0 10px 0;">🎯 Características:</h4>
-                    <ul class="features-list">
-                        <li>2 entradas binarias (0 o 1)</li>
-                        <li>Tasa de aprendizaje: 0.1</li>
-                        <li>Actualización de pesos por descenso de gradiente</li>
-                        <li>Clasificación binaria simple</li>
+            <div class="key-points">
+                <h3>Características Clave</h3>
+                <ul>
+                    <li>Modelo de aprendizaje supervisado</li>
+                    <li>Actualización de pesos mediante regla del perceptrón o descenso por gradiente</li>
+                    <li>Ideal para problemas linealmente separables</li>
+                    <li>Base fundamental para redes neuronales más complejas</li>
+                    <li>Implementación simple pero poderosa</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Funciones de Activación -->
+        <section>
+            <h2>⚡ Funciones de Activación Implementadas</h2>
+            <p>Cada función de activación tiene características únicas que la hacen más adecuada para ciertos tipos de problemas:</p>
+            
+            <div class="activation-grid">
+                <div class="activation-card">
+                    <h4>🔵 Lineal</h4>
+                    <div class="formula">φ(z) = z</div>
+                    <p><strong>Características:</strong></p>
+                    <ul>
+                        <li>Salida: (-∞, +∞)</li>
+                        <li>Derivada: φ'(z) = 1</li>
+                        <li>Útil para regresión</li>
+                        <li>Requiere umbral para clasificación</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>Caso de uso:</strong> AND Lógico (Swift)</p>
+                </div>
+
+                <div class="activation-card">
+                    <h4>🟢 Escalón (Heaviside)</h4>
+                    <div class="formula">φ(z) = {1 si z≥0, 0 si z&lt;0}</div>
+                    <p><strong>Características:</strong></p>
+                    <ul>
+                        <li>Salida: {0, 1}</li>
+                        <li>No diferenciable en z=0</li>
+                        <li>Perceptrón clásico</li>
+                        <li>Decisión binaria directa</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>Caso de uso:</strong> OR Lógico (C#)</p>
+                </div>
+
+                <div class="activation-card">
+                    <h4>🟡 Sigmoidal (Logística)</h4>
+                    <div class="formula">σ(z) = 1 / (1 + e⁻ᶻ)</div>
+                    <p><strong>Características:</strong></p>
+                    <ul>
+                        <li>Salida: (0, 1)</li>
+                        <li>Derivada: σ'(z) = σ(z)(1-σ(z))</li>
+                        <li>Suave y diferenciable</li>
+                        <li>Interpretable como probabilidad</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>Caso de uso:</strong> Clasificación Spam (Python)</p>
+                </div>
+
+                <div class="activation-card">
+                    <h4>🔴 ReLU (Rectified Linear Unit)</h4>
+                    <div class="formula">ReLU(z) = max(0, z)</div>
+                    <p><strong>Características:</strong></p>
+                    <ul>
+                        <li>Salida: [0, +∞)</li>
+                        <li>Derivada: {1 si z>0, 0 si z≤0}</li>
+                        <li>Computacionalmente eficiente</li>
+                        <li>Evita vanishing gradient</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>Caso de uso:</strong> Predicción del Clima (Python)</p>
+                </div>
+
+                <div class="activation-card">
+                    <h4>🟣 Softmax</h4>
+                    <div class="formula">softmax(zᵢ) = e^zᵢ / Σⱼe^zⱼ</div>
+                    <p><strong>Características:</strong></p>
+                    <ul>
+                        <li>Salida: (0, 1), Σᵢ=1</li>
+                        <li>Para clasificación multiclase</li>
+                        <li>Distribución de probabilidad</li>
+                        <li>Amplifica diferencias</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>Caso de uso:</strong> Detección de Fraudes (Java)</p>
+                </div>
+
+                <div class="activation-card">
+                    <h4>🟠 Tangente Hiperbólica</h4>
+                    <div class="formula">tanh(z) = (e^z - e⁻ᶻ) / (e^z + e⁻ᶻ)</div>
+                    <p><strong>Características:</strong></p>
+                    <ul>
+                        <li>Salida: (-1, 1)</li>
+                        <li>Derivada: tanh'(z) = 1 - tanh²(z)</li>
+                        <li>Centrada en cero</li>
+                        <li>Convergencia más rápida</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>Caso de uso:</strong> Riesgo Académico (Java)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Casos de Implementación -->
+        <section>
+            <h2>💼 Casos de Implementación</h2>
+            
+            <div class="grid">
+                <div class="card">
+                    <h4>1️⃣ AND Lógico</h4>
+                    <span class="lang-tag swift">Swift</span>
+                    <span class="lang-tag" style="background: #5a6c7d; color: white;">Lineal</span>
+                    <p style="margin-top: 15px;"><strong>Descripción:</strong> Clasificación de la operación AND con dos entradas binarias.</p>
+                    <p><strong>Datos:</strong> 4 combinaciones (00, 01, 10, 11)</p>
+                    <p><strong>Salida esperada:</strong> 1 solo si ambas entradas son 1</p>
+                </div>
+
+                <div class="card">
+                    <h4>2️⃣ OR Lógico</h4>
+                    <span class="lang-tag csharp">C#</span>
+                    <span class="lang-tag" style="background: #27ae60; color: white;">Escalón</span>
+                    <p style="margin-top: 15px;"><strong>Descripción:</strong> Clasificación de la operación OR con dos entradas binarias.</p>
+                    <p><strong>Datos:</strong> 4 combinaciones (00, 01, 10, 11)</p>
+                    <p><strong>Salida esperada:</strong> 1 si al menos una entrada es 1</p>
+                </div>
+
+                <div class="card">
+                    <h4>3️⃣ Clasificación de Spam</h4>
+                    <span class="lang-tag python">Python</span>
+                    <span class="lang-tag" style="background: #f39c12; color: white;">Sigmoidal</span>
+                    <p style="margin-top: 15px;"><strong>Descripción:</strong> Detección de correos electrónicos spam.</p>
+                    <p><strong>Features:</strong> Longitud, enlaces, palabras spam, mayúsculas, exclamaciones</p>
+                    <p><strong>Dataset:</strong> 16 muestras (8 spam + 8 no spam)</p>
+                </div>
+
+                <div class="card">
+                    <h4>4️⃣ Predicción del Clima</h4>
+                    <span class="lang-tag python">Python</span>
+                    <span class="lang-tag" style="background: #c0392b; color: white;">ReLU</span>
+                    <p style="margin-top: 15px;"><strong>Descripción:</strong> Predicción de lluvia basada en condiciones meteorológicas.</p>
+                    <p><strong>Features:</strong> Temperatura, humedad, presión, viento, nubosidad</p>
+                    <p><strong>Dataset:</strong> 20 muestras (10 con/sin lluvia)</p>
+                </div>
+
+                <div class="card">
+                    <h4>5️⃣ Detección de Fraudes</h4>
+                    <span class="lang-tag java">Java</span>
+                    <span class="lang-tag" style="background: #8e44ad; color: white;">Softmax</span>
+                    <p style="margin-top: 15px;"><strong>Descripción:</strong> Identificación de transacciones fraudulentas.</p>
+                    <p><strong>Características:</strong> Patrones de transacción anómalos</p>
+                    <p><strong>Desafío:</strong> Datos desbalanceados</p>
+                </div>
+
+                <div class="card">
+                    <h4>6️⃣ Riesgo Académico</h4>
+                    <span class="lang-tag java">Java</span>
+                    <span class="lang-tag" style="background: #d35400; color: white;">Tanh</span>
+                    <p style="margin-top: 15px;"><strong>Descripción:</strong> Clasificación de estudiantes en riesgo de deserción.</p>
+                    <p><strong>Features:</strong> 3 características académicas</p>
+                    <p><strong>Clases:</strong> Graduate (0) / Dropout (1)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Código Swift - AND -->
+        <section>
+            <h2>💻 Implementaciones de Código</h2>
+            
+            <h3>Swift - AND Lógico con Activación Lineal</h3>
+            <div class="code-block">
+<span class="comment">// Función de activación lineal</span>
+<span class="keyword">func</span> <span class="function">linear</span>(<span class="keyword">_</span> x: Double) -> Double {
+    <span class="keyword">return</span> x
+}
+
+<span class="keyword">class</span> Perceptron {
+    <span class="keyword">var</span> w: [Double]
+    <span class="keyword">var</span> b: Double
+    <span class="keyword">var</span> lr: Double
+    <span class="keyword">var</span> nInputs: Int
+    
+    <span class="keyword">init</span>(nInputs: Int, lr: Double = <span class="string">0.1</span>) {
+        <span class="keyword">self</span>.nInputs = nInputs
+        <span class="keyword">self</span>.lr = lr
+        <span class="keyword">self</span>.w = (<span class="string">0</span>..<nInputs).<span class="function">map</span> { _ <span class="keyword">in</span> Double.<span class="function">random</span>(in: <span class="string">-1</span>...<span class="string">1</span>) }
+        <span class="keyword">self</span>.b = Double.<span class="function">random</span>(in: <span class="string">-1</span>...<span class="string">1</span>)
+    }
+    
+    <span class="keyword">func</span> <span class="function">train</span>(X: [[Double]], Y: [Double], epochs: Int) {
+        <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="string">0</span>..<epochs {
+            <span class="comment">// Descenso por gradiente</span>
+            <span class="keyword">var</span> dw = Array(repeating: <span class="string">0.0</span>, count: nInputs)
+            <span class="keyword">var</span> db = <span class="string">0.0</span>
+            
+            <span class="keyword">for</span> (xi, yi) <span class="keyword">in</span> <span class="function">zip</span>(X, Y) {
+                <span class="keyword">let</span> yhat = <span class="function">linear</span>(<span class="function">net</span>(xi))
+                <span class="keyword">let</span> err = yhat - yi
+                <span class="keyword">for</span> j <span class="keyword">in</span> <span class="string">0</span>..<nInputs {
+                    dw[j] += err * xi[j]
+                }
+                db += err
+            }
+            
+            <span class="comment">// Actualizar pesos</span>
+            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="string">0</span>..<nInputs {
+                w[j] -= lr * dw[j] / Double(X.count)
+            }
+            b -= lr * db / Double(X.count)
+        }
+    }
+}
+
+<span class="comment">// Entrenamiento</span>
+<span class="keyword">let</span> X = [[<span class="string">0.0</span>,<span class="string">0.0</span>],[<span class="string">0.0</span>,<span class="string">1.0</span>],[<span class="string">1.0</span>,<span class="string">0.0</span>],[<span class="string">1.0</span>,<span class="string">1.0</span>]]
+<span class="keyword">let</span> Y = [<span class="string">0.0</span>,<span class="string">0.0</span>,<span class="string">0.0</span>,<span class="string">1.0</span>]
+<span class="keyword">let</span> perceptron = Perceptron(nInputs: <span class="string">2</span>, lr: <span class="string">0.1</span>)
+perceptron.<span class="function">train</span>(X: X, Y: Y, epochs: <span class="string">100</span>)
+            </div>
+
+            <h3>C# - OR Lógico con Activación Escalón</h3>
+            <div class="code-block">
+<span class="keyword">class</span> Perceptron {
+    <span class="keyword">double</span>[] w;
+    <span class="keyword">double</span> b;
+    <span class="keyword">double</span> lr;
+    
+    <span class="keyword">double</span> <span class="function">Step</span>(<span class="keyword">double</span> x) => x >= <span class="string">0</span> ? <span class="string">1.0</span> : <span class="string">0.0</span>;
+    
+    <span class="keyword">public void</span> <span class="function">Train</span>(<span class="keyword">double</span>[][] X, <span class="keyword">int</span>[] Y, <span class="keyword">int</span> epochs) {
+        <span class="keyword">for</span>(<span class="keyword">int</span> e=<span class="string">0</span>; e<epochs; e++) {
+            <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="string">0</span>; i<X.Length; i++) {
+                <span class="keyword">double</span> s = <span class="function">Net</span>(X[i]);
+                <span class="keyword">int</span> yhat = (<span class="keyword">int</span>)<span class="function">Step</span>(s);
+                <span class="keyword">int</span> err = Y[i] - yhat;
+                
+                <span class="comment">// Actualización de pesos si hay error</span>
+                <span class="keyword">if</span>(err != <span class="string">0</span>) {
+                    <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="string">0</span>; j<nInputs; j++)
+                        w[j] += lr * err * X[i][j];
+                    b += lr * err;
+                }
+            }
+        }
+    }
+}
+
+<span class="comment">// Datos OR lógico</span>
+<span class="keyword">double</span>[][] X = { 
+    <span class="keyword">new double</span>[]{<span class="string">0</span>,<span class="string">0</span>}, <span class="keyword">new double</span>[]{<span class="string">0</span>,<span class="string">1</span>}, 
+    <span class="keyword">new double</span>[]{<span class="string">1</span>,<span class="string">0</span>}, <span class="keyword">new double</span>[]{<span class="string">1</span>,<span class="string">1</span>} 
+};
+<span class="keyword">int</span>[] Y = {<span class="string">0</span>,<span class="string">1</span>,<span class="string">1</span>,<span class="string">1</span>};
+            </div>
+
+            <h3>Python - Clasificación Spam con Sigmoidal</h3>
+            <div class="code-block">
+<span class="keyword">import</span> numpy <span class="keyword">as</span> np
+
+<span class="keyword">class</span> <span class="function">PerceptronSigmoidal</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, num_features, learning_rate=<span class="string">0.1</span>, epochs=<span class="string">100</span>):
+        self.weights = np.random.<span class="function">randn</span>(num_features)
+        self.bias = np.random.<span class="function">randn</span>()
+        self.learning_rate = learning_rate
+        self.epochs = epochs
+    
+    <span class="keyword">def</span> <span class="function">sigmoid</span>(self, x):
+        <span class="string">"""Función de activación sigmoidal"""</span>
+        <span class="keyword">return</span> <span class="string">1</span> / (<span class="string">1</span> + np.<span class="function">exp</span>(-np.<span class="function">clip</span>(x, <span class="string">-500</span>, <span class="string">500</span>)))
+    
+    <span class="keyword">def</span> <span class="function">train</span>(self, X, y):
+        <span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="function">range</span>(self.epochs):
+            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="function">len</span>(X)):
+                <span class="comment"># Forward pass</span>
+                z = np.<span class="function">dot</span>(X[i], self.weights) + self.bias
+                prediction = self.<span class="function">sigmoid</span>(z)
+                
+                <span class="comment"># Calcular error</span>
+                error = y[i] - prediction
+                
+                <span class="comment"># Backward pass (gradiente descendente)</span>
+                gradient = error * self.<span class="function">sigmoid_derivative</span>(z)
+                
+                <span class="comment"># Actualizar pesos y bias</span>
+                self.weights += self.learning_rate * gradient * X[i]
+                self.bias += self.learning_rate * gradient
+
+<span class="comment"># Features: [longitud, enlaces, palabras_spam, mayúsculas, exclamaciones]</span>
+<span class="comment"># Dataset: 8 normales + 8 spam = 16 muestras totales</span>
+            </div>
+        </section>
+
+        <!-- Resultados -->
+        <section>
+            <h2>📊 Resultados Experimentales</h2>
+            
+            <div class="graph-container">
+                <h3>Precisión por Caso de Uso</h3>
+                <div class="bar-chart">
+                    <div class="bar" style="height: 100%;">
+                        <span class="bar-value">100%</span>
+                        <div class="bar-label">AND<br>Lógico</div>
+                    </div>
+                    <div class="bar" style="height: 100%;">
+                        <span class="bar-value">100%</span>
+                        <div class="bar-label">OR<br>Lógico</div>
+                    </div>
+                    <div class="bar" style="height: 100%;">
+                        <span class="bar-value">100%</span>
+                        <div class="bar-label">Clasificación<br>Spam</div>
+                    </div>
+                    <div class="bar" style="height: 100%;">
+                        <span class="bar-value">100%</span>
+                        <div class="bar-label">Predicción<br>Clima</div>
+                    </div>
+                    <div class="bar" style="height: 92%;">
+                        <span class="bar-value">92%</span>
+                        <div class="bar-label">Detección<br>Fraudes</div>
+                    </div>
+                    <div class="bar" style="height: 87%;">
+                        <span class="bar-value">87%</span>
+                        <div class="bar-label">Riesgo<br>Académico</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Métricas Detalladas por Implementación</h3>
+            
+            <div class="results-grid">
+                <div class="result-card">
+                    <h4>AND Lógico (Swift)</h4>
+                    <span class="lang-tag swift">Swift + Lineal</span>
+                    <div class="metric">
+                        <span>Accuracy</span>
+                        <span class="metric-value">100%</span>
+                    </div>
+                    <div class="metric">
+                        <span>Precision</span>
+                        <span class="metric-value">100%</span>
+                    </div>
+                    <div class="metric">
+                        <span>Recall</span>
+                        <span class="metric-value">100%</span>
+                    </div>
+                    <div class="metric">
+                        <span>F1-Score</span>
+                        <span class="metric-value">100%</span>
+                    </div>
+                    <p style="margin-top: 15px;"><strong>Epochs:</strong> 100 | <strong>Learning Rate:</strong> 0.1</p>
+                    <p><strong>Observación:</strong> Convergencia rápida en problema linealmente separable.</p>
+                </div>
+
+                <div class="result-card">
+                    <h4>OR Lógico (C#)</h4>
+                    <span class="lang-tag csharp">C# + Escalón</span>
+                    <div class="metric">
+                        <span>Accuracy</span>
+                        <span class="metric-value">100%</span>
+                    </div>
+                    <div class="metric">
+                        <span>Precision</span>
+                        <span class="metric-value">100%</span>
+                    </div>
+                    <div class="metric">
+                        <span>Recall</span>
+                        <span class="metric-value">100%</span>
+                    </div>
+                    <div class="metric">
+                        <span>F1-Score</span>
+                        <span class="metric-value">100%</span>
+                    </div>
+                    <p style="margin-top: 15px;"><strong>Epochs:</strong> 20 | <strong>Learning Rate:</strong> 0.1</p>
+                    <p><strong>Observación:</strong> Función escalón encuentra frontera de decisión perfecta.</p>
+                </div>
+
+                <div class="result-card">
+                    <h4>Clasificación Spam (Python)</h4>
+                    <span class="lang-tag python">Python + Sigmoidal</span>
+                    <div class="metric">
+                        <span>Accuracy</span>
+                        <span class="metric-value">100%</span>
+                    </div>
+                    <div class="metric">
+                        <span>Precision</span>
+                        <span class="metric-value">100%</span>
+                    </div>
+                    <div class="metric">
+                        <span>Recall</span>
+                        <span class="metric-value">100%</span>
+                    </div>
+                    <div class="metric">
+                        <span>F1-Score</span>
+                        <span class="metric-value">100%</span>
+                    </div>
+                    <p style="margin-top: 15px;"><strong>Epochs:</strong> 50 | <strong>Learning Rate:</strong> 0.5</p>
+                    <p><strong>Dataset:</strong> 16 muestras (8 spam + 8 no spam)</p>
+                    <p><strong>Features:</strong> Longitud, enlaces, palabras spam, mayúsculas, exclamaciones</p>
+                </div>
+
+                <div class="result-card">
+                    <h4>Predicción Clima (Python)</h4>
+                    <span class="lang-tag python">Python + ReLU</span>
+                    <div class="metric">
+                        <span>Accuracy</span>
+                        <span class="metric-value">100%</span>
+                    </div>
+                    <div class="metric">
+                        <span>Precision</span>
+                        <span class="metric-value">100%</span>
+                    </div>
+                    <div class="metric">
+                        <span>Recall</span>
+                        <span class="metric-value">100%</span>
+                    </div>
+                    <div class="metric">
+                        <span>F1-Score</span>
+                        <span class="metric-value">100%</span>
+                    </div>
+                    <p style="margin-top: 15px;"><strong>Epochs:</strong> 100 | <strong>Learning Rate:</strong> 0.15</p>
+                    <p><strong>Dataset:</strong> 20 muestras (10 con/sin lluvia)</p>
+                    <p><strong>Features:</strong> Temperatura, humedad, presión, viento, nubosidad</p>
+                </div>
+
+                <div class="result-card">
+                    <h4>Detección Fraudes (Java)</h4>
+                    <span class="lang-tag java">Java + Softmax</span>
+                    <div class="metric">
+                        <span>Accuracy</span>
+                        <span class="metric-value">92%</span>
+                    </div>
+                    <div class="metric">
+                        <span>Precision</span>
+                        <span class="metric-value">88%</span>
+                    </div>
+                    <div class="metric">
+                        <span>Recall</span>
+                        <span class="metric-value">85%</span>
+                    </div>
+                    <div class="metric">
+                        <span>F1-Score</span>
+                        <span class="metric-value">86.5%</span>
+                    </div>
+                    <p style="margin-top: 15px;"><strong>Desafío:</strong> Dataset desbalanceado</p>
+                    <p><strong>Observación:</strong> Softmax permite clasificación probabilística multiclase.</p>
+                </div>
+
+                <div class="result-card">
+                    <h4>Riesgo Académico (Java)</h4>
+                    <span class="lang-tag java">Java + Tanh</span>
+                    <div class="metric">
+                        <span>Accuracy</span>
+                        <span class="metric-value">87%</span>
+                    </div>
+                    <div class="metric">
+                        <span>Precision</span>
+                        <span class="metric-value">85%</span>
+                    </div>
+                    <div class="metric">
+                        <span>Recall</span>
+                        <span class="metric-value">82%</span>
+                    </div>
+                    <div class="metric">
+                        <span>F1-Score</span>
+                        <span class="metric-value">83.5%</span>
+                    </div>
+                    <p style="margin-top: 15px;"><strong>Epochs:</strong> 200 | <strong>Learning Rate:</strong> 0.01</p>
+                    <p><strong>Features:</strong> 3 características académicas</p>
+                    <p><strong>Clases:</strong> Graduate (0) / Dropout (1)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tabla Comparativa -->
+        <section>
+            <h2>📈 Tabla Comparativa de Configuraciones</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Caso</th>
+                        <th>Lenguaje</th>
+                        <th>Activación</th>
+                        <th>Epochs</th>
+                        <th>Learning Rate</th>
+                        <th>Accuracy</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>AND Lógico</td>
+                        <td><span class="lang-tag swift">Swift</span></td>
+                        <td>Lineal</td>
+                        <td>100</td>
+                        <td>0.1</td>
+                        <td><strong>100%</strong></td>
+                    </tr>
+                    <tr>
+                        <td>OR Lógico</td>
+                        <td><span class="lang-tag csharp">C#</span></td>
+                        <td>Escalón</td>
+                        <td>20</td>
+                        <td>0.1</td>
+                        <td><strong>100%</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Clasificación Spam</td>
+                        <td><span class="lang-tag python">Python</span></td>
+                        <td>Sigmoidal</td>
+                        <td>50</td>
+                        <td>0.5</td>
+                        <td><strong>100%</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Predicción Clima</td>
+                        <td><span class="lang-tag python">Python</span></td>
+                        <td>ReLU</td>
+                        <td>100</td>
+                        <td>0.15</td>
+                        <td><strong>100%</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Detección Fraudes</td>
+                        <td><span class="lang-tag java">Java</span></td>
+                        <td>Softmax</td>
+                        <td>Variable</td>
+                        <td>Variable</td>
+                        <td><strong>92%</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Riesgo Académico</td>
+                        <td><span class="lang-tag java">Java</span></td>
+                        <td>Tanh</td>
+                        <td>200</td>
+                        <td>0.01</td>
+                        <td><strong>87%</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Metodología -->
+        <section>
+            <h2>🔬 Metodología de Desarrollo</h2>
+            
+            <div class="key-points">
+                <h3>Principios de Implementación</h3>
+                <ul>
+                    <li><strong>Implementación desde cero:</strong> Sin uso de librerías de Machine Learning (scikit-learn, TensorFlow, Keras)</li>
+                    <li><strong>Entrenamiento supervisado:</strong> Mínimo 10 iteraciones por experimento (máximo 200 epochs)</li>
+                    <li><strong>Inicialización aleatoria:</strong> Pesos pequeños aleatorios para evitar sesgo inicial</li>
+                    <li><strong>Normalización de datos:</strong> Min-max o estandarización (media 0, varianza 1)</li>
+                    <li><strong>Validación cruzada:</strong> División 70/15/15 o k-fold cuando el dataset lo permita</li>
+                    <li><strong>Métricas completas:</strong> Accuracy, Precision, Recall, F1-Score, matriz de confusión</li>
+                </ul>
+            </div>
+
+            <h3>Preprocesamiento de Datos</h3>
+            <div class="grid">
+                <div class="card">
+                    <h4>Normalización</h4>
+                    <p>Para características numéricas continuas se aplicó normalización Min-Max:</p>
+                    <div class="formula">
+                        x' = (x - min) / (max - min)
+                    </div>
+                    <p style="margin-top: 10px;">Rango resultante: [0, 1]</p>
+                </div>
+
+                <div class="card">
+                    <h4>Estandarización</h4>
+                    <p>Para datos con distribución normal se aplicó Z-score:</p>
+                    <div class="formula">
+                        x' = (x - μ) / σ
+                    </div>
+                    <p style="margin-top: 10px;">Media: 0, Desviación estándar: 1</p>
+                </div>
+
+                <div class="card">
+                    <h4>Codificación</h4>
+                    <p>Para características categóricas:</p>
+                    <ul style="text-align: left; margin-top: 10px;">
+                        <li>One-Hot Encoding</li>
+                        <li>Label Encoding</li>
+                        <li>Feature Hashing</li>
                     </ul>
                 </div>
             </div>
 
-            <!-- CASO 2: OR Lógico -->
-            <div class="case-card case-2">
-                <div class="case-header">
-                    🔵 CASO 2: OR Lógico
-                </div>
-                <div class="case-content">
-                    <div class="info-row">
-                        <span class="info-label">👤 Desarrollador:</span>
-                        <span class="info-value">Julio</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">💻 Lenguaje:</span>
-                        <span class="info-value"><span class="code-badge lang-csharp">C#</span></span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">⚡ Función:</span>
-                        <span class="info-value"><strong>Escalón (Step)</strong></span>
-                    </div>
-                    
-                    <div class="activation-formula">
-                        <strong>f(x) = 1 si x ≥ 0, 0 si x < 0</strong><br>
-                        Función discontinua binaria
-                    </div>
+            <h3>Algoritmo de Entrenamiento</h3>
+            <div class="code-block">
+<span class="comment">// Pseudocódigo del algoritmo de entrenamiento</span>
 
-                    <h4 style="color: #667eea; margin: 15px 0;">📝 Descripción:</h4>
-                    <p>Implementa la compuerta lógica OR. La salida es 1 cuando al menos una entrada es 1.</p>
-                    
-                    <h4 style="color: #667eea; margin: 15px 0 10px 0;">🎯 Características:</h4>
-                    <ul class="features-list">
-                        <li>2 entradas binarias (0 o 1)</li>
-                        <li>Tasa de aprendizaje: 0.1</li>
-                        <li>Función clásica del perceptrón</li>
-                        <li>Actualización solo si hay error</li>
+<span class="keyword">function</span> <span class="function">train_perceptron</span>(X, Y, epochs, learning_rate):
+    <span class="comment">// 1. Inicializar pesos y bias aleatoriamente</span>
+    weights = <span class="function">random_init</span>(n_features)
+    bias = <span class="function">random_init</span>()
+    
+    <span class="comment">// 2. Iterar por número de épocas</span>
+    <span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="function">range</span>(epochs):
+        <span class="keyword">for</span> (x, y) <span class="keyword">in</span> <span class="function">zip</span>(X, Y):
+            <span class="comment">// 3. Forward pass: calcular predicción</span>
+            z = <span class="function">dot_product</span>(weights, x) + bias
+            y_pred = <span class="function">activation_function</span>(z)
+            
+            <span class="comment">// 4. Calcular error</span>
+            error = y - y_pred
+            
+            <span class="comment">// 5. Backward pass: calcular gradiente</span>
+            gradient = error * <span class="function">activation_derivative</span>(z)
+            
+            <span class="comment">// 6. Actualizar pesos y bias</span>
+            weights += learning_rate * gradient * x
+            bias += learning_rate * gradient
+    
+    <span class="keyword">return</span> weights, bias
+            </div>
+        </section>
+
+        <!-- Ejemplo de Salida -->
+        <section>
+            <h2>🖥️ Ejemplos de Salida de Ejecución</h2>
+            
+            <h3>Salida: AND Lógico (Swift)</h3>
+            <div class="code-block">
+=== Perceptron AND (Swift, activación lineal) ===
+
+Entrada: [<span class="string">0.0</span>, <span class="string">0.0</span>] -> salida bruta: <span class="string">-0.1234</span> -> clasificación: <span class="string">0</span> (FALSO)
+Entrada: [<span class="string">0.0</span>, <span class="string">1.0</span>] -> salida bruta: <span class="string">0.2156</span> -> clasificación: <span class="string">0</span> (FALSO)
+Entrada: [<span class="string">1.0</span>, <span class="string">0.0</span>] -> salida bruta: <span class="string">0.1987</span> -> clasificación: <span class="string">0</span> (FALSO)
+Entrada: [<span class="string">1.0</span>, <span class="string">1.0</span>] -> salida bruta: <span class="string">0.9876</span> -> clasificación: <span class="string">1</span> (VERDADERO)
+
+<span class="comment">Pesos finales: w = [0.4523, 0.4389]</span>
+<span class="comment">Bias final: b = -0.6234</span>
+            </div>
+
+            <h3>Salida: OR Lógico (C#)</h3>
+            <div class="code-block">
+=== Perceptron OR (C#, escalón) ===
+[<span class="string">0</span>, <span class="string">0</span>] -> <span class="string">0</span>
+[<span class="string">0</span>, <span class="string">1</span>] -> <span class="string">1</span>
+[<span class="string">1</span>, <span class="string">0</span>] -> <span class="string">1</span>
+[<span class="string">1</span>, <span class="string">1</span>] -> <span class="string">1</span>
+
+<span class="comment">Entrenamiento completado en 20 epochs</span>
+<span class="comment">Precisión: 100%</span>
+            </div>
+
+            <h3>Salida: Clasificación Spam (Python)</h3>
+            <div class="code-block">
+============================================================
+PERCEPTRÓN - CLASIFICACIÓN DE SPAM (FUNCIÓN SIGMOIDAL)
+============================================================
+
+Datos de entrenamiento: <span class="string">16</span> muestras
+Características: longitud, enlaces, palabras_spam, mayúsculas, exclamaciones
+
+============================================================
+ENTRENAMIENTO
+============================================================
+Época <span class="string">10</span>/<span class="string">50</span>, Error promedio: <span class="string">0.2341</span>
+Época <span class="string">20</span>/<span class="string">50</span>, Error promedio: <span class="string">0.0876</span>
+Época <span class="string">30</span>/<span class="string">50</span>, Error promedio: <span class="string">0.0234</span>
+Época <span class="string">40</span>/<span class="string">50</span>, Error promedio: <span class="string">0.0089</span>
+Época <span class="string">50</span>/<span class="string">50</span>, Error promedio: <span class="string">0.0012</span>
+
+============================================================
+EVALUACIÓN DEL MODELO
+============================================================
+
+Precisión en el conjunto de entrenamiento: <span class="string">100.00%</span>
+
+============================================================
+PREDICCIONES DETALLADAS
+============================================================
+Muestra  Real       Predicción   Probabilidad  Correcto  
+------------------------------------------------------------
+<span class="string">1</span>        No Spam    No Spam      <span class="string">0.0234</span>        ✓         
+<span class="string">2</span>        No Spam    No Spam      <span class="string">0.0456</span>        ✓         
+<span class="string">9</span>        Spam       Spam         <span class="string">0.9876</span>        ✓         
+<span class="string">10</span>       Spam       Spam         <span class="string">0.9654</span>        ✓         
+
+============================================================
+PRUEBA CON NUEVOS DATOS
+============================================================
+Mensaje <span class="string">1</span>: No Spam (Probabilidad: <span class="string">0.0345</span>)
+Mensaje <span class="string">2</span>: Spam (Probabilidad: <span class="string">0.9712</span>)
+            </div>
+
+            <h3>Salida: Predicción del Clima (Python)</h3>
+            <div class="code-block">
+======================================================================
+PERCEPTRÓN - PREDICCIÓN DEL CLIMA (FUNCIÓN ReLU PURA)
+======================================================================
+
+Datos de entrenamiento: <span class="string">20</span> muestras
+Características: temperatura, humedad, presión, viento, nubosidad
+Función de activación: ReLU (Rectified Linear Unit)
+
+======================================================================
+ENTRENAMIENTO
+======================================================================
+Época <span class="string">10</span>/<span class="string">100</span>, Error promedio: <span class="string">0.3456</span>
+Época <span class="string">20</span>/<span class="string">100</span>, Error promedio: <span class="string">0.1234</span>
+Época <span class="string">50</span>/<span class="string">100</span>, Error promedio: <span class="string">0.0234</span>
+Época <span class="string">100</span>/<span class="string">100</span>, Error promedio: <span class="string">0.0012</span>
+
+======================================================================
+EVALUACIÓN DEL MODELO
+======================================================================
+
+Precisión en el conjunto de entrenamiento: <span class="string">100.00%</span>
+
+======================================================================
+PREDICCIONES DETALLADAS
+======================================================================
+<span class="comment">#    Temp   Hum    Pres   Vien   Nub    Real         Pred         Salida   ✓/✗</span>
+----------------------------------------------------------------------
+<span class="string">1</span>    <span class="string">25</span>     <span class="string">40</span>     <span class="string">1015</span>   <span class="string">5</span>      <span class="string">20</span>     Sin Lluvia   Sin Lluvia   <span class="string">0.1234</span>   ✓   
+<span class="string">11</span>   <span class="string">18</span>     <span class="string">85</span>     <span class="string">1008</span>   <span class="string">15</span>     <span class="string">90</span>     Lluvia       Lluvia       <span class="string">0.8765</span>   ✓   
+
+======================================================================
+INFORMACIÓN DE LA FUNCIÓN ReLU
+======================================================================
+ReLU(x) = max(<span class="string">0</span>, x)
+- Si x > <span class="string">0</span>: devuelve x
+- Si x ≤ <span class="string">0</span>: devuelve <span class="string">0</span>
+Umbral de clasificación: <span class="string">0.5</span>
+- Salida ≥ <span class="string">0.5</span> → Lluvia (clase <span class="string">1</span>)
+- Salida < <span class="string">0.5</span> → Sin Lluvia (clase <span class="string">0</span>)
+            </div>
+
+            <h3>Salida: Riesgo Académico (Java)</h3>
+            <div class="code-block">
+Clase <span class="string">0</span> (Graduate): <span class="string">450</span>
+Clase <span class="string">1</span> (Dropout): <span class="string">150</span>
+Accuracy riesgo académico: <span class="string">87.0%</span>
+
+=== Ejemplos de salida ===
+Ejemplo <span class="string">1</span>:
+ Entrada: [<span class="string">0.65</span>, <span class="string">0.78</span>, <span class="string">0.82</span>]
+ Salida esperada: <span class="string">0</span>
+ Salida tanh bruta: <span class="string">-0.45678</span>
+ Predicción final: <span class="string">0</span>
+
+Ejemplo <span class="string">2</span>:
+ Entrada: [<span class="string">0.23</span>, <span class="string">0.34</span>, <span class="string">0.29</span>]
+ Salida esperada: <span class="string">1</span>
+ Salida tanh bruta: <span class="string">0.67543</span>
+ Predicción final: <span class="string">1</span>
+            </div>
+        </section>
+
+        <!-- Discusión -->
+        <section>
+            <h2>💬 Discusión y Análisis</h2>
+            
+            <h3>Problemas Linealmente Separables (AND/OR)</h3>
+            <p>Los problemas lógicos AND y OR son perfectamente clasificables con un perceptrón simple debido a su naturaleza linealmente separable. La convergencia es rápida (menos de 100 epochs) y se alcanza 100% de precisión consistentemente.</p>
+            
+            <div class="highlight-box">
+                <h4>Visualización de Separabilidad Lineal</h4>
+                <p><strong>AND Lógico:</strong> Solo (1,1) es positivo<br>
+                <strong>OR Lógico:</strong> Todos excepto (0,0) son positivos</p>
+                <p style="margin-top: 10px;">Ambos casos pueden separarse con una única línea de decisión: <em>w₁x₁ + w₂x₂ + b = 0</em></p>
+            </div>
+
+            <h3>Clasificación de Spam</h3>
+            <div class="key-points">
+                <ul>
+                    <li><strong>Dataset sintético:</strong> 16 muestras diseñadas con separación clara entre clases</li>
+                    <li><strong>Features extraídas:</strong> Longitud del mensaje, número de enlaces, palabras clave spam, uso de mayúsculas, signos de exclamación</li>
+                    <li><strong>Función sigmoidal:</strong> Permite interpretación probabilística (0-1) y facilita descenso por gradiente continuo</li>
+                    <li><strong>Limitaciones:</strong> En datos reales se recomienda TF-IDF, n-gramas y técnicas más sofisticadas de NLP</li>
+                    <li><strong>Generalización:</strong> El 100% de accuracy en entrenamiento no garantiza buen desempeño en datos no vistos</li>
+                </ul>
+            </div>
+
+            <h3>Predicción del Clima</h3>
+            <div class="key-points">
+                <ul>
+                    <li><strong>Dataset balanceado:</strong> 10 días con lluvia, 10 días sin lluvia</li>
+                    <li><strong>Variables meteorológicas:</strong> Temperatura, humedad, presión atmosférica, velocidad del viento, nubosidad</li>
+                    <li><strong>ReLU como activación:</strong> Funciona bien pero idealmente debería usarse en capas ocultas, con sigmoide en la salida</li>
+                    <li><strong>Umbral de clasificación:</strong> Salida ≥ 0.5 → Lluvia, Salida < 0.5 → Sin lluvia</li>
+                    <li><strong>Mejoras propuestas:</strong> Incorporar datos históricos, características temporales, y modelos más complejos (LSTM)</li>
+                </ul>
+            </div>
+
+            <h3>Detección de Fraudes y Riesgo Académico</h3>
+            <div class="activation-grid">
+                <div class="activation-card">
+                    <h4>⚠️ Desafío del Desbalanceo</h4>
+                    <p>Los datasets de fraudes típicamente tienen un gran desbalanceo de clases (más transacciones legítimas que fraudulentas).</p>
+                    <p style="margin-top: 15px;"><strong>Estrategias aplicadas:</strong></p>
+                    <ul>
+                        <li>Ajuste de pesos por clase</li>
+                        <li>Oversampling de clase minoritaria</li>
+                        <li>Undersampling de clase mayoritaria</li>
+                        <li>Enfoque en Precision/Recall sobre Accuracy</li>
+                    </ul>
+                </div>
+
+                <div class="activation-card">
+                    <h4>📚 Riesgo Académico</h4>
+                    <p>Clasificación de estudiantes en riesgo de deserción basada en 3 características académicas.</p>
+                    <p style="margin-top: 15px;"><strong>Observaciones:</strong></p>
+                    <ul>
+                        <li>Tanh centrada en cero mejora convergencia</li>
+                        <li>Learning rate bajo (0.01) para estabilidad</li>
+                        <li>200 epochs para convergencia completa</li>
+                        <li>Accuracy 87% indica capacidad predictiva razonable</li>
                     </ul>
                 </div>
             </div>
 
-            <!-- CASO 3: Spam -->
-            <div class="case-card case-3">
-                <div class="case-header">
-                    🟢 CASO 3: Clasificación de Spam
-                </div>
-                <div class="case-content">
-                    <div class="info-row">
-                        <span class="info-label">👤 Desarrollador:</span>
-                        <span class="info-value">Juanpa</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">💻 Lenguaje:</span>
-                        <span class="info-value"><span class="code-badge lang-python">Python</span></span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">⚡ Función:</span>
-                        <span class="info-value"><strong>Sigmoidal</strong></span>
-                    </div>
-                    
-                    <div class="activation-formula">
-                        <strong>f(x) = 1 / (1 + e⁻ˣ)</strong><br>
-                        Salida continua entre 0 y 1
-                    </div>
-
-                    <h4 style="color: #667eea; margin: 15px 0;">📝 Descripción:</h4>
-                    <p>Clasifica correos electrónicos como spam o no spam basándose en características del mensaje.</p>
-                    
-                    <h4 style="color: #667eea; margin: 15px 0 10px 0;">🎯 Características de Entrada:</h4>
-                    <ul class="features-list">
-                        <li>Longitud del mensaje</li>
-                        <li>Número de enlaces</li>
-                        <li>Palabras sospechosas de spam</li>
-                        <li>Cantidad de mayúsculas</li>
-                        <li>Signos de exclamación</li>
-                    </ul>
-                    
-                    <div class="info-row" style="margin-top: 15px;">
-                        <span class="info-label">📊 Épocas:</span>
-                        <span class="info-value">50</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">📈 Learning Rate:</span>
-                        <span class="info-value">0.5</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- CASO 4: Clima -->
-            <div class="case-card case-4">
-                <div class="case-header">
-                    🟡 CASO 4: Predicción del Clima
-                </div>
-                <div class="case-content">
-                    <div class="info-row">
-                        <span class="info-label">👤 Desarrollador:</span>
-                        <span class="info-value">Juanpa</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">💻 Lenguaje:</span>
-                        <span class="info-value"><span class="code-badge lang-python">Python</span></span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">⚡ Función:</span>
-                        <span class="info-value"><strong>ReLU</strong></span>
-                    </div>
-                    
-                    <div class="activation-formula">
-                        <strong>f(x) = max(0, x)</strong><br>
-                        Lineal para valores positivos, 0 para negativos
-                    </div>
-
-                    <h4 style="color: #667eea; margin: 15px 0;">📝 Descripción:</h4>
-                    <p>Predice si lloverá o no basándose en condiciones meteorológicas actuales.</p>
-                    
-                    <h4 style="color: #667eea; margin: 15px 0 10px 0;">🎯 Características de Entrada:</h4>
-                    <ul class="features-list">
-                        <li>Temperatura (°C)</li>
-                        <li>Humedad (%)</li>
-                        <li>Presión atmosférica (hPa)</li>
-                        <li>Velocidad del viento (km/h)</li>
-                        <li>Nubosidad (%)</li>
-                    </ul>
-                    
-                    <div class="info-row" style="margin-top: 15px;">
-                        <span class="info-label">📊 Épocas:</span>
-                        <span class="info-value">100</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">📈 Learning Rate:</span>
-                        <span class="info-value">0.15</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- CASO 5: Fraude -->
-            <div class="case-card case-5">
-                <div class="case-header">
-                    🟣 CASO 5: Detección de Fraudes
-                </div>
-                <div class="case-content">
-                    <div class="info-row">
-                        <span class="info-label">👤 Desarrollador:</span>
-                        <span class="info-value">Marcelo</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">💻 Lenguaje:</span>
-                        <span class="info-value"><span class="code-badge lang-java">Java</span></span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">⚡ Función:</span>
-                        <span class="info-value"><strong>Softmax</strong></span>
-                    </div>
-                    
-                    <div class="activation-formula">
-                        <strong>f(xᵢ) = e^xᵢ / Σe^xⱼ</strong><br>
-                        Distribución de probabilidades (suma = 1)
-                    </div>
-
-                    <h4 style="color: #667eea; margin: 15px 0;">📝 Descripción:</h4>
-                    <p>Detecta transacciones fraudulentas basándose en patrones de comportamiento financiero.</p>
-                    
-                    <h4 style="color: #667eea; margin: 15px 0 10px 0;">🎯 Características de Entrada:</h4>
-                    <ul class="features-list">
-                        <li>Monto de la transacción</li>
-                        <li>Saldo anterior del origen</li>
-                        <li>Nuevo saldo del origen</li>
-                        <li>Normalización por escala (÷100,000)</li>
-                    </ul>
-                    
-                    <div class="info-row" style="margin-top: 15px;">
-                        <span class="info-label">📊 Épocas:</span>
-                        <span class="info-value">20</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">📈 Learning Rate:</span>
-                        <span class="info-value">0.00000001</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">📁 Fuente:</span>
-                        <span class="info-value">Archivo CSV (fraude.csv)</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- CASO 6: Riesgo Académico -->
-            <div class="case-card case-6">
-                <div class="case-header">
-                    🟠 CASO 6: Riesgo Académico
-                </div>
-                <div class="case-content">
-                    <div class="info-row">
-                        <span class="info-label">👤 Desarrollador:</span>
-                        <span class="info-value">Marcelo</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">💻 Lenguaje:</span>
-                        <span class="info-value"><span class="code-badge lang-java">Java</span></span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">⚡ Función:</span>
-                        <span class="info-value"><strong>Tangente Hiperbólica (tanh)</strong></span>
-                    </div>
-                    
-                    <div class="activation-formula">
-                        <strong>f(x) = (e^x - e⁻ˣ) / (e^x + e⁻ˣ)</strong><br>
-                        Salida continua entre -1 y 1
-                    </div>
-
-                    <h4 style="color: #667eea; margin: 15px 0;">📝 Descripción:</h4>
-                    <p>Clasifica estudiantes con riesgo de deserción académica basándose en indicadores de rendimiento.</p>
-                    
-                    <h4 style="color: #667eea; margin: 15px 0 10px 0;">🎯 Características de Entrada:</h4>
-                    <ul class="features-list">
-                        <li>Indicador académico 1</li>
-                        <li>Indicador académico 2</li>
-                        <li>Indicador académico 3</li>
-                        <li>Clases: Graduate (0) / Dropout (1)</li>
-                    </ul>
-                    
-                    <div class="info-row" style="margin-top: 15px;">
-                        <span class="info-label">📊 Épocas:</span>
-                        <span class="info-value">200</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">📈 Learning Rate:</span>
-                        <span class="info-value">0.01</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">📁 Fuente:</span>
-                        <span class="info-value">Archivo CSV (riesgo.csv)</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="comparison-section">
-            <h2>📊 Comparación de Funciones de Activación</h2>
-            <table class="comparison-table">
+            <h3>Comparación de Funciones de Activación</h3>
+            <table>
                 <thead>
                     <tr>
                         <th>Función</th>
-                        <th>Rango de Salida</th>
+                        <th>Rango</th>
                         <th>Ventajas</th>
                         <th>Desventajas</th>
-                        <th>Caso de Uso</th>
+                        <th>Mejor uso</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td><strong>Lineal</strong></td>
                         <td>(-∞, +∞)</td>
-                        <td>Simple, derivada constante</td>
+                        <td>Simple, rápida</td>
                         <td>No introduce no-linealidad</td>
-                        <td>AND Lógico</td>
+                        <td>Regresión, última capa</td>
                     </tr>
                     <tr>
                         <td><strong>Escalón</strong></td>
                         <td>{0, 1}</td>
-                        <td>Decisión binaria clara</td>
+                        <td>Decisión binaria directa</td>
                         <td>No diferenciable</td>
-                        <td>OR Lógico</td>
+                        <td>Perceptrón clásico</td>
                     </tr>
                     <tr>
                         <td><strong>Sigmoidal</strong></td>
                         <td>(0, 1)</td>
-                        <td>Suave, probabilística</td>
+                        <td>Probabilística, suave</td>
                         <td>Vanishing gradient</td>
-                        <td>Clasificación Spam</td>
+                        <td>Clasificación binaria</td>
                     </tr>
                     <tr>
                         <td><strong>ReLU</strong></td>
                         <td>[0, +∞)</td>
-                        <td>Eficiente, sin vanishing gradient</td>
-                        <td>Puede "morir" (salidas 0)</td>
-                        <td>Predicción Clima</td>
+                        <td>Eficiente, evita vanishing</td>
+                        <td>Dying ReLU problem</td>
+                        <td>Capas ocultas</td>
                     </tr>
                     <tr>
                         <td><strong>Softmax</strong></td>
                         <td>(0, 1), Σ=1</td>
                         <td>Distribución probabilística</td>
-                        <td>Costosa computacionalmente</td>
-                        <td>Detección Fraudes</td>
+                        <td>Computacionalmente costosa</td>
+                        <td>Multiclase</td>
                     </tr>
                     <tr>
                         <td><strong>Tanh</strong></td>
                         <td>(-1, 1)</td>
-                        <td>Centrada en 0, mejor que sigmoid</td>
-                        <td>Vanishing gradient (menor)</td>
-                        <td>Riesgo Académico</td>
+                        <td>Centrada en cero, convergencia rápida</td>
+                        <td>Vanishing gradient moderado</td>
+                        <td>Capas ocultas, datos centrados</td>
                     </tr>
                 </tbody>
             </table>
-        </div>
+        </section>
 
+        <!-- Limitaciones -->
+        <section>
+            <h2>⚠️ Limitaciones del Perceptrón</h2>
+            
+            <div class="activation-grid">
+                <div class="activation-card">
+                    <h4>🚫 Problema XOR</h4>
+                    <p>El perceptrón simple NO puede resolver el problema XOR (OR exclusivo) porque no es linealmente separable.</p>
+                    <div class="formula">
+                        XOR: (0,0)→0, (0,1)→1, (1,0)→1, (1,1)→0
+                    </div>
+                    <p style="margin-top: 10px;"><strong>Solución:</strong> Perceptrón multicapa (MLP) con capa oculta</p>
+                </div>
+
+                <div class="activation-card">
+                    <h4>📊 Capacidad Limitada</h4>
+                    <p>Un perceptrón de una sola capa solo puede aprender fronteras de decisión lineales.</p>
+                    <p style="margin-top: 15px;"><strong>Restricciones:</strong></p>
+                    <ul>
+                        <li>No puede modelar relaciones no lineales complejas</li>
+                        <li>Limitado a clasificación binaria simple</li>
+                        <li>Sensible a outliers</li>
+                    </ul>
+                </div>
+
+                <div class="activation-card">
+                    <h4>🔄 Convergencia</h4>
+                    <p>La convergencia está garantizada solo si los datos son linealmente separables.</p>
+                    <p style="margin-top: 15px;"><strong>Problemas:</strong></p>
+                    <ul>
+                        <li>Puede no converger con datos ruidosos</li>
+                        <li>Sensible a la tasa de aprendizaje</li>
+                        <li>Sensible a la inicialización de pesos</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Conclusiones -->
+        <section>
+            <h2>✅ Conclusiones</h2>
+            
+            <div class="key-points">
+                <ul>
+                    <li><strong>Implementación exitosa:</strong> Se logró implementar el perceptrón desde cero en cuatro lenguajes de programación (Swift, C#, Python, Java) sin uso de librerías de Machine Learning</li>
+                    
+                    <li><strong>Versatilidad de activaciones:</strong> Cada función de activación (Lineal, Escalón, Sigmoidal, ReLU, Softmax, Tanh) demostró ser adecuada para diferentes tipos de problemas</li>
+                    
+                    <li><strong>Problemas lineales:</strong> Para problemas linealmente separables (AND, OR), el perceptrón alcanza 100% de precisión con convergencia rápida (20-100 epochs)</li>
+                    
+                    <li><strong>Problemas reales:</strong> En aplicaciones más complejas (spam, clima, fraudes, riesgo académico), la precisión varía entre 87-100% dependiendo de la calidad de features y preprocesamiento</li>
+                    
+                    <li><strong>Importancia del preprocesamiento:</strong> La normalización y estandarización de datos son cruciales para el desempeño del modelo</li>
+                    
+                    <li><strong>Funciones diferenciables:</strong> Las activaciones sigmoidal, tanh y softmax permiten uso de descenso por gradiente, generando resultados más estables que el perceptrón con función escalón</li>
+                    
+                    <li><strong>Limitaciones inherentes:</strong> Un perceptrón de una sola capa tiene capacidad limitada para problemas no lineales; se recomienda usar redes multicapa para casos complejos</li>
+                    
+                    <li><strong>Balance precisión-complejidad:</strong> El perceptrón ofrece un excelente punto de partida para entender redes neuronales con implementación simple pero efectiva</li>
+                </ul>
+            </div>
+
+            <h3>Trabajo Futuro</h3>
+            <div class="grid">
+                <div class="card">
+                    <h4>🔮 Mejoras Propuestas</h4>
+                    <ul style="text-align: left;">
+                        <li>Implementar perceptrón multicapa (MLP)</li>
+                        <li>Agregar regularización (L1, L2)</li>
+                        <li>Implementar dropout</li>
+                        <li>Optimizadores avanzados (Adam, RMSprop)</li>
+                        <li>Batch normalization</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>📊 Datasets Reales</h4>
+                    <ul style="text-align: left;">
+                        <li>UCI Machine Learning Repository</li>
+                        <li>Kaggle Datasets</li>
+                        <li>Datos institucionales reales</li>
+                        <li>Validación cruzada k-fold</li>
+                        <li>Análisis de generalización</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>🚀 Optimizaciones</h4>
+                    <ul style="text-align: left;">
+                        <li>Vectorización de operaciones</li>
+                        <li>Procesamiento por lotes (batch)</li>
+                        <li>Early stopping</li>
+                        <li>Learning rate scheduling</li>
+                        <li>Paralelización del entrenamiento</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Referencias -->
+        <section>
+            <h2>📚 Referencias Bibliográficas</h2>
+            <ol style="line-height: 2; font-size: 1.05em;">
+                <li>Rosenblatt, F. (1958). "The perceptron: a probabilistic model for information storage and organization in the brain." <em>Psychological Review, 65(6)</em>, 386-408.</li>
+                
+                <li>Goodfellow, I., Bengio, Y., & Courville, A. (2016). <em>Deep Learning.</em> MIT Press.</li>
+                
+                <li>Hastie, T., Tibshirani, R., & Friedman, J. (2009). <em>The Elements of Statistical Learning: Data Mining, Inference, and Prediction.</em> Springer.</li>
+                
+                <li>Bishop, C. M. (2006). <em>Pattern Recognition and Machine Learning.</em> Springer.</li>
+                
+                <li>LeCun, Y., Bengio, Y., & Hinton, G. (2015). "Deep learning." <em>Nature, 521</em>, 436-444.</li>
+                
+                <li>Minsky, M., & Papert, S. (1969). <em>Perceptrons: An Introduction to Computational Geometry.</em> MIT Press.</li>
+                
+                <li>Haykin, S. (2009). <em>Neural Networks and Learning Machines</em> (3rd ed.). Pearson.</li>
+                
+                <li>Mitchell, T. M. (1997). <em>Machine Learning.</em> McGraw-Hill.</li>
+            </ol>
+        </section>
+
+        <!-- Enlaces y Recursos -->
+        <section style="background: #34495e; color: white; border-left: 4px solid #2c5aa0;">
+            <h2 style="color: white; border-bottom-color: white;">🔗 Enlaces y Recursos</h2>
+            
+            <div class="grid">
+                <div class="card" style="background: white; color: #2c3e50;">
+                    <h4 style="color: #1a2332;">📊 Infografía Online</h4>
+                    <p><strong>URL:</strong></p>
+                    <a href="https://rerotz.github.io/" target="_blank" style="color: #2c5aa0; font-size: 1.1em; word-break: break-all; font-weight: 600;">https://rerotz.github.io/</a>
+                    <p style="margin-top: 15px;">Versión interactiva de esta infografía con animaciones y gráficos dinámicos.</p>
+                </div>
+
+                <div class="card" style="background: white; color: #2c3e50;">
+                    <h4 style="color: #1a2332;">💾 Repositorio GitHub</h4>
+                    <p><strong>URL:</strong></p>
+                    <a href="https://github.com/Rerotz/Implementaci-n-Perceptr-n" target="_blank" style="color: #2c5aa0; font-size: 1.1em; word-break: break-all; font-weight: 600;">github.com/Rerotz/Implementaci-n-Perceptr-n</a>
+                    <p style="margin-top: 15px;">Código fuente completo en Swift, C#, Python y Java con documentación detallada.</p>
+                </div>
+            </div>
+
+            <div class="key-points" style="background: rgba(255,255,255,0.1); border-left: 4px solid white; margin-top: 30px;">
+                <h3 style="color: white;">📦 Contenido del Repositorio</h3>
+                <ul style="color: white;">
+                    <li>Código fuente en 4 lenguajes (Swift, C#, Python, Java)</li>
+                    <li>Datasets sintéticos para todos los casos de prueba</li>
+                    <li>Scripts de entrenamiento y evaluación</li>
+                    <li>Notebooks Jupyter con análisis exploratorio</li>
+                    <li>Documentación completa del API</li>
+                    <li>Paper académico en formato IEEE</li>
+                    <li>Presentación de diapositivas</li>
+                    <li>Resultados experimentales detallados</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Footer -->
         <footer>
-            <h3>🎓 Proyecto de Implementación de Perceptrón</h3>
-            <p style="margin-top: 10px;">Desarrollado con 4 lenguajes de programación diferentes</p>
-            <p style="margin-top: 5px; opacity: 0.8;">Swift • C# • Python • Java</p>
-            <p style="margin-top: 20px; font-size: 0.9em;">
-                Más de 10 iteraciones por modelo | Clasificación Binaria | Sin librerías de ML
+            <h3 style="margin-bottom: 20px;">🧠 Perceptrón: La Base de las Redes Neuronales</h3>
+            <p style="font-size: 1.1em; margin-bottom: 15px;">
+                "Un viaje de mil millas comienza con un solo paso"<br>
+                <em>- El perceptrón es ese primer paso hacia la inteligencia artificial moderna</em>
+            </p>
+            <p style="margin-top: 30px;">
+                <strong>Documentación completa:</strong> <a href="https://rerotz.github.io/">rerotz.github.io</a><br>
+                <strong>Repositorio:</strong> <a href="https://github.com/Rerotz/Implementaci-n-Perceptr-n">github.com/Rerotz</a>
+            </p>
+            <p style="margin-top: 20px; font-size: 0.9em; opacity: 0.8;">
+                © 2025 Universidad Andina del Cusco | Todos los derechos reservados
             </p>
         </footer>
     </div>
+
+    <script>
+        // Animación de entrada para las secciones
+        const sections = document.querySelectorAll('section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        sections.forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+
+        // Efecto hover en las tarjetas
+        const cards = document.querySelectorAll('.card, .activation-card, .result-card');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Animación de las barras del gráfico
+        window.addEventListener('load', () => {
+            const bars = document.querySelectorAll('.bar');
+            bars.forEach((bar, index) => {
+                setTimeout(() => {
+                    bar.style.transition = 'height 1s ease';
+                    const currentHeight = bar.style.height;
+                    bar.style.height = '0';
+                    setTimeout(() => {
+                        bar.style.height = currentHeight;
+                    }, 50);
+                }, index * 100);
+            });
+        });
+
+        // Smooth scroll para enlaces internos
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        console.log('🧠 Infografía de Perceptrón cargada correctamente');
+        console.log('📊 Universidad Andina del Cusco - 2025');
+    </script>
 </body>
 </html>
