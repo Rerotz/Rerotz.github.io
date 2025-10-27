@@ -716,29 +716,30 @@
     </div>
 
     <script>
-        function toggleDetails(button) {
-            const details = button.nextElementSibling;
-            details.classList.toggle('active');
-            button.textContent = details.classList.contains('active') 
-                ? 'Ocultar Detalles' 
-                : 'Ver Detalles';
-        }
+    function toggleDetails(button) {
+        const details = button.nextElementSibling;
+        details.classList.toggle('active');
+        button.textContent = details.classList.contains('active') 
+            ? 'Ocultar Detalles' 
+            : 'Ver Detalles';
+    }
 
-        // Animación de entrada escalonada
-        document.addEventListener('DOMContentLoaded', function() {
-            const cards = document.querySelectorAll('.card');
-            cards.forEach((card, index) => {
-                card.style.animationDelay = ${index * 0.1}s;
-            });
+    // Animación de entrada escalonada
+    document.addEventListener('DOMContentLoaded', function() {
+        const cards = document.querySelectorAll('.card');
+        cards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
         });
+    });
 
-        // Efecto de parallax suave en scroll
-        window.addEventListener('scroll', function() {
-            const scrolled = window.pageYOffset;
-            const header = document.querySelector('header');
-            header.style.transform = translateY(${scrolled * 0.5}px);
-            header.style.opacity = 1 - (scrolled / 500);
-        });
-    </script>
+    // Efecto de parallax suave en scroll
+    window.addEventListener('scroll', function() {
+        const scrolled = window.pageYOffset;
+        const header = document.querySelector('header');
+        header.style.transform = `translateY(${scrolled * 0.5}px)`;
+        header.style.opacity = 1 - (scrolled / 500);
+    });
+</script>
 </body>
 </html>
+
