@@ -220,6 +220,58 @@
             opacity: 0.9;
         }
 
+        .activities {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px dashed #e0e0e0;
+        }
+
+        .activities h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: start;
+            margin-bottom: 10px;
+            padding: 8px 10px;
+            background: #fafbfc;
+            border-radius: 6px;
+            border-left: 3px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .activity-item:hover {
+            background: #f0f2f5;
+            transform: translateX(3px);
+        }
+
+        .activity-number {
+            min-width: 22px;
+            height: 22px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75em;
+            font-weight: bold;
+            margin-right: 10px;
+            margin-top: 2px;
+        }
+
+        .activity-text {
+            color: #555;
+            line-height: 1.5;
+            font-size: 0.9em;
+        }
+
         .conclusion {
             background: white;
             border-radius: 20px;
@@ -340,6 +392,30 @@
                             <div class="highlight-text">100% de HU completadas (HU01 y HU02)</div>
                         </div>
                     </div>
+
+                    <div class="activities">
+                        <h3>📋 Actividades Realizadas</h3>
+                        <div class="activity-item">
+                            <div class="activity-number">1</div>
+                            <div class="activity-text">Identificar las fases principales del proyecto y sus entregables</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-number">2</div>
+                            <div class="activity-text">Asignar tiempos estimados y dependencias entre tareas</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-number">3</div>
+                            <div class="activity-text">Validar el cronograma con el equipo y los interesados</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-number">4</div>
+                            <div class="activity-text">Listar los perfiles requeridos según las tareas del proyecto</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-number">5</div>
+                            <div class="activity-text">Asignar responsabilidades específicas a cada rol</div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -383,6 +459,50 @@
                         <div class="metric-box">
                             <div class="metric-value">95%</div>
                             <div class="metric-label">Empatía</div>
+                        </div>
+                    </div>
+
+                    <div class="activities">
+                        <h3>📋 Actividades Realizadas</h3>
+                        <div class="activity-item">
+                            <div class="activity-number">1</div>
+                            <div class="activity-text">Analizar distintos modelos LLM disponibles (GPT, LLaMA, Mistral)</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-number">2</div>
+                            <div class="activity-text">Evaluar rendimiento, costo de equipo y requisitos técnicos</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-number">3</div>
+                            <div class="activity-text">Seleccionar el modelo y definir infraestructura de despliegue</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-number">4</div>
+                            <div class="activity-text">Justificar la elección en base a criterios técnicos y éticos</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-number">5</div>
+                            <div class="activity-text">Definir componentes del sistema y su interacción</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-number">6</div>
+                            <div class="activity-text">Seleccionar tecnologías y frameworks para frontend y backend</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-number">7</div>
+                            <div class="activity-text">Elaborar diagramas de arquitectura y flujo de datos</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-number">8</div>
+                            <div class="activity-text">Revisar escalabilidad, seguridad y mantenibilidad del diseño</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-number">9</div>
+                            <div class="activity-text">Configurar entorno de prueba en WhatsApp Business API</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-number">10</div>
+                            <div class="activity-text">Validar la claridad y empatía del lenguaje del chatbot</div>
                         </div>
                     </div>
                 </div>
@@ -434,69 +554,9 @@
                             <div class="metric-label">Respuesta</div>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <!-- Sprint 4 -->
-            <div class="sprint-card sprint4">
-                <div class="sprint-header">
-                    <div class="sprint-number">04</div>
-                    <div class="sprint-title">Optimización</div>
-                </div>
-                <div class="sprint-content">
-                    <div class="objective">
-                        <h3>🎯 Objetivo</h3>
-                        <p>Seguridad, pruebas multilingües y despliegue final</p>
-                    </div>
-                    
-                    <div class="highlights">
-                        <h3>✨ Mejoras Finales</h3>
-                        <div class="highlight-item">
-                            <div class="icon">🔐</div>
-                            <div class="highlight-text">Gestión segura de credenciales (.env + rotación)</div>
-                        </div>
-                        <div class="highlight-item">
-                            <div class="icon">🌍</div>
-                            <div class="highlight-text">Detección automática de idioma (ES/EN)</div>
-                        </div>
-                        <div class="highlight-item">
-                            <div class="icon">🧪</div>
-                            <div class="highlight-text">20 pruebas de conversación simuladas</div>
-                        </div>
-                        <div class="highlight-item">
-                            <div class="icon">🚀</div>
-                            <div class="highlight-text">Despliegue en servidores UAC</div>
-                        </div>
-                    </div>
-
-                    <div class="metrics">
-                        <div class="metric-box">
-                            <div class="metric-value">88%</div>
-                            <div class="metric-label">Precisión</div>
-                        </div>
-                        <div class="metric-box">
-                            <div class="metric-value">9.4s</div>
-                            <div class="metric-label">Tiempo</div>
-                        </div>
-                        <div class="metric-box">
-                            <div class="metric-value">4.7/5</div>
-                            <div class="metric-label">Satisfacción</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="conclusion">
-            <h2>🎉 Conclusión General</h2>
-            <p>
-                Se desarrolló exitosamente un <strong>chatbot médico inteligente</strong> basado en LLaMA 3.1 8B, 
-                integrado con WhatsApp Business API en un entorno local seguro y ético. El sistema logró 
-                respuestas empáticas, coherentes y precisas con <strong>88% de precisión semántica</strong>, 
-                <strong>9 segundos de respuesta promedio</strong> y <strong>4.7/5 en satisfacción</strong>, 
-                enfocado en consultas generales sin sustituir atención profesional.
-            </p>
-        </div>
-    </div>
-</body>
-                            </html>
+                    <div class="activities">
+                        <h3>📋 Actividades Realizadas</h3>
+                        <div class="activity-item">
+                            <div class="activity-number">1</div>
+                            <div class="activity-text">Implementar mensajes estructurados en WhatsApp (texto coheren
