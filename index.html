@@ -3,352 +3,246 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reconocimiento Facial con CNN - Infografía</title>
+    <title>Proyecto Chatbot Médico - Sprints</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #333;
-            overflow-x: hidden;
+            padding: 40px 20px;
+            min-height: 100vh;
         }
+
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 20px;
         }
-        /* Header */
-        header {
-            text-align: center;
-            padding: 60px 20px;
-            background: rgba(255, 255, 255, 0.95);
-            margin-bottom: 40px;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            animation: fadeInDown 1s ease;
-        }
-        header h1 {
-            font-size: 3em;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 15px;
-        }
-        header p {
-            font-size: 1.2em;
-            color: #666;
-            margin-bottom: 10px;
-        }
-        .authors {
-            font-size: 0.95em;
-            color: #888;
-            margin-top: 15px;
-        }
-        /* Sections */
-        section {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 50px 40px;
-            margin-bottom: 40px;
-            border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
-            animation: fadeInUp 1s ease;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        section:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-        }
-        section h2 {
-            font-size: 2.5em;
-            color: #667eea;
-            margin-bottom: 25px;
-            text-align: center;
-            position: relative;
-            padding-bottom: 15px;
-        }
-        section h2::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 4px;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            border-radius: 2px;
-        }
-        /* Problem Section */
-        .problem-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            align-items: center;
-        }
-        .problem-text {
-            font-size: 1.1em;
-            line-height: 1.8;
-            color: #555;
-        }
-        .problem-icon {
-            text-align: center;
-            font-size: 8em;
-            color: #667eea;
-            animation: pulse 2s infinite;
-        }
-        /* Dataset Section */
-        .dataset-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            margin-top: 30px;
-        }
-        .person-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 25px;
-            border-radius: 15px;
+
+        .header {
             text-align: center;
             color: white;
-            transition: transform 0.3s ease;
+            margin-bottom: 50px;
+            animation: fadeInDown 0.8s ease;
         }
-        .person-card:hover {
-            transform: scale(1.05) rotate(2deg);
-        }
-        .person-icon {
-            font-size: 4em;
+
+        .header h1 {
+            font-size: 3em;
             margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
-        .person-card h3 {
+
+        .header p {
             font-size: 1.3em;
-            margin-bottom: 10px;
+            opacity: 0.95;
         }
-        .person-card p {
-            font-size: 0.95em;
-            opacity: 0.9;
-        }
-        .dataset-stats {
-            margin-top: 30px;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-        .stat-box {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 10px;
+
+        .team-info {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            color: white;
+            margin-bottom: 40px;
             text-align: center;
+            animation: fadeIn 1s ease;
+        }
+
+        .sprints-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .sprint-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .sprint-card:nth-child(1) { animation-delay: 0.1s; }
+        .sprint-card:nth-child(2) { animation-delay: 0.2s; }
+        .sprint-card:nth-child(3) { animation-delay: 0.3s; }
+        .sprint-card:nth-child(4) { animation-delay: 0.4s; }
+
+        .sprint-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .sprint-header {
+            padding: 30px;
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sprint-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255,255,255,0.1);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+        }
+
+        .sprint-card:hover .sprint-header::before {
+            left: 100%;
+        }
+
+        .sprint1 .sprint-header { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .sprint2 .sprint-header { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .sprint3 .sprint-header { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        .sprint4 .sprint-header { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+
+        .sprint-number {
+            font-size: 3.5em;
+            font-weight: bold;
+            opacity: 0.3;
+            position: relative;
+        }
+
+        .sprint-title {
+            font-size: 1.8em;
+            margin-top: -20px;
+            position: relative;
+        }
+
+        .sprint-content {
+            padding: 30px;
+        }
+
+        .objective {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
             border-left: 4px solid #667eea;
         }
-        .stat-box h4 {
-            font-size: 2.5em;
+
+        .objective h3 {
             color: #667eea;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            font-size: 1.1em;
         }
-        .stat-box p {
-            color: #666;
-            font-size: 1em;
+
+        .objective p {
+            color: #555;
+            line-height: 1.6;
         }
-        /* Architecture Section */
-        .architecture-diagram {
+
+        .highlights {
+            margin-top: 20px;
+        }
+
+        .highlights h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .highlight-item {
             display: flex;
-            justify-content: space-around;
-            align-items: center;
-            margin: 40px 0;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        .arch-box {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            padding: 30px;
-            border-radius: 15px;
-            color: white;
-            min-width: 180px;
-            text-align: center;
-            position: relative;
-            transition: transform 0.3s ease;
-        }
-        .arch-box:hover {
-            transform: translateY(-10px);
-        }
-        .arch-box::after {
-            content: '→';
-            position: absolute;
-            right: -30px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 2em;
-            color: #667eea;
-        }
-        .arch-box:last-child::after {
-            content: '';
-        }
-        .arch-box h3 {
-            font-size: 1.3em;
-            margin-bottom: 10px;
-        }
-        .tech-details {
+            align-items: start;
+            margin-bottom: 12px;
+            padding: 10px;
             background: #f8f9fa;
-            padding: 30px;
-            border-radius: 10px;
-            margin-top: 30px;
-        }
-        .tech-details ul {
-            list-style: none;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-        .tech-details li {
-            padding: 15px;
-            background: white;
             border-radius: 8px;
-            border-left: 3px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .highlight-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .icon {
+            width: 24px;
+            height: 24px;
+            min-width: 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 12px;
+            font-size: 0.8em;
+        }
+
+        .highlight-text {
+            color: #444;
+            line-height: 1.5;
             font-size: 0.95em;
         }
-        .tech-details li strong {
-            color: #667eea;
-        }
-        /* Metrics Section */
-        .metrics-grid {
+
+        .metrics {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
-            margin-top: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
         }
-        .metric-card {
-            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-            padding: 40px;
-            border-radius: 15px;
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
-        .metric-card:hover {
-            transform: scale(1.05);
-        }
-        .metric-value {
-            font-size: 4em;
-            font-weight: bold;
-            color: #667eea;
-            margin-bottom: 10px;
-        }
-        .metric-label {
-            font-size: 1.2em;
-            color: #555;
-            font-weight: 600;
-        }
-        .metrics-table {
-            margin-top: 30px;
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        .metrics-table table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .metrics-table th {
+
+        .metric-box {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             padding: 15px;
-            text-align: center;
-            font-size: 1.1em;
-        }
-        .metrics-table td {
-            padding: 15px;
-            text-align: center;
-            border-bottom: 1px solid #f0f0f0;
-            font-size: 1.05em;
-        }
-        .metrics-table tr:last-child td {
-            border-bottom: none;
-        }
-        .metrics-table tr:hover {
-            background: #f8f9fa;
-        }
-        /* Demo Section */
-        .demo-container {
-            text-align: center;
-            margin-top: 30px;
-        }
-        .video-wrapper {
-            max-width: 400px;
-            margin: 0 auto;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-            background: #000;
-        }
-        .video-wrapper iframe {
-            border: none;
-            width: 100%;
-            height: 600px;
-        }
-        .demo-description {
-            margin-top: 30px;
-            font-size: 1.1em;
-            color: #555;
-            line-height: 1.8;
-        }
-        .features-list {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin-top: 30px;
-        }
-        .feature-item {
-            background: #f8f9fa;
-            padding: 20px;
             border-radius: 10px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
+            text-align: center;
+            transition: transform 0.3s ease;
         }
-        .feature-icon {
-            font-size: 2.5em;
-            color: #667eea;
+
+        .metric-box:hover {
+            transform: scale(1.05);
         }
-        .feature-text {
-            flex: 1;
-        }
-        .feature-text h4 {
-            color: #667eea;
+
+        .metric-value {
+            font-size: 2em;
+            font-weight: bold;
             margin-bottom: 5px;
         }
-        .feature-text p {
-            font-size: 0.9em;
-            color: #666;
+
+        .metric-label {
+            font-size: 0.85em;
+            opacity: 0.9;
         }
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 40px 20px;
-            background: rgba(255, 255, 255, 0.95);
+
+        .conclusion {
+            background: white;
             border-radius: 20px;
-            margin-top: 40px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: fadeIn 1.2s ease;
         }
-        .footer-links {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
-        .footer-links a {
+
+        .conclusion h2 {
             color: #667eea;
-            text-decoration: none;
-            font-weight: 600;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .conclusion p {
+            color: #555;
+            line-height: 1.8;
             font-size: 1.1em;
-            transition: color 0.3s ease;
+            max-width: 900px;
+            margin: 0 auto;
         }
-        .footer-links a:hover {
-            color: #764ba2;
-        }
-        /* Animations */
+
         @keyframes fadeInDown {
             from {
                 opacity: 0;
@@ -359,6 +253,7 @@
                 transform: translateY(0);
             }
         }
+
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -369,321 +264,239 @@
                 transform: translateY(0);
             }
         }
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
             }
-            50% {
-                transform: scale(1.05);
+            to {
+                opacity: 1;
             }
         }
-        /* Responsive */
+
         @media (max-width: 768px) {
-            header h1 {
+            .header h1 {
                 font-size: 2em;
             }
-            .problem-content {
-                grid-template-columns: 1fr;
+
+            .header p {
+                font-size: 1em;
             }
-            .dataset-grid {
-                grid-template-columns: repeat(2, 1fr);
+
+            .sprint-number {
+                font-size: 2.5em;
             }
-            .dataset-stats,
-            .metrics-grid,
-            .features-list,
-            .tech-details ul {
-                grid-template-columns: 1fr;
+
+            .sprint-title {
+                font-size: 1.3em;
             }
-            .architecture-diagram {
-                flex-direction: column;
-            }
-            .arch-box::after {
-                content: '↓';
-                right: 50%;
-                bottom: -30px;
-                top: auto;
-                transform: translateX(50%);
-            }
-            section {
-                padding: 30px 20px;
-            }
-            .video-wrapper iframe {
-                height: 500px;
+
+            .conclusion h2 {
+                font-size: 1.8em;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>🤖 Reconocimiento Facial con CNN</h1>
-            <p>Despliegue Móvil con TensorFlow Lite</p>
-            <div class="authors">
-                <strong>Autores:</strong> Juan P. Aguilar, Jhon A. Díaz, Marcelo Espirilla, Julio A. Villasante<br>
-                Universidad Andina del Cusco - Ingeniería de Sistemas
-            </div>
-        </header>
+        <div class="header">
+            <h1>🏥 Chatbot Médico Inteligente</h1>
+            <p>Universidad Andina del Cusco - Resumen de Sprints</p>
+        </div>
 
-        <!-- Problem Section -->
-        <section id="problema">
-            <h2>🎯 El Problema</h2>
-            <div class="problem-content">
-                <div class="problem-text">
-                    <p><strong>Desafío:</strong> Crear un sistema capaz de identificar automáticamente a 4 integrantes del equipo mediante reconocimiento facial en dispositivos móviles.</p>
-                    <br>
-                    <p><strong>Necesidad:</strong> Implementar un mecanismo de autenticación biométrica ligero y eficiente que funcione completamente offline, sin depender de infraestructura externa ni conexión a internet.</p>
-                    <br>
-                    <p><strong>Solución:</strong> Desarrollo de un modelo CNN basado en MobileNetV2 con Transfer Learning y Fine-Tuning, optimizado mediante TensorFlow Lite para ejecución en tiempo real en Android.</p>
-                </div>
-                <div class="problem-icon">
-                    🔐
-                </div>
-            </div>
-        </section>
+        <div class="team-info">
+            <strong>Equipo Choclin Choclito</strong> | Ingeniería de Sistemas | 2025-II
+        </div>
 
-        <!-- Dataset Section -->
-        <section id="dataset">
-            <h2>📊 Dataset</h2>
-            <div class="dataset-grid">
-                <div class="person-card">
-                    <div class="person-icon">👨‍💻</div>
-                    <h3>Juan Pablo</h3>
-                    <p>560 imágenes</p>
+        <div class="sprints-grid">
+            <!-- Sprint 1 -->
+            <div class="sprint-card sprint1">
+                <div class="sprint-header">
+                    <div class="sprint-number">01</div>
+                    <div class="sprint-title">Planificación</div>
                 </div>
-                <div class="person-card">
-                    <div class="person-icon">👨‍🎓</div>
-                    <h3>Jhon</h3>
-                    <p>1000 imágenes</p>
-                </div>
-                <div class="person-card">
-                    <div class="person-icon">👨‍💼</div>
-                    <h3>Julio</h3>
-                    <p>1800 imágenes</p>
-                </div>
-                <div class="person-card">
-                    <div class="person-icon">👨‍🔬</div>
-                    <h3>Marcelo</h3>
-                    <p>1000 imágenes</p>
-                </div>
-            </div>
-
-            <div class="dataset-stats">
-                <div class="stat-box">
-                    <h4>4</h4>
-                    <p>Clases (Personas)</p>
-                </div>
-                <div class="stat-box">
-                    <h4>4360</h4>
-                    <p>Imágenes Procesadas</p>
-                </div>
-                <div class="stat-box">
-                    <h4>224×224</h4>
-                    <p>Resolución</p>
-                </div>
-            </div>
-
-            <div class="tech-details">
-                <h3 style="color: #667eea; margin-bottom: 20px;">🔧 Procesamiento del Dataset</h3>
-                <ul>
-                    <li><strong>Captura:</strong> OpenCV + Haar Cascade detector facial (padding 20%)</li>
-                    <li><strong>Preprocesamiento:</strong> Detección, recorte y redimensionado a 224×224 píxeles</li>
-                    <li><strong>Data Augmentation:</strong> Rotaciones, flips horizontales y cambios de brillo</li>
-                    <li><strong>Normalización:</strong> Valores de píxeles escalados de [0, 255] → [0, 1]</li>
-                    <li><strong>Balanceo:</strong> Sobremuestreo offline + aumento online con ImageDataGenerator</li>
-                    <li><strong>División:</strong> 72% Entrenamiento, 13% Validación, 15% Prueba (test set)</li>
-                    <li><strong>Class Weights:</strong> Pesos inversamente proporcionales a la frecuencia de cada clase</li>
-                    <li><strong>Variabilidad:</strong> Múltiples condiciones de iluminación, pose y expresión facial</li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- Architecture Section -->
-        <section id="arquitectura">
-            <h2>🏗️ Arquitectura CNN</h2>
-            <div class="architecture-diagram">
-                <div class="arch-box">
-                    <h3>📸 Input</h3>
-                    <p>224×224×3</p>
-                    <small>Imagen RGB</small>
-                </div>
-                <div class="arch-box">
-                    <h3>🧠 MobileNetV2</h3>
-                    <p>Base Convolucional</p>
-                    <small>Pre-entrenada ImageNet</small>
-                </div>
-                <div class="arch-box">
-                    <h3>⚡ GlobalAvgPool2D</h3>
-                    <p>Reducción</p>
-                    <small>Dimensionalidad</small>
-                </div>
-                <div class="arch-box">
-                    <h3>🎲 Dropout (40%)</h3>
-                    <p>Regularización</p>
-                    <small>Anti-overfitting</small>
-                </div>
-                <div class="arch-box">
-                    <h3>🎯 Dense + Softmax</h3>
-                    <p>4 Neuronas</p>
-                    <small>Clasificador Final</small>
-                </div>
-            </div>
-
-            <div class="tech-details">
-                <h3 style="color: #667eea; margin-bottom: 20px;">⚙️ Detalles de Entrenamiento</h3>
-                <ul>
-                    <li><strong>Transfer Learning:</strong> MobileNetV2 pre-entrenada (ImageNet)</li>
-                    <li><strong>Etapa 1 - Feature Extraction:</strong> 5 épocas, capas base congeladas</li>
-                    <li><strong>Etapa 2 - Fine-Tuning:</strong> 6 épocas, últimas 20 capas descongeladas</li>
-                    <li><strong>Optimizador:</strong> Adam con learning rate adaptativo</li>
-                    <li><strong>Función de Pérdida:</strong> Categorical Crossentropy</li>
-                    <li><strong>Batch Size:</strong> 32 imágenes por lote</li>
-                    <li><strong>Early Stopping:</strong> Parada automática si val_loss no mejora en 6 épocas</li>
-                    <li><strong>ReduceLROnPlateau:</strong> Reducción dinámica del learning rate (factor 0.3 / 3 épocas)</li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- Metrics Section -->
-        <section id="metricas">
-            <h2>📈 Métricas y Resultados</h2>
-            <div class="metrics-grid">
-                <div class="metric-card">
-                    <div class="metric-value">93%</div>
-                    <div class="metric-label">Accuracy Global</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-value">450ms</div>
-                    <div class="metric-label">Latencia por Frame</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-value">2-4×</div>
-                    <div class="metric-label">Reducción de Tamaño</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-value">100%</div>
-                    <div class="metric-label">Offline (Sin Internet)</div>
-                </div>
-            </div>
-
-            <div class="metrics-table">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Métrica</th>
-                            <th>Valor Promedio</th>
-                            <th>Descripción</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Accuracy</strong></td>
-                            <td>0.93 (93%)</td>
-                            <td>Exactitud global del modelo</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Precision</strong></td>
-                            <td>0.94</td>
-                            <td>Tasa de verdaderos positivos</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Recall</strong></td>
-                            <td>0.93</td>
-                            <td>Capacidad de detección correcta</td>
-                        </tr>
-                        <tr>
-                            <td><strong>F1-Score</strong></td>
-                            <td>0.93</td>
-                            <td>Media armónica precision-recall</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="tech-details" style="margin-top: 30px;">
-                <h3 style="color: #667eea; margin-bottom: 20px;">🎯 Optimizaciones TensorFlow Lite</h3>
-                <ul>
-                    <li><strong>Cuantización Post-Entrenamiento:</strong> Reducción a 8-bit / float16</li>
-                    <li><strong>Formato FlatBuffers:</strong> Carga ultra-rápida del modelo</li>
-                    <li><strong>Delegados Hardware:</strong> GPU/NNAPI para aceleración</li>
-                    <li><strong>Multi-threading:</strong> Procesamiento paralelo en múltiples núcleos</li>
-                    <li><strong>Kernels Optimizados:</strong> Operaciones especializadas para móviles</li>
-                    <li><strong>Poda de Pesos:</strong> TensorFlow Model Optimization Toolkit</li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- Demo Section -->
-        <section id="demo">
-            <h2>📱 Demostración Móvil</h2>
-            <div class="demo-container">
-                <div class="video-wrapper">
-                    <iframe 
-                        src="https://streamable.com/e/onp457?" 
-                        allow="fullscreen"
-                        allowfullscreen>
-                    </iframe>
-                </div>
-                <div class="demo-description">
-                    <p><strong>Aplicación Android Nativa</strong> desarrollada en Kotlin y Java con integración directa de TensorFlow Lite. El sistema realiza inferencia local en tiempo real sin necesidad de conexión a internet, con latencia inferior a 500ms por frame.</p>
-                </div>
-            </div>
-
-            <div class="features-list">
-                <div class="feature-item">
-                    <div class="feature-icon">📷</div>
-                    <div class="feature-text">
-                        <h4>CameraX API</h4>
-                        <p>Captura continua de frames en tiempo real con visualización del stream</p>
+                <div class="sprint-content">
+                    <div class="objective">
+                        <h3>🎯 Objetivo</h3>
+                        <p>Establecer bases organizativas y definir roles del equipo</p>
                     </div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">🔍</div>
-                    <div class="feature-text">
-                        <h4>Procesamiento Frame-by-Frame</h4>
-                        <p>Análisis instantáneo mediante CNN optimizada</p>
-                    </div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">🎯</div>
-                    <div class="feature-text">
-                        <h4>Identificación Precisa</h4>
-                        <p>Nombre del integrante + probabilidad + porcentaje de confianza</p>
-                    </div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">⚡</div>
-                    <div class="feature-text">
-                        <h4>Inferencia Ultra-Rápida</h4>
-                        <p>450ms promedio por frame con delegado GPU habilitado</p>
-                    </div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">🔒</div>
-                    <div class="feature-text">
-                        <h4>Autenticación Biométrica</h4>
-                        <p>Sistema de reconocimiento facial robusto y confiable</p>
-                    </div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">📴</div>
-                    <div class="feature-text">
-                        <h4>100% Offline</h4>
-                        <p>No requiere infraestructura externa ni conexión a internet</p>
+                    
+                    <div class="highlights">
+                        <h3>✨ Logros Clave</h3>
+                        <div class="highlight-item">
+                            <div class="icon">✓</div>
+                            <div class="highlight-text">Plan de trabajo detallado con 4 fases principales</div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="icon">✓</div>
+                            <div class="highlight-text">Cronograma completo asignado a 4 sprints</div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="icon">✓</div>
+                            <div class="highlight-text">Roles definidos: Gerente, Scrum Master, Dev y Tester</div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="icon">✓</div>
+                            <div class="highlight-text">100% de HU completadas (HU01 y HU02)</div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </section>
 
-        <!-- Footer -->
-        <footer>
-            <h3 style="color: #667eea; margin-bottom: 15px;">📚 Enlaces del Proyecto</h3>
-            <div class="footer-links">
-                <a href="https://github.com/Rerotz/Aplicacion_Reconocimiento-Facial-con-CNN_Choclin-Choclit" target="_blank">💻 Repositorio GitHub</a>
+            <!-- Sprint 2 -->
+            <div class="sprint-card sprint2">
+                <div class="sprint-header">
+                    <div class="sprint-number">02</div>
+                    <div class="sprint-title">Diseño Técnico</div>
+                </div>
+                <div class="sprint-content">
+                    <div class="objective">
+                        <h3>🎯 Objetivo</h3>
+                        <p>Seleccionar modelo LLM y diseñar arquitectura del sistema</p>
+                    </div>
+                    
+                    <div class="highlights">
+                        <h3>✨ Decisiones Clave</h3>
+                        <div class="highlight-item">
+                            <div class="icon">🤖</div>
+                            <div class="highlight-text"><strong>Modelo:</strong> LLaMA 3.1 8B Instruct con RAG</div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="icon">🔒</div>
+                            <div class="highlight-text"><strong>Ejecución:</strong> Local en LM Studio (privacidad total)</div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="icon">💬</div>
+                            <div class="highlight-text"><strong>Interfaz:</strong> WhatsApp Business API</div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="icon">🌐</div>
+                            <div class="highlight-text"><strong>Backend:</strong> Node.js + Python + FAISS</div>
+                        </div>
+                    </div>
+
+                    <div class="metrics">
+                        <div class="metric-box">
+                            <div class="metric-value">90%</div>
+                            <div class="metric-label">Claridad</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-value">95%</div>
+                            <div class="metric-label">Empatía</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <p style="margin-top: 30px; color: #888;">
-                © 2025 Universidad Andina del Cusco - Escuela Profesional de Ingeniería de Sistemas
+
+            <!-- Sprint 3 -->
+            <div class="sprint-card sprint3">
+                <div class="sprint-header">
+                    <div class="sprint-number">03</div>
+                    <div class="sprint-title">Desarrollo</div>
+                </div>
+                <div class="sprint-content">
+                    <div class="objective">
+                        <h3>🎯 Objetivo</h3>
+                        <p>Integración completa WhatsApp + LLaMA con RAG</p>
+                    </div>
+                    
+                    <div class="highlights">
+                        <h3>✨ Implementaciones</h3>
+                        <div class="highlight-item">
+                            <div class="icon">✓</div>
+                            <div class="highlight-text">Mensajes abiertos en WhatsApp (UTF-8)</div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="icon">✓</div>
+                            <div class="highlight-text">Servidor Node.js con puente Python</div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="icon">✓</div>
+                            <div class="highlight-text">Sistema RAG con FAISS y dataset médico</div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="icon">✓</div>
+                            <div class="highlight-text">Autenticación con tokens Bearer</div>
+                        </div>
+                    </div>
+
+                    <div class="metrics">
+                        <div class="metric-box">
+                            <div class="metric-value">92%</div>
+                            <div class="metric-label">Claridad</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-value">87%</div>
+                            <div class="metric-label">Coherencia</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-value">4.9s</div>
+                            <div class="metric-label">Respuesta</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sprint 4 -->
+            <div class="sprint-card sprint4">
+                <div class="sprint-header">
+                    <div class="sprint-number">04</div>
+                    <div class="sprint-title">Optimización</div>
+                </div>
+                <div class="sprint-content">
+                    <div class="objective">
+                        <h3>🎯 Objetivo</h3>
+                        <p>Seguridad, pruebas multilingües y despliegue final</p>
+                    </div>
+                    
+                    <div class="highlights">
+                        <h3>✨ Mejoras Finales</h3>
+                        <div class="highlight-item">
+                            <div class="icon">🔐</div>
+                            <div class="highlight-text">Gestión segura de credenciales (.env + rotación)</div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="icon">🌍</div>
+                            <div class="highlight-text">Detección automática de idioma (ES/EN)</div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="icon">🧪</div>
+                            <div class="highlight-text">20 pruebas de conversación simuladas</div>
+                        </div>
+                        <div class="highlight-item">
+                            <div class="icon">🚀</div>
+                            <div class="highlight-text">Despliegue en servidores UAC</div>
+                        </div>
+                    </div>
+
+                    <div class="metrics">
+                        <div class="metric-box">
+                            <div class="metric-value">88%</div>
+                            <div class="metric-label">Precisión</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-value">9.4s</div>
+                            <div class="metric-label">Tiempo</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-value">4.7/5</div>
+                            <div class="metric-label">Satisfacción</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="conclusion">
+            <h2>🎉 Conclusión General</h2>
+            <p>
+                Se desarrolló exitosamente un <strong>chatbot médico inteligente</strong> basado en LLaMA 3.1 8B, 
+                integrado con WhatsApp Business API en un entorno local seguro y ético. El sistema logró 
+                respuestas empáticas, coherentes y precisas con <strong>88% de precisión semántica</strong>, 
+                <strong>9 segundos de respuesta promedio</strong> y <strong>4.7/5 en satisfacción</strong>, 
+                enfocado en consultas generales sin sustituir atención profesional.
             </p>
-        </footer>
+        </div>
     </div>
 </body>
-</html>
+                            </html>
