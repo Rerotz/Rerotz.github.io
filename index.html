@@ -1,706 +1,300 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proyecto Chatbot Médico - Sprints</title>
+    <title>Comparativa de Modelos de Traducción</title>
+    <!-- Carga de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        /* Fuente Inter (similar a la usada en muchos dashboards) */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 40px 20px;
-            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* bg-gray-100 */
         }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .header {
-            text-align: center;
-            color: white;
-            margin-bottom: 50px;
-            animation: fadeInDown 0.8s ease;
-        }
-
-        .header h1 {
-            font-size: 3em;
-            margin-bottom: 15px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .header p {
-            font-size: 1.3em;
-            opacity: 0.95;
-        }
-
-        .team-info {
-            background: rgba(255,255,255,0.15);
-            backdrop-filter: blur(10px);
-            padding: 20px;
-            border-radius: 15px;
-            color: white;
-            margin-bottom: 40px;
-            text-align: center;
-            animation: fadeIn 1s ease;
-        }
-
-        .sprints-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-
-        .sprint-card {
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            animation: fadeInUp 0.8s ease;
-        }
-
-        .sprint-card:nth-child(1) { animation-delay: 0.1s; }
-        .sprint-card:nth-child(2) { animation-delay: 0.2s; }
-        .sprint-card:nth-child(3) { animation-delay: 0.3s; }
-        .sprint-card:nth-child(4) { animation-delay: 0.4s; }
-
-        .sprint-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
-        }
-
-        .sprint-header {
-            padding: 30px;
-            color: white;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .sprint-header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: rgba(255,255,255,0.1);
-            transform: rotate(45deg);
-            transition: all 0.5s ease;
-        }
-
-        .sprint-card:hover .sprint-header::before {
-            left: 100%;
-        }
-
-        .sprint1 .sprint-header { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
-        .sprint2 .sprint-header { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
-        .sprint3 .sprint-header { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
-        .sprint4 .sprint-header { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
-
-        .sprint-number {
-            font-size: 3.5em;
-            font-weight: bold;
-            opacity: 0.3;
-            position: relative;
-        }
-
-        .sprint-title {
-            font-size: 1.8em;
-            margin-top: -20px;
-            position: relative;
-        }
-
-        .sprint-content {
-            padding: 30px;
-        }
-
-        .objective {
-            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            border-left: 4px solid #667eea;
-        }
-
-        .objective h3 {
-            color: #667eea;
-            margin-bottom: 8px;
-            font-size: 1.1em;
-        }
-
-        .objective p {
-            color: #555;
-            line-height: 1.6;
-        }
-
-        .highlights {
-            margin-top: 20px;
-        }
-
-        .highlights h3 {
-            color: #333;
-            margin-bottom: 15px;
-            font-size: 1.2em;
-        }
-
-        .highlight-item {
-            display: flex;
-            align-items: start;
-            margin-bottom: 12px;
-            padding: 10px;
-            background: #f8f9fa;
+        /* Estilo para el snippet de código */
+        pre code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+            padding: 16px;
             border-radius: 8px;
-            transition: all 0.3s ease;
+            background-color: #1F2937; /* bg-gray-800 */
+            color: #E5E7EB; /* text-gray-200 */
+            display: block;
+            overflow-x: auto;
         }
+        pre code .token-comment { color: #6B7280; } /* gray-500 */
+        pre code .token-key { color: #EC4899; } /* pink-500 */
+        pre code .token-string { color: #34D399; } /* emerald-400 */
+        pre code .token-function { color: #60A5FA; } /* blue-400 */
+        pre code .token-number { color: #F59E0B; } /* amber-500 */
 
-        .highlight-item:hover {
-            background: #e9ecef;
-            transform: translateX(5px);
-        }
-
-        .icon {
-            width: 24px;
-            height: 24px;
-            min-width: 24px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            margin-right: 12px;
-            font-size: 0.8em;
-        }
-
-        .highlight-text {
-            color: #444;
-            line-height: 1.5;
-            font-size: 0.95em;
-        }
-
-        .metrics {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .metric-box {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
-
-        .metric-box:hover {
-            transform: scale(1.05);
-        }
-
-        .metric-value {
-            font-size: 2em;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .metric-label {
-            font-size: 0.85em;
-            opacity: 0.9;
-        }
-
-        .activities {
-            margin-top: 25px;
-            padding-top: 20px;
-            border-top: 2px dashed #e0e0e0;
-        }
-
-        .activities h3 {
-            color: #333;
-            margin-bottom: 15px;
-            font-size: 1.1em;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .activity-item {
-            display: flex;
-            align-items: start;
-            margin-bottom: 10px;
-            padding: 8px 10px;
-            background: #fafbfc;
-            border-radius: 6px;
-            border-left: 3px solid #667eea;
-            transition: all 0.3s ease;
-        }
-
-        .activity-item:hover {
-            background: #f0f2f5;
-            transform: translateX(3px);
-        }
-
-        .activity-number {
-            min-width: 22px;
-            height: 22px;
-            background: #667eea;
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.75em;
-            font-weight: bold;
-            margin-right: 10px;
-            margin-top: 2px;
-        }
-
-        .activity-text {
-            color: #555;
-            line-height: 1.5;
-            font-size: 0.9em;
-        }
-
-        .conclusion {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            animation: fadeIn 1.2s ease;
-        }
-
-        .conclusion h2 {
-            color: #667eea;
-            font-size: 2.5em;
-            margin-bottom: 20px;
-        }
-
-        .conclusion p {
-            color: #555;
-            line-height: 1.8;
-            font-size: 1.1em;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2em;
-            }
-
-            .header p {
-                font-size: 1em;
-            }
-
-            .sprint-number {
-                font-size: 2.5em;
-            }
-
-            .sprint-title {
-                font-size: 1.3em;
-            }
-
-            .conclusion h2 {
-                font-size: 1.8em;
-            }
-        }
     </style>
 </head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>🏥 Chatbot Médico Inteligente</h1>
-            <p>Universidad Andina del Cusco - Resumen de Sprints</p>
-        </div>
+<body class="p-4 md:p-8">
 
-        <div class="team-info">
-            <strong>Equipo Choclin Choclito</strong> | Ingeniería de Sistemas | 2025-II
-        </div>
-
-        <div class="sprints-grid">
-            <!-- Sprint 1 -->
-            <div class="sprint-card sprint1">
-                <div class="sprint-header">
-                    <div class="sprint-number">01</div>
-                    <div class="sprint-title">Planificación</div>
-                </div>
-                <div class="sprint-content">
-                    <div class="objective">
-                        <h3>🎯 Objetivo</h3>
-                        <p>Establecer bases organizativas y definir roles del equipo</p>
-                    </div>
-                    
-                    <div class="highlights">
-                        <h3>✨ Logros Clave</h3>
-                        <div class="highlight-item">
-                            <div class="icon">✓</div>
-                            <div class="highlight-text">Plan de trabajo detallado con 4 fases principales</div>
-                        </div>
-                        <div class="highlight-item">
-                            <div class="icon">✓</div>
-                            <div class="highlight-text">Cronograma completo asignado a 4 sprints</div>
-                        </div>
-                        <div class="highlight-item">
-                            <div class="icon">✓</div>
-                            <div class="highlight-text">Roles definidos: Gerente, Scrum Master, Dev y Tester</div>
-                        </div>
-                        <div class="highlight-item">
-                            <div class="icon">✓</div>
-                            <div class="highlight-text">100% de HU completadas (HU01 y HU02)</div>
-                        </div>
-                    </div>
-
-                    <div class="activities">
-                        <h3>📋 Actividades Realizadas</h3>
-                        <div class="activity-item">
-                            <div class="activity-number">1</div>
-                            <div class="activity-text">Identificar las fases principales del proyecto y sus entregables</div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-number">2</div>
-                            <div class="activity-text">Asignar tiempos estimados y dependencias entre tareas</div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-number">3</div>
-                            <div class="activity-text">Validar el cronograma con el equipo y los interesados</div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-number">4</div>
-                            <div class="activity-text">Listar los perfiles requeridos según las tareas del proyecto</div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-number">5</div>
-                            <div class="activity-text">Asignar responsabilidades específicas a cada rol</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Sprint 2 -->
-            <div class="sprint-card sprint2">
-                <div class="sprint-header">
-                    <div class="sprint-number">02</div>
-                    <div class="sprint-title">Diseño Técnico</div>
-                </div>
-                <div class="sprint-content">
-                    <div class="objective">
-                        <h3>🎯 Objetivo</h3>
-                        <p>Seleccionar modelo LLM y diseñar arquitectura del sistema</p>
-                    </div>
-                    
-                    <div class="highlights">
-                        <h3>✨ Decisiones Clave</h3>
-                        <div class="highlight-item">
-                            <div class="icon">🤖</div>
-                            <div class="highlight-text"><strong>Modelo:</strong> LLaMA 3.1 8B Instruct con RAG</div>
-                        </div>
-                        <div class="highlight-item">
-                            <div class="icon">🔒</div>
-                            <div class="highlight-text"><strong>Ejecución:</strong> Local en LM Studio (privacidad total)</div>
-                        </div>
-                        <div class="highlight-item">
-                            <div class="icon">💬</div>
-                            <div class="highlight-text"><strong>Interfaz:</strong> WhatsApp Business API</div>
-                        </div>
-                        <div class="highlight-item">
-                            <div class="icon">🌐</div>
-                            <div class="highlight-text"><strong>Backend:</strong> Node.js + Python + FAISS</div>
-                        </div>
-                    </div>
-
-                    <div class="metrics">
-                        <div class="metric-box">
-                            <div class="metric-value">90%</div>
-                            <div class="metric-label">Claridad</div>
-                        </div>
-                        <div class="metric-box">
-                            <div class="metric-value">95%</div>
-                            <div class="metric-label">Empatía</div>
-                        </div>
-                    </div>
-
-                    <div class="activities">
-                        <h3>📋 Actividades Realizadas</h3>
-                        <div class="activity-item">
-                            <div class="activity-number">1</div>
-                            <div class="activity-text">Analizar distintos modelos LLM disponibles (GPT, LLaMA, Mistral)</div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-number">2</div>
-                            <div class="activity-text">Evaluar rendimiento, costo de equipo y requisitos técnicos</div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-number">3</div>
-                            <div class="activity-text">Seleccionar el modelo y definir infraestructura de despliegue</div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-number">4</div>
-                            <div class="activity-text">Justificar la elección en base a criterios técnicos y éticos</div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-number">5</div>
-                            <div class="activity-text">Definir componentes del sistema y su interacción</div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-number">6</div>
-                            <div class="activity-text">Seleccionar tecnologías y frameworks para frontend y backend</div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-number">7</div>
-                            <div class="activity-text">Elaborar diagramas de arquitectura y flujo de datos</div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-number">8</div>
-                            <div class="activity-text">Revisar escalabilidad, seguridad y mantenibilidad del diseño</div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-number">9</div>
-                            <div class="activity-text">Configurar entorno de prueba en WhatsApp Business API</div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-number">10</div>
-                            <div class="activity-text">Validar la claridad y empatía del lenguaje del chatbot</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Sprint 3 -->
-            <div class="sprint-card sprint3">
-                <div class="sprint-header">
-                    <div class="sprint-number">03</div>
-                    <div class="sprint-title">Desarrollo</div>
-                </div>
-                <div class="sprint-content">
-                    <div class="objective">
-                        <h3>🎯 Objetivo</h3>
-                        <p>Integración completa WhatsApp + LLaMA con RAG</p>
-                    </div>
-                    
-                    <div class="highlights">
-                        <h3>✨ Implementaciones</h3>
-                        <div class="highlight-item">
-                            <div class="icon">✓</div>
-                            <div class="highlight-text">Mensajes abiertos en WhatsApp (UTF-8)</div>
-                        </div>
-                        <div class="highlight-item">
-                            <div class="icon">✓</div>
-                            <div class="highlight-text">Servidor Node.js con puente Python</div>
-                        </div>
-                        <div class="highlight-item">
-                            <div class="icon">✓</div>
-                            <div class="highlight-text">Sistema RAG con FAISS y dataset médico</div>
-                        </div>
-                        <div class="highlight-item">
-                            <div class="icon">✓</div>
-                            <div class="highlight-text">Autenticación con tokens Bearer</div>
-                        </div>
-                    </div>
-
-                    <div class="metrics">
-                        <div class="metric-box">
-                            <div class="metric-value">92%</div>
-                            <div class="metric-label">Claridad</div>
-                        </div>
-                        <div class="metric-box">
-                            <div class="metric-value">87%</div>
-                            <div class="metric-label">Coherencia</div>
-                        </div>
-                        <div class="metric-box">
-                            <div class="metric-value">4.9s</div>
-                            <div class="metric-label">Respuesta</div>
-                        </div>
-                    </div>
-
-                    <div class="activities">
-                        <h3>📋 Actividades Realizadas</h3>
-                        <div class="activity-item">
-                            <div class="activity-number">1</div>
-                            <div class="activity-text">Implementar mensajes estructurados en WhatsApp (texto coherente)</div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-number">2</div>
-                            <div class="activity-text">Asegurar formato breve, claro y clínicamente coherente</div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-number">3</div>
-                            <div class="activity-text">Probar distintos escenarios de conversación para evaluar usabilidad</div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-number">4</div>
-                            <div class="activity-text">Configurar servidor intermediario entre WhatsApp API y LLM Studio</div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-number">5</div>
-                            <div class="activity-text">Crear endpoints que reciban y reenvíen mensajes al modelo</div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-number">6</div>
-                            <div class="activity-text">Gestionar autenticación y tokens de acceso a LLM Studio</div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-number">7</div>
-                            <div class="activity-text">Procesar y adaptar respuestas del modelo al formato WhatsApp</div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-number">8</div>
-                            <div class="activity-text">Cargar dataset médico verificado en LLM Studio</div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-number">9</div>
-                            <div class="activity-text">Ajustar parámetros del modelo (prompts, longitud de respuesta)</div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-number">10</div>
-                            <div class="activity-text">Validar desempeño con preguntas médicas simuladas</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Sprint 4 -->
-            <div class="sprint-card sprint4">
-                <div class="sprint-header">
-                    <div class="sprint-number">04</div>
-                    <div class="sprint-title">Optimización</div>
-                </div>
-                <div class="sprint-content">
-                    <div class="objective">
-                        <h3>🎯 Objetivo</h3>
-                        <p>Seguridad, pruebas multilingües y despliegue final</p>
-                    </div>
-                    
-                    <div class="highlights">
-                        <h3>✨ Mejoras Finales</h3>
-                        <div class="highlight-item">
-                            <div class="icon">🔐</div>
-                            <div class="highlight-text">Gestión segura de credenciales (.env + rotación)</div>
-                        </div>
-                        <div class="highlight-item">
-                            <div class="icon">🌍</div>
-                            <div class="highlight-text">Detección automática de idioma (ES/EN)</div>
-                        </div>
-                        <div class="highlight-item">
-                            <div class="icon">🧪</div>
-                            <div class="highlight-text">20 pruebas de conversación simuladas</div>
-                        </div>
-                        <div class="highlight-item">
-                            <div class="icon">🚀</div>
-                            <div class="highlight-text">Despliegue en servidores UAC</div>
-                        </div>
-                    </div>
-
-                    <div class="metrics">
-                        <div class="metric-box">
-                            <div class="metric-value">88%</div>
-                            <div class="metric-label">Precisión</div>
-                        </div>
-                        <div class="metric-box">
-                            <div class="metric-value">9.4s</div>
-                            <div class="metric-label">Tiempo</div>
-                        </div>
-                        <div class="metric-box">
-                            <div class="metric-value">4.7/5</div>
-                            <div class="metric-label">Satisfacción</div>
-                        </div>
-                    </div>
-
-                    <div class="activities">
-                        <h3>📋 Actividades Realizadas</h3>
-                        <div class="activity-item">
-                            <div class="activity-number">1</div>
-                            <div class="activity-text">Asegurar que las credenciales estén protegidas y rotadas</div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-number">2</div>
-                            <div class="activity-text">Configurar detección automática de idioma en LLM Studio</div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-number">3</div>
-                            <div class="activity-text">Simular conversaciones reales con diferentes tipos de consultas</div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-number">4</div>
-                            <div class="activity-text">Verificar coherencia médica en ambos idiomas</div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-number">5</div>
-                            <div class="activity-text">Realizar pruebas multilingües en WhatsApp</div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-number">6</div>
-                            <div class="activity-text">Evaluar precisión y tono de las respuestas generadas</div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-number">7</div>
-                            <div class="activity-text">Analizar tiempos de respuesta, errores y satisfacción</div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-number">8</div>
-                            <div class="activity-text">Incluir instrucciones para despliegue y mantenimiento</div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-number">9</div>
-                            <div class="activity-text">Optimizar flujo entre API WhatsApp, backend y LLM Studio</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="conclusion">
-            <h2>🎉 Conclusión General</h2>
-            <p>
-                Se desarrolló exitosamente un <strong>chatbot médico inteligente</strong> basado en LLaMA 3.1 8B, 
-                integrado con WhatsApp Business API en un entorno local seguro y ético. El sistema logró 
-                respuestas empáticas, coherentes y precisas con <strong>88% de precisión semántica</strong>, 
-                <strong>9 segundos de respuesta promedio</strong> y <strong>4.7/5 en satisfacción</strong>, 
-                enfocado en consultas generales sin sustituir atención profesional.
+    <main class="max-w-7xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden">
+        
+        <!-- CABECERA -->
+        <header class="p-8 md:p-12 bg-gray-900 text-white">
+            <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-3">
+                Comparativa de Modelos de Traducción
+            </h1>
+            <p class="text-lg md:text-xl text-gray-300">
+                Análisis de Hallazgos: RNN Simple vs. LSTM vs. GRU vs. Transformer
             </p>
-        </div>
-    </div>
+        </header>
+
+        <!-- SECCIÓN 1: OBJETIVO Y CORPUS -->
+        <section class="p-8 md:p-12">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">1. Objetivo y Corpus</h2>
+            <p class="text-gray-600 mb-8 max-w-4xl">
+                El objetivo fue implementar, entrenar y comparar cuatro arquitecturas de traducción automática neuronal (NMT) para el par lingüístico Español-Inglés. Se utilizó un pipeline de datos homogéneo para evaluar el rendimiento de cada modelo bajo las mismas condiciones experimentales.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
+                <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                    <h3 class="text-lg font-semibold text-blue-800">Corpus Base</h3>
+                    <p class="text-2xl font-bold text-blue-600">Tatoeba</p>
+                    <p class="text-sm text-blue-500">(vía OPUS)</p>
+                </div>
+                <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                    <h3 class="text-lg font-semibold text-blue-800">Muestreo Inicial</h3>
+                    <p class="text-2xl font-bold text-blue-600">50,000</p>
+                    <p class="text-sm text-blue-500">Pares de oraciones</p>
+                </div>
+                <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                    <h3 class="text-lg font-semibold text-blue-800">Datos Finales</h3>
+                    <p class="text-2xl font-bold text-blue-600">~46,104</p>
+                    <p class="text-sm text-blue-500">Pares (post-limpieza)</p>
+                </div>
+                <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                    <h3 class="text-lg font-semibold text-blue-800">Tokenización</h3>
+                    <p class="text-2xl font-bold text-blue-600">SentencePiece</p>
+                    <p class="text-sm text-blue-500">(BPE, 16k-32k tokens)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: RESUMEN DE MODELOS (TARJETAS) -->
+        <section class="p-8 md:p-12 bg-gray-50 border-y border-gray-200">
+            <h2 class="text-2xl font-bold text-gray-800 mb-8">2. Resumen Cuantitativo por Modelo</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                
+                <!-- Tarjeta 1: RNN Simple -->
+                <div class="border border-gray-200 rounded-2xl p-6 bg-white shadow-lg transition-transform hover:scale-105">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">RNN Simple</h3>
+                    <div class="mb-5">
+                        <span class="text-5xl font-extrabold text-red-600">17.4</span>
+                        <span class="text-lg font-medium text-gray-500 ml-1">BLEU</span>
+                    </div>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex items-center text-gray-700"><strong>Tiempo:</strong><span class="ml-auto font-mono">~15 min</span></div>
+                        <div class="flex items-center text-gray-700"><strong>Parámetros:</strong><span class="ml-auto font-mono">~12.6 M</span></div>
+                        <div class="flex items-center text-gray-700"><strong>Pérdida (Val):</strong><span class="ml-auto font-mono">N/A</span></div>
+                        <div class="flex items-center text-gray-700"><strong>Arq. Clave:</strong><span class="ml-auto font-mono">SimpleRNN</span></div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 2: LSTM -->
+                <div class="border border-gray-200 rounded-2xl p-6 bg-white shadow-lg transition-transform hover:scale-105">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">LSTM</h3>
+                    <div class="mb-5">
+                        <span class="text-5xl font-extrabold text-yellow-600">25.7</span>
+                        <span class="text-lg font-medium text-gray-500 ml-1">BLEU</span>
+                    </div>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex items-center text-gray-700"><strong>Tiempo:</strong><span class="ml-auto font-mono">~28.5 min</span></div>
+                        <div class="flex items-center text-gray-700"><strong>Parámetros:</strong><span class="ml-auto font-mono">~51.7 M</span></div>
+                        <div class="flex items-center text-gray-700"><strong>Pérdida (Val):</strong><span class="ml-auto font-mono">~3.69</span></div>
+                        <div class="flex items-center text-gray-700"><strong>Arq. Clave:</strong><span class="ml-auto font-mono">BiLSTM + Atención</span></div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 3: GRU -->
+                <div class="border border-gray-200 rounded-2xl p-6 bg-white shadow-lg transition-transform hover:scale-105 relative">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">GRU</h3>
+                    <div class="mb-5">
+                        <span class="text-5xl font-extrabold text-blue-600">40.8</span>
+                        <span class="text-lg font-medium text-gray-500 ml-1">BLEU</span>
+                    </div>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex items-center text-gray-700"><strong>Tiempo:</strong><span class="ml-auto font-mono">~116.5 min</span></div>
+                        <div class="flex items-center text-gray-700"><strong>Parámetros:</strong><span class="ml-auto font-mono">~22.0 M</span></div>
+                        <div class="flex items-center text-gray-700"><strong>Pérdida (Val):</strong><span class="ml-auto font-mono">~1.87</span></div>
+                        <div class="flex items-center text-gray-700"><strong>Arq. Clave:</strong><span class="ml-auto font-mono">BiGRU + Atención (Vect.)</span></div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 4: Transformer -->
+                <div class="border border-gray-200 rounded-2xl p-6 bg-white shadow-lg transition-transform hover:scale-105">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Transformer</h3>
+                    <div class="mb-5">
+                        <span class="text-5xl font-extrabold text-green-600">53.2</span>
+                        <span class="text-lg font-medium text-gray-500 ml-1">BLEU</span>
+                    </div>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex items-center text-gray-700"><strong>Tiempo:</strong><span class="ml-auto font-mono">~501.6 min</span></div>
+                        <div class="flex items-center text-gray-700"><strong>Parámetros:</strong><span class="ml-auto font-mono">~19.7 M</span></div>
+                        <div class="flex items-center text-gray-700"><strong>Pérdida (Val):</strong><span class="ml-auto font-mono">~6.65</span></div>
+                        <div class="flex items-center text-gray-700"><strong>Arq. Clave:</strong><span class="ml-auto font-mono">Multi-Head Attention</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: COMPARATIVA DE CALIDAD (BLEU) -->
+        <section class="p-8 md:p-12">
+            <h2 class="text-2xl font-bold text-gray-800 mb-8">3. Comparativa de Calidad (Puntuación BLEU)</h2>
+            <div class="space-y-5">
+                <!-- Transformer -->
+                <div class="flex items-center">
+                    <span class="w-28 text-sm font-medium text-gray-600">Transformer</span>
+                    <div class="flex-1 h-10 bg-green-500 rounded-r-lg" style="width: 100%;"></div>
+                    <span class="w-16 text-right text-base font-bold text-green-600">53.22</span>
+                </div>
+                <!-- GRU -->
+                <div class="flex items-center">
+                    <span class="w-28 text-sm font-medium text-gray-600">GRU</span>
+                    <div class="flex-1 h-10 bg-blue-500 rounded-r-lg" style="width: 76.7%;"></div>
+                    <span class="w-16 text-right text-base font-bold text-blue-600">40.78</span>
+                </div>
+                <!-- LSTM -->
+                <div class="flex items-center">
+                    <span class="w-28 text-sm font-medium text-gray-600">LSTM</span>
+                    <div class="flex-1 h-10 bg-yellow-500 rounded-r-lg" style="width: 48.3%;"></div>
+                    <span class="w-16 text-right text-base font-bold text-yellow-600">25.66</span>
+                </div>
+                <!-- RNN Simple -->
+                <div class="flex items-center">
+                    <span class="w-28 text-sm font-medium text-gray-600">RNN Simple</span>
+                    <div class="flex-1 h-10 bg-red-500 rounded-r-lg" style="width: 32.7%;"></div>
+                    <span class="w-16 text-right text-base font-bold text-red-600">17.40</span>
+                </div>
+            </div>
+        </section>
+        
+        <!-- SECCIÓN 4: COMPARATIVA DE EFICIENCIA (TIEMPO Y PARÁMETROS) -->
+        <section class="p-8 md:p-12 bg-gray-50 border-y border-gray-200">
+            <h2 class="text-2xl font-bold text-gray-800 mb-8">4. Comparativa de Eficiencia (Costo Computacional)</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Gráfico de Tiempo -->
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-700 mb-5">Tiempo Total de Entrenamiento (6 Épocas)</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center"><span class="w-28 text-sm text-gray-600">Transformer</span><div class="flex-1 h-8 bg-red-500 rounded-r-lg" style="width: 100%;"></div><span class="w-24 text-right text-sm font-bold text-red-600">~8.4 horas</span></div>
+                        <div class="flex items-center"><span class="w-28 text-sm text-gray-600">GRU</span><div class="flex-1 h-8 bg-yellow-500 rounded-r-lg" style="width: 23.2%;"></div><span class="w-24 text-right text-sm font-bold text-yellow-600">~1.9 horas</span></div>
+                        <div class="flex items-center"><span class="w-28 text-sm text-gray-600">LSTM</span><div class="flex-1 h-8 bg-green-500 rounded-r-lg" style="width: 5.7%;"></div><span class="w-24 text-right text-sm font-bold text-green-600">~28.5 min</span></div>
+                        <div class="flex items-center"><span class="w-28 text-sm text-gray-600">RNN Simple</span><div class="flex-1 h-8 bg-green-500 rounded-r-lg" style="width: 3%;"></div><span class="w-24 text-right text-sm font-bold text-green-600">~15.0 min</span></div>
+                    </div>
+                </div>
+                <!-- Gráfico de Parámetros -->
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-700 mb-5">Tamaño del Modelo (Parámetros)</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center"><span class="w-28 text-sm text-gray-600">LSTM</span><div class="flex-1 h-8 bg-red-500 rounded-r-lg" style="width: 100%;"></div><span class="w-24 text-right text-sm font-bold text-red-600">51.7 M</span></div>
+                        <div class="flex items-center"><span class="w-28 text-sm text-gray-600">GRU</span><div class="flex-1 h-8 bg-yellow-500 rounded-r-lg" style="width: 42.5%;"></div><span class="w-24 text-right text-sm font-bold text-yellow-600">22.0 M</span></div>
+                        <div class="flex items-center"><span class="w-28 text-sm text-gray-600">Transformer</span><div class="flex-1 h-8 bg-green-500 rounded-r-lg" style="width: 38.1%;"></div><span class="w-24 text-right text-sm font-bold text-green-600">19.7 M</span></div>
+                        <div class="flex items-center"><span class="w-28 text-sm text-gray-600">RNN Simple</span><div class="flex-1 h-8 bg-green-500 rounded-r-lg" style="width: 24.4%;"></div><span class="w-24 text-right text-sm font-bold text-green-600">12.6 M</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: ANÁLISIS CUALITATIVO (EJEMPLOS) -->
+        <section class="p-8 md:p-12">
+            <h2 class="text-2xl font-bold text-gray-800 mb-8">5. Análisis Cualitativo (Ejemplos de Traducción)</h2>
+            <div class="space-y-6">
+                <!-- Ejemplo LSTM -->
+                <div class="border rounded-lg overflow-hidden">
+                    <div class="p-4 bg-gray-50 border-b">
+                        <p class="font-mono text-gray-700"><strong class="text-gray-900">ES:</strong> "Voy a pegarle un tiro."</p>
+                    </div>
+                    <div class="p-4">
+                        <strong class="text-yellow-600">LSTM:</strong>
+                        <span class="font-mono text-gray-800">"i am going to give him."</span>
+                        <span class="ml-2 inline-block bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">Error Semántico Grave</span>
+                    </div>
+                </div>
+                <!-- Ejemplo GRU -->
+                <div class="border rounded-lg overflow-hidden">
+                    <div class="p-4 bg-gray-50 border-b">
+                        <p class="font-mono text-gray-700"><strong class="text-gray-900">ES:</strong> "mi perro tiene un sombrero"</p>
+                    </div>
+                    <div class="p-4">
+                        <strong class="text-blue-600">GRU:</strong>
+                        <span class="font-mono text-gray-800">"my dog has a locker."</span>
+                        <span class="ml-2 inline-block bg-yellow-100 text-yellow-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">Error (Alucinación)</span>
+                    </div>
+                </div>
+                <!-- Ejemplo Transformer -->
+                <div class="border rounded-lg overflow-hidden">
+                    <div class="p-4 bg-gray-50 border-b">
+                        <p class="font-mono text-gray-700"><strong class="text-gray-900">ES:</strong> "dicen que soy una anciana."</Gg>
+                    </div>
+                    <div class="p-4">
+                        <strong class="text-green-600">Transformer:</strong>
+                        <span class="font-mono text-gray-800">"they say i'm an old woman."</span>
+                        <span class="ml-2 inline-block bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">Traducción Perfecta</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 6: ARQUITECTURA Y CÓDIGO (NUEVO) -->
+        <section class="p-8 md:p-12 bg-gray-50 border-t border-gray-200">
+            <h2 class="text-2xl font-bold text-gray-800 mb-8">6. Arquitectura y Pipeline de Datos</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4">Pipeline de Datos: Tokenización (BPE)</h3>
+                    <p class="text-gray-600 mb-4 text-sm">
+                        Se usó <strong class="text-gray-900">SentencePiece (BPE)</strong> en lugar de tokenización por palabras. Esto permite al modelo manejar palabras desconocidas (OOV) dividiéndolas en sub-unidades conocidas, mejorando la robustez.
+                    </p>
+                    <pre><code><span class="token-comment"># Fragmento de código de entrenamiento del tokenizador (p. 29)</span>
+<span class="token-function">spm.SentencePieceTrainer.Train(</span>
+    <span class="token-string">f"--input={train_src} "</span>
+    <span class="token-string">f"--model_prefix=sp_src "</span>
+    <span class="token-string">f"--vocab_size={VOCAB_SIZE} "</span>
+    <span class="token-string">f"--character_coverage=1.0 "</span>
+    <span class="token-string">f"--model_type=bpe"</span>
+<span class="token-function">)</span></code></pre>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4">Diferencia Arquitectónica Clave</h3>
+                    <p class="text-gray-600 mb-4 text-sm">
+                        <strong class="text-red-600">RNN/LSTM:</strong> Procesan tokens secuencialmente. La información del inicio de la oración debe viajar a través de cada paso hasta el final, causando "desvanecimiento de gradiente".
+                    </p>
+                    <p class="text-gray-600 mb-4 text-sm">
+                        <strong class="text-green-600">GRU/Transformer:</strong> Usan mecanismos de <strong class="text-gray-900">Atención</strong>. Esto permite al decodificador "mirar" directamente a cualquier parte de la oración de entrada en cualquier momento, resolviendo el cuello de botella secuencial y mejorando drásticamente la traducción de dependencias largas.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONCLUSIONES -->
+        <footer class="p-8 md:p-12 bg-gray-900 text-white">
+            <h2 class="text-2xl font-bold mb-6">Conclusiones Clave</h2>
+            <ul class="space-y-4">
+                <li class="flex items-start">
+                    <svg class="w-6 h-6 text-green-400 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                    <p><strong class="text-white">Mejor Calidad:</strong> El <strong class="text-green-400">Transformer (BLEU 53.2)</strong> es superior, demostrando la efectividad de la arquitectura de auto-atención.</p>
+                </li>
+                 <li class="flex items-start">
+                    <svg class="w-6 h-6 text-blue-400 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                    <p><strong class="text-white">Mejor Balance:</strong> El <strong class="text-blue-400">GRU (BLEU 40.8)</strong> ofrece un salto de calidad masivo sobre LSTM, con menos de la mitad de parámetros (22M vs 51.7M).</p>
+                </li>
+                <li class="flex items-start">
+                    <svg class="w-6 h-6 text-yellow-400 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                    <p><strong class="text-white">Ineficiencia de LSTM:</strong> El modelo <strong class="text-yellow-400">LSTM</strong> fue el más grande (51.7M) pero obtuvo el segundo peor BLEU (25.7), mostrando una clara ineficiencia.</p>
+                </li>
+                 <li class="flex items-start">
+                    <svg class="w-6 h-6 text-red-400 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                    <p><strong class="text-white">Costo vs. Calidad:</strong> El <strong class="text-red-400">Transformer</strong> tiene el mayor costo de entrenamiento (~8.4h), pero es el único que logra traducciones de alta fluidez, y es más ligero en parámetros que LSTM.</p>
+                </li>
+            </ul>
+        </footer>
+
+    </main>
+
 </body>
 </html>
