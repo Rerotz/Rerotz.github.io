@@ -3,298 +3,471 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comparativa de Modelos de Traducción</title>
-    <!-- Carga de Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Infografía: Asistente de Codificación con LLM</title>
     <style>
-        /* Fuente Inter (similar a la usada en muchos dashboards) */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6; /* bg-gray-100 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        /* Estilo para el snippet de código */
-        pre code {
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 13px;
-            padding: 16px;
-            border-radius: 8px;
-            background-color: #1F2937; /* bg-gray-800 */
-            color: #E5E7EB; /* text-gray-200 */
-            display: block;
-            overflow-x: auto;
-        }
-        pre code .token-comment { color: #6B7280; } /* gray-500 */
-        pre code .token-key { color: #EC4899; } /* pink-500 */
-        pre code .token-string { color: #34D399; } /* emerald-400 */
-        pre code .token-function { color: #60A5FA; } /* blue-400 */
-        pre code .token-number { color: #F59E0B; } /* amber-500 */
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e1e1e 0%, #2d2d2d 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.9;
+        }
+
+        .section {
+            padding: 50px 40px;
+            border-bottom: 3px solid #f0f0f0;
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 2.2em;
+            color: #667eea;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .icon {
+            font-size: 1.2em;
+        }
+
+        .architecture {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .component {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            transition: transform 0.3s;
+        }
+
+        .component:hover {
+            transform: translateY(-10px);
+        }
+
+        .component h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .component ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .component li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .component li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #ffd700;
+        }
+
+        .flow-diagram {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+            transition: all 0.3s;
+        }
+
+        .flow-step:hover {
+            background: #e9ecef;
+            transform: translateX(10px);
+        }
+
+        .flow-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .flow-content {
+            flex: 1;
+        }
+
+        .flow-content h3 {
+            color: #667eea;
+            margin-bottom: 8px;
+            font-size: 1.3em;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .feature-card {
+            background: white;
+            border: 2px solid #667eea;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            transform: scale(1.05);
+        }
+
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .feature-card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.4em;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: center;
+        }
+
+        .tech-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s;
+        }
+
+        .tech-badge:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        .languages-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .language-tag {
+            background: #f8f9fa;
+            padding: 15px 30px;
+            border-radius: 10px;
+            border: 2px solid #667eea;
+            font-weight: 600;
+            color: #667eea;
+            transition: all 0.3s;
+        }
+
+        .language-tag:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .footer {
+            background: #1e1e1e;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .code-snippet {
+            background: #1e1e1e;
+            color: #61afef;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .section {
+                padding: 30px 20px;
+            }
+
+            .section-title {
+                font-size: 1.8em;
+            }
+        }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 Asistente de Codificación con LLM</h1>
+            <p>Sistema para la Detección y Corrección Automática de Errores de Código en lenguaje Python</p>
+        </div>
 
-    <main class="max-w-7xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden">
-        
-        <!-- CABECERA -->
-        <header class="p-8 md:p-12 bg-gray-900 text-white">
-            <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-3">
-                Comparativa de Modelos de Traducción
-            </h1>
-            <p class="text-lg md:text-xl text-gray-300">
-                Análisis de Hallazgos: RNN Simple vs. LSTM vs. GRU vs. Transformer
+        <div class="section">
+            <h2 class="section-title"><span class="icon">🎯</span>¿Qué es este proyecto?</h2>
+            <p style="font-size: 1.2em; color: #555;">
+                Un asistente de codificación impulsado por IA que utiliza el modelo <strong>Llama 3.1 (8B)</strong> para analizar, 
+                corregir errores y refactorizar código en múltiples lenguajes de programación. Ofrece una interfaz web estilo IDE 
+                con diseño inspirado en VS Code.
             </p>
-        </header>
+        </div>
 
-        <!-- SECCIÓN 1: OBJETIVO Y CORPUS -->
-        <section class="p-8 md:p-12">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6">1. Objetivo y Corpus</h2>
-            <p class="text-gray-600 mb-8 max-w-4xl">
-                El objetivo fue implementar, entrenar y comparar cuatro arquitecturas de traducción automática neuronal (NMT) para el par lingüístico Español-Inglés. Se utilizó un pipeline de datos homogéneo para evaluar el rendimiento de cada modelo bajo las mismas condiciones experimentales.
-            </p>
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
-                <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
-                    <h3 class="text-lg font-semibold text-blue-800">Corpus Base</h3>
-                    <p class="text-2xl font-bold text-blue-600">Tatoeba</p>
-                    <p class="text-sm text-blue-500">(vía OPUS)</p>
+        <div class="section">
+            <h2 class="section-title"><span class="icon">🏗️</span>Arquitectura del Sistema</h2>
+            <div class="architecture">
+                <div class="component">
+                    <h3>🌐 Frontend</h3>
+                    <ul>
+                        <li>HTML5 + CSS3</li>
+                        <li>JavaScript Vanilla</li>
+                        <li>Highlight.js</li>
+                        <li>Diseño tipo IDE</li>
+                        <li>Tema oscuro VS Code</li>
+                    </ul>
                 </div>
-                <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
-                    <h3 class="text-lg font-semibold text-blue-800">Muestreo Inicial</h3>
-                    <p class="text-2xl font-bold text-blue-600">50,000</p>
-                    <p class="text-sm text-blue-500">Pares de oraciones</p>
+                <div class="component">
+                    <h3>⚙️ Backend</h3>
+                    <ul>
+                        <li>Flask (Python)</li>
+                        <li>API REST</li>
+                        <li>Procesamiento LLM</li>
+                        <li>Gestión de prompts</li>
+                    </ul>
                 </div>
-                <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
-                    <h3 class="text-lg font-semibold text-blue-800">Datos Finales</h3>
-                    <p class="text-2xl font-bold text-blue-600">~46,104</p>
-                    <p class="text-sm text-blue-500">Pares (post-limpieza)</p>
-                </div>
-                <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
-                    <h3 class="text-lg font-semibold text-blue-800">Tokenización</h3>
-                    <p class="text-2xl font-bold text-blue-600">SentencePiece</p>
-                    <p class="text-sm text-blue-500">(BPE, 16k-32k tokens)</p>
+                <div class="component">
+                    <h3>🧠 Motor IA</h3>
+                    <ul>
+                        <li>Llama 3.1 (8B)</li>
+                        <li>Servidor local (LM Studio)</li>
+                        <li>Temperature: 0.3</li>
+                        <li>Max tokens: 2048</li>
+                    </ul>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- SECCIÓN 2: RESUMEN DE MODELOS (TARJETAS) -->
-        <section class="p-8 md:p-12 bg-gray-50 border-y border-gray-200">
-            <h2 class="text-2xl font-bold text-gray-800 mb-8">2. Resumen Cuantitativo por Modelo</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                
-                <!-- Tarjeta 1: RNN Simple -->
-                <div class="border border-gray-200 rounded-2xl p-6 bg-white shadow-lg transition-transform hover:scale-105">
-                    <h3 class="text-xl font-bold text-gray-800 mb-4">RNN Simple</h3>
-                    <div class="mb-5">
-                        <span class="text-5xl font-extrabold text-red-600">17.4</span>
-                        <span class="text-lg font-medium text-gray-500 ml-1">BLEU</span>
-                    </div>
-                    <div class="space-y-3 text-sm">
-                        <div class="flex items-center text-gray-700"><strong>Tiempo:</strong><span class="ml-auto font-mono">~15 min</span></div>
-                        <div class="flex items-center text-gray-700"><strong>Parámetros:</strong><span class="ml-auto font-mono">~12.6 M</span></div>
-                        <div class="flex items-center text-gray-700"><strong>Pérdida (Val):</strong><span class="ml-auto font-mono">N/A</span></div>
-                        <div class="flex items-center text-gray-700"><strong>Arq. Clave:</strong><span class="ml-auto font-mono">SimpleRNN</span></div>
+        <div class="section">
+            <h2 class="section-title"><span class="icon">🔄</span>Flujo de Trabajo</h2>
+            <div class="flow-diagram">
+                <div class="flow-step">
+                    <div class="flow-number">1</div>
+                    <div class="flow-content">
+                        <h3>Entrada de Código</h3>
+                        <p>El usuario pega su código en el editor y selecciona el lenguaje de programación</p>
                     </div>
                 </div>
-
-                <!-- Tarjeta 2: LSTM -->
-                <div class="border border-gray-200 rounded-2xl p-6 bg-white shadow-lg transition-transform hover:scale-105">
-                    <h3 class="text-xl font-bold text-gray-800 mb-4">LSTM</h3>
-                    <div class="mb-5">
-                        <span class="text-5xl font-extrabold text-yellow-600">25.7</span>
-                        <span class="text-lg font-medium text-gray-500 ml-1">BLEU</span>
-                    </div>
-                    <div class="space-y-3 text-sm">
-                        <div class="flex items-center text-gray-700"><strong>Tiempo:</strong><span class="ml-auto font-mono">~28.5 min</span></div>
-                        <div class="flex items-center text-gray-700"><strong>Parámetros:</strong><span class="ml-auto font-mono">~51.7 M</span></div>
-                        <div class="flex items-center text-gray-700"><strong>Pérdida (Val):</strong><span class="ml-auto font-mono">~3.69</span></div>
-                        <div class="flex items-center text-gray-700"><strong>Arq. Clave:</strong><span class="ml-auto font-mono">BiLSTM + Atención</span></div>
+                <div class="flow-step">
+                    <div class="flow-number">2</div>
+                    <div class="flow-content">
+                        <h3>Envío al Backend</h3>
+                        <p>La aplicación envía el código y metadatos a través de una petición POST al endpoint /process</p>
                     </div>
                 </div>
-
-                <!-- Tarjeta 3: GRU -->
-                <div class="border border-gray-200 rounded-2xl p-6 bg-white shadow-lg transition-transform hover:scale-105 relative">
-                    <h3 class="text-xl font-bold text-gray-800 mb-4">GRU</h3>
-                    <div class="mb-5">
-                        <span class="text-5xl font-extrabold text-blue-600">40.8</span>
-                        <span class="text-lg font-medium text-gray-500 ml-1">BLEU</span>
-                    </div>
-                    <div class="space-y-3 text-sm">
-                        <div class="flex items-center text-gray-700"><strong>Tiempo:</strong><span class="ml-auto font-mono">~116.5 min</span></div>
-                        <div class="flex items-center text-gray-700"><strong>Parámetros:</strong><span class="ml-auto font-mono">~22.0 M</span></div>
-                        <div class="flex items-center text-gray-700"><strong>Pérdida (Val):</strong><span class="ml-auto font-mono">~1.87</span></div>
-                        <div class="flex items-center text-gray-700"><strong>Arq. Clave:</strong><span class="ml-auto font-mono">BiGRU + Atención (Vect.)</span></div>
+                <div class="flow-step">
+                    <div class="flow-number">3</div>
+                    <div class="flow-content">
+                        <h3>Procesamiento LLM</h3>
+                        <p>El backend construye un prompt contextual y lo envía al modelo Llama 3.1 para análisis</p>
                     </div>
                 </div>
-
-                <!-- Tarjeta 4: Transformer -->
-                <div class="border border-gray-200 rounded-2xl p-6 bg-white shadow-lg transition-transform hover:scale-105">
-                    <h3 class="text-xl font-bold text-gray-800 mb-4">Transformer</h3>
-                    <div class="mb-5">
-                        <span class="text-5xl font-extrabold text-green-600">53.2</span>
-                        <span class="text-lg font-medium text-gray-500 ml-1">BLEU</span>
+                <div class="flow-step">
+                    <div class="flow-number">4</div>
+                    <div class="flow-content">
+                        <h3>Análisis y Corrección</h3>
+                        <p>El modelo analiza el código, detecta errores y genera código optimizado/corregido</p>
                     </div>
-                    <div class="space-y-3 text-sm">
-                        <div class="flex items-center text-gray-700"><strong>Tiempo:</strong><span class="ml-auto font-mono">~501.6 min</span></div>
-                        <div class="flex items-center text-gray-700"><strong>Parámetros:</strong><span class="ml-auto font-mono">~19.7 M</span></div>
-                        <div class="flex items-center text-gray-700"><strong>Pérdida (Val):</strong><span class="ml-auto font-mono">~6.65</span></div>
-                        <div class="flex items-center text-gray-700"><strong>Arq. Clave:</strong><span class="ml-auto font-mono">Multi-Head Attention</span></div>
+                </div>
+                <div class="flow-step">
+                    <div class="flow-number">5</div>
+                    <div class="flow-content">
+                        <h3>Renderizado con Sintaxis</h3>
+                        <p>El frontend aplica resaltado de sintaxis con Highlight.js y muestra los cambios realizados</p>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- SECCIÓN 3: COMPARATIVA DE CALIDAD (BLEU) -->
-        <section class="p-8 md:p-12">
-            <h2 class="text-2xl font-bold text-gray-800 mb-8">3. Comparativa de Calidad (Puntuación BLEU)</h2>
-            <div class="space-y-5">
-                <!-- Transformer -->
-                <div class="flex items-center">
-                    <span class="w-28 text-sm font-medium text-gray-600">Transformer</span>
-                    <div class="flex-1 h-10 bg-green-500 rounded-r-lg" style="width: 100%;"></div>
-                    <span class="w-16 text-right text-base font-bold text-green-600">53.22</span>
+        <div class="section">
+            <h2 class="section-title"><span class="icon">✨</span>Características Principales</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>Análisis de Código</h3>
+                    <p>Detección automática de errores sintácticos y typos comunes</p>
                 </div>
-                <!-- GRU -->
-                <div class="flex items-center">
-                    <span class="w-28 text-sm font-medium text-gray-600">GRU</span>
-                    <div class="flex-1 h-10 bg-blue-500 rounded-r-lg" style="width: 76.7%;"></div>
-                    <span class="w-16 text-right text-base font-bold text-blue-600">40.78</span>
+                <div class="feature-card">
+                    <div class="feature-icon">🔧</div>
+                    <h3>Corrección Inteligente</h3>
+                    <p>Sugerencias de corrección sin modificar la lógica del código</p>
                 </div>
-                <!-- LSTM -->
-                <div class="flex items-center">
-                    <span class="w-28 text-sm font-medium text-gray-600">LSTM</span>
-                    <div class="flex-1 h-10 bg-yellow-500 rounded-r-lg" style="width: 48.3%;"></div>
-                    <span class="w-16 text-right text-base font-bold text-yellow-600">25.66</span>
+                <div class="feature-card">
+                    <div class="feature-icon">♻️</div>
+                    <h3>Refactorización</h3>
+                    <p>Optimización de código Python para mejor legibilidad y eficiencia</p>
                 </div>
-                <!-- RNN Simple -->
-                <div class="flex items-center">
-                    <span class="w-28 text-sm font-medium text-gray-600">RNN Simple</span>
-                    <div class="flex-1 h-10 bg-red-500 rounded-r-lg" style="width: 32.7%;"></div>
-                    <span class="w-16 text-right text-base font-bold text-red-600">17.40</span>
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Interfaz IDE</h3>
+                    <p>Diseño inspirado en VS Code con tema oscuro profesional</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌈</div>
+                    <h3>Resaltado de Sintaxis</h3>
+                    <p>Visualización colorizada del código con Highlight.js</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📝</div>
+                    <h3>Registro de Cambios</h3>
+                    <p>Documentación automática de todas las modificaciones realizadas</p>
                 </div>
             </div>
-        </section>
-        
-        <!-- SECCIÓN 4: COMPARATIVA DE EFICIENCIA (TIEMPO Y PARÁMETROS) -->
-        <section class="p-8 md:p-12 bg-gray-50 border-y border-gray-200">
-            <h2 class="text-2xl font-bold text-gray-800 mb-8">4. Comparativa de Eficiencia (Costo Computacional)</h2>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                <!-- Gráfico de Tiempo -->
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-700 mb-5">Tiempo Total de Entrenamiento (6 Épocas)</h3>
-                    <div class="space-y-4">
-                        <div class="flex items-center"><span class="w-28 text-sm text-gray-600">Transformer</span><div class="flex-1 h-8 bg-red-500 rounded-r-lg" style="width: 100%;"></div><span class="w-24 text-right text-sm font-bold text-red-600">~8.4 horas</span></div>
-                        <div class="flex items-center"><span class="w-28 text-sm text-gray-600">GRU</span><div class="flex-1 h-8 bg-yellow-500 rounded-r-lg" style="width: 23.2%;"></div><span class="w-24 text-right text-sm font-bold text-yellow-600">~1.9 horas</span></div>
-                        <div class="flex items-center"><span class="w-28 text-sm text-gray-600">LSTM</span><div class="flex-1 h-8 bg-green-500 rounded-r-lg" style="width: 5.7%;"></div><span class="w-24 text-right text-sm font-bold text-green-600">~28.5 min</span></div>
-                        <div class="flex items-center"><span class="w-28 text-sm text-gray-600">RNN Simple</span><div class="flex-1 h-8 bg-green-500 rounded-r-lg" style="width: 3%;"></div><span class="w-24 text-right text-sm font-bold text-green-600">~15.0 min</span></div>
-                    </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title"><span class="icon">💻</span>Lenguajes Soportados</h2>
+            <div class="languages-list">
+                <div class="language-tag">🐍 Python</div>
+                <div class="language-tag">📜 JavaScript</div>
+                <div class="language-tag">☕ Java</div>
+                <div class="language-tag">⚡ C++</div>
+                <div class="language-tag">💎 C#</div>
+                <div class="language-tag">💎 Ruby</div>
+                <div class="language-tag">🔷 Go</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title"><span class="icon">🛠️</span>Stack Tecnológico</h2>
+            <div class="tech-stack">
+                <div class="tech-badge">Python 3.x</div>
+                <div class="tech-badge">Flask</div>
+                <div class="tech-badge">Llama 3.1 (8B)</div>
+                <div class="tech-badge">HTML5</div>
+                <div class="tech-badge">CSS3</div>
+                <div class="tech-badge">JavaScript ES6+</div>
+                <div class="tech-badge">Highlight.js</div>
+                <div class="tech-badge">REST API</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title"><span class="icon">🚀</span>Instalación y Uso</h2>
+            <div class="code-snippet">
+# 1. Clonar el repositorio
+git clone [tu-repositorio]
+
+# 2. Instalar dependencias
+pip install flask requests
+
+# 3. Configurar LM Studio con Llama 3.1
+# Asegúrate de que el servidor esté corriendo en:
+# http://172.20.10.2:1234/v1/chat/completions
+
+# 4. Ejecutar la aplicación
+python app.py
+
+# 5. Abrir en el navegador
+# http://127.0.0.1:5000/
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title"><span class="icon">⚙️</span>Configuración del LLM</h2>
+            <p style="font-size: 1.1em; margin-bottom: 20px;">El sistema utiliza los siguientes parámetros para el modelo:</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>Modelo</h3>
+                    <p><strong>meta-llama-3.1-8b-instruct</strong></p>
                 </div>
-                <!-- Gráfico de Parámetros -->
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-700 mb-5">Tamaño del Modelo (Parámetros)</h3>
-                    <div class="space-y-4">
-                        <div class="flex items-center"><span class="w-28 text-sm text-gray-600">LSTM</span><div class="flex-1 h-8 bg-red-500 rounded-r-lg" style="width: 100%;"></div><span class="w-24 text-right text-sm font-bold text-red-600">51.7 M</span></div>
-                        <div class="flex items-center"><span class="w-28 text-sm text-gray-600">GRU</span><div class="flex-1 h-8 bg-yellow-500 rounded-r-lg" style="width: 42.5%;"></div><span class="w-24 text-right text-sm font-bold text-yellow-600">22.0 M</span></div>
-                        <div class="flex items-center"><span class="w-28 text-sm text-gray-600">Transformer</span><div class="flex-1 h-8 bg-green-500 rounded-r-lg" style="width: 38.1%;"></div><span class="w-24 text-right text-sm font-bold text-green-600">19.7 M</span></div>
-                        <div class="flex items-center"><span class="w-28 text-sm text-gray-600">RNN Simple</span><div class="flex-1 h-8 bg-green-500 rounded-r-lg" style="width: 24.4%;"></div><span class="w-24 text-right text-sm font-bold text-green-600">12.6 M</span></div>
-                    </div>
+                <div class="feature-card">
+                    <h3>Temperature</h3>
+                    <p><strong>0.3</strong> (respuestas consistentes)</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Max Tokens</h3>
+                    <p><strong>2048</strong> (respuestas detalladas)</p>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- SECCIÓN 5: ANÁLISIS CUALITATIVO (EJEMPLOS) -->
-        <section class="p-8 md:p-12">
-            <h2 class="text-2xl font-bold text-gray-800 mb-8">5. Análisis Cualitativo (Ejemplos de Traducción)</h2>
-            <div class="space-y-6">
-                <!-- Ejemplo LSTM -->
-                <div class="border rounded-lg overflow-hidden">
-                    <div class="p-4 bg-gray-50 border-b">
-                        <p class="font-mono text-gray-700"><strong class="text-gray-900">ES:</strong> "Voy a pegarle un tiro."</p>
-                    </div>
-                    <div class="p-4">
-                        <strong class="text-yellow-600">LSTM:</strong>
-                        <span class="font-mono text-gray-800">"i am going to give him."</span>
-                        <span class="ml-2 inline-block bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">Error Semántico Grave</span>
-                    </div>
-                </div>
-                <!-- Ejemplo GRU -->
-                <div class="border rounded-lg overflow-hidden">
-                    <div class="p-4 bg-gray-50 border-b">
-                        <p class="font-mono text-gray-700"><strong class="text-gray-900">ES:</strong> "mi perro tiene un sombrero"</p>
-                    </div>
-                    <div class="p-4">
-                        <strong class="text-blue-600">GRU:</strong>
-                        <span class="font-mono text-gray-800">"my dog has a locker."</span>
-                        <span class="ml-2 inline-block bg-yellow-100 text-yellow-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">Error (Alucinación)</span>
-                    </div>
-                </div>
-                <!-- Ejemplo Transformer -->
-                <div class="border rounded-lg overflow-hidden">
-                    <div class="p-4 bg-gray-50 border-b">
-                        <p class="font-mono text-gray-700"><strong class="text-gray-900">ES:</strong> "dicen que soy una anciana."</Gg>
-                    </div>
-                    <div class="p-4">
-                        <strong class="text-green-600">Transformer:</strong>
-                        <span class="font-mono text-gray-800">"they say i'm an old woman."</span>
-                        <span class="ml-2 inline-block bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">Traducción Perfecta</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECCIÓN 6: ARQUITECTURA Y CÓDIGO (NUEVO) -->
-        <section class="p-8 md:p-12 bg-gray-50 border-t border-gray-200">
-            <h2 class="text-2xl font-bold text-gray-800 mb-8">6. Arquitectura y Pipeline de Datos</h2>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-700 mb-4">Pipeline de Datos: Tokenización (BPE)</h3>
-                    <p class="text-gray-600 mb-4 text-sm">
-                        Se usó <strong class="text-gray-900">SentencePiece (BPE)</strong> en lugar de tokenización por palabras. Esto permite al modelo manejar palabras desconocidas (OOV) dividiéndolas en sub-unidades conocidas, mejorando la robustez.
-                    </p>
-                    <pre><code><span class="token-comment"># Fragmento de código de entrenamiento del tokenizador (p. 29)</span>
-<span class="token-function">spm.SentencePieceTrainer.Train(</span>
-    <span class="token-string">f"--input={train_src} "</span>
-    <span class="token-string">f"--model_prefix=sp_src "</span>
-    <span class="token-string">f"--vocab_size={VOCAB_SIZE} "</span>
-    <span class="token-string">f"--character_coverage=1.0 "</span>
-    <span class="token-string">f"--model_type=bpe"</span>
-<span class="token-function">)</span></code></pre>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-700 mb-4">Diferencia Arquitectónica Clave</h3>
-                    <p class="text-gray-600 mb-4 text-sm">
-                        <strong class="text-red-600">RNN/LSTM:</strong> Procesan tokens secuencialmente. La información del inicio de la oración debe viajar a través de cada paso hasta el final, causando "desvanecimiento de gradiente".
-                    </p>
-                    <p class="text-gray-600 mb-4 text-sm">
-                        <strong class="text-green-600">GRU/Transformer:</strong> Usan mecanismos de <strong class="text-gray-900">Atención</strong>. Esto permite al decodificador "mirar" directamente a cualquier parte de la oración de entrada en cualquier momento, resolviendo el cuello de botella secuencial y mejorando drásticamente la traducción de dependencias largas.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- CONCLUSIONES -->
-        <footer class="p-8 md:p-12 bg-gray-900 text-white">
-            <h2 class="text-2xl font-bold mb-6">Conclusiones Clave</h2>
-            <ul class="space-y-4">
-                <li class="flex items-start">
-                    <svg class="w-6 h-6 text-green-400 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-                    <p><strong class="text-white">Mejor Calidad:</strong> El <strong class="text-green-400">Transformer (BLEU 53.2)</strong> es superior, demostrando la efectividad de la arquitectura de auto-atención.</p>
-                </li>
-                 <li class="flex items-start">
-                    <svg class="w-6 h-6 text-blue-400 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-                    <p><strong class="text-white">Mejor Balance:</strong> El <strong class="text-blue-400">GRU (BLEU 40.8)</strong> ofrece un salto de calidad masivo sobre LSTM, con menos de la mitad de parámetros (22M vs 51.7M).</p>
-                </li>
-                <li class="flex items-start">
-                    <svg class="w-6 h-6 text-yellow-400 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-                    <p><strong class="text-white">Ineficiencia de LSTM:</strong> El modelo <strong class="text-yellow-400">LSTM</strong> fue el más grande (51.7M) pero obtuvo el segundo peor BLEU (25.7), mostrando una clara ineficiencia.</p>
-                </li>
-                 <li class="flex items-start">
-                    <svg class="w-6 h-6 text-red-400 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-                    <p><strong class="text-white">Costo vs. Calidad:</strong> El <strong class="text-red-400">Transformer</strong> tiene el mayor costo de entrenamiento (~8.4h), pero es el único que logra traducciones de alta fluidez, y es más ligero en parámetros que LSTM.</p>
-                </li>
-            </ul>
-        </footer>
-
-    </main>
-
+        <div class="footer">
+            <p style="font-size: 1.2em; margin-bottom: 10px;">🌟 Proyecto de Asistente de Codificación con IA</p>
+            <p>Desarrollado con Flask + Llama 3.1 | Interfaz estilo VS Code</p>
+        </div>
+    </div>
 </body>
 </html>
