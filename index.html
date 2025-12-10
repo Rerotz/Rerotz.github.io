@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Infografía: Asistente de Codificación con LLM</title>
+    <title>Análisis de Clustering de Clientes del Mall</title>
     <style>
         * {
             margin: 0;
@@ -14,8 +14,9 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 40px 20px;
+            color: #333;
             line-height: 1.6;
+            padding: 20px;
         }
 
         .container {
@@ -27,26 +28,26 @@
             overflow: hidden;
         }
 
-        .header {
-            background: linear-gradient(135deg, #1e1e1e 0%, #2d2d2d 100%);
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 60px 40px;
+            padding: 40px;
             text-align: center;
         }
 
-        .header h1 {
-            font-size: 3em;
-            margin-bottom: 15px;
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
-        .header p {
-            font-size: 1.3em;
+        header p {
+            font-size: 1.2em;
             opacity: 0.9;
         }
 
         .section {
-            padding: 50px 40px;
+            padding: 40px;
             border-bottom: 3px solid #f0f0f0;
         }
 
@@ -55,89 +56,16 @@
         }
 
         .section-title {
-            font-size: 2.2em;
+            font-size: 2em;
             color: #667eea;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
             gap: 15px;
         }
 
-        .icon {
-            font-size: 1.2em;
-        }
-
-        .architecture {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-top: 30px;
-        }
-
-        .component {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
-            transition: transform 0.3s;
-        }
-
-        .component:hover {
-            transform: translateY(-10px);
-        }
-
-        .component h3 {
-            font-size: 1.5em;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .component ul {
-            list-style: none;
-            padding-left: 0;
-        }
-
-        .component li {
-            padding: 8px 0;
-            padding-left: 25px;
-            position: relative;
-        }
-
-        .component li:before {
-            content: "→";
-            position: absolute;
-            left: 0;
-            color: #ffd700;
-        }
-
-        .flow-diagram {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .flow-step {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            padding: 25px;
-            background: #f8f9fa;
-            border-radius: 15px;
-            border-left: 5px solid #667eea;
-            transition: all 0.3s;
-        }
-
-        .flow-step:hover {
-            background: #e9ecef;
-            transform: translateX(10px);
-        }
-
-        .flow-number {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .section-number {
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             width: 50px;
             height: 50px;
@@ -145,328 +73,521 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5em;
             font-weight: bold;
-            flex-shrink: 0;
+            font-size: 1.5em;
         }
 
-        .flow-content {
-            flex: 1;
-        }
-
-        .flow-content h3 {
-            color: #667eea;
-            margin-bottom: 8px;
-            font-size: 1.3em;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
-        }
-
-        .feature-card {
-            background: white;
-            border: 2px solid #667eea;
-            padding: 30px;
+        .dataset-info {
+            background: #f8f9ff;
+            padding: 25px;
             border-radius: 15px;
-            text-align: center;
-            transition: all 0.3s;
+            border-left: 5px solid #667eea;
+            margin: 20px 0;
         }
 
-        .feature-card:hover {
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
-            transform: scale(1.05);
+        .variables-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
         }
 
-        .feature-icon {
-            font-size: 3em;
-            margin-bottom: 15px;
-        }
-
-        .feature-card h3 {
-            color: #667eea;
-            margin-bottom: 10px;
-            font-size: 1.4em;
-        }
-
-        .tech-stack {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-top: 30px;
-            justify-content: center;
-        }
-
-        .tech-badge {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .variable-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             color: white;
-            padding: 12px 25px;
-            border-radius: 25px;
-            font-weight: 600;
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-            transition: all 0.3s;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
         }
 
-        .tech-badge:hover {
+        .variable-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.5);
         }
 
-        .languages-list {
+        .variable-card h4 {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .process-flow {
             display: flex;
             flex-wrap: wrap;
-            gap: 15px;
-            margin-top: 30px;
+            gap: 20px;
+            justify-content: space-between;
+            margin: 30px 0;
         }
 
-        .language-tag {
-            background: #f8f9fa;
-            padding: 15px 30px;
-            border-radius: 10px;
-            border: 2px solid #667eea;
-            font-weight: 600;
-            color: #667eea;
-            transition: all 0.3s;
-        }
-
-        .language-tag:hover {
-            background: #667eea;
-            color: white;
-        }
-
-        .footer {
-            background: #1e1e1e;
-            color: white;
-            padding: 30px;
+        .process-step {
+            flex: 1;
+            min-width: 250px;
+            background: white;
+            border: 3px solid #667eea;
+            border-radius: 15px;
+            padding: 25px;
             text-align: center;
+            position: relative;
+        }
+
+        .process-step::after {
+            content: '→';
+            position: absolute;
+            right: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2em;
+            color: #667eea;
+        }
+
+        .process-step:last-child::after {
+            display: none;
+        }
+
+        .process-step h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .algorithm-comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .algo-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-top: 5px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .algo-card:nth-child(2) {
+            border-top-color: #f5576c;
+        }
+
+        .algo-card:nth-child(3) {
+            border-top-color: #4facfe;
+        }
+
+        .algo-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .algo-card h3 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .metric-box {
+            background: #f8f9ff;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .metric-box strong {
+            color: #667eea;
+            font-size: 1.1em;
         }
 
         .code-snippet {
-            background: #1e1e1e;
-            color: #61afef;
+            background: #2d2d2d;
+            color: #f8f8f2;
             padding: 20px;
             border-radius: 10px;
-            overflow-x: auto;
-            margin-top: 20px;
             font-family: 'Courier New', monospace;
             font-size: 0.9em;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #ffeaa7 0%, #fdcb6e 100%);
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .metric-item {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .metric-item h4 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .metric-item p {
+            font-size: 0.95em;
+            color: #555;
+        }
+
+        .conclusion {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .conclusion h3 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .conclusion p {
+            font-size: 1.2em;
+            line-height: 1.8;
+        }
+
+        .visualization-note {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        ul {
+            list-style-position: inside;
+            margin: 15px 0;
+        }
+
+        li {
+            margin: 10px 0;
+            padding-left: 10px;
         }
 
         @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2em;
+            header h1 {
+                font-size: 1.8em;
             }
 
             .section {
-                padding: 30px 20px;
+                padding: 25px;
             }
 
             .section-title {
-                font-size: 1.8em;
+                font-size: 1.5em;
+            }
+
+            .process-step::after {
+                display: none;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>🤖 Asistente de Codificación con LLM</h1>
-            <p>Sistema para la Detección y Corrección Automática de Errores de Código en lenguaje Python</p>
-        </div>
+        <header>
+            <h1>🛍️ Análisis de Clustering de Clientes del Mall</h1>
+            <p>Segmentación inteligente mediante algoritmos de Machine Learning</p>
+        </header>
 
+        <!-- SECCIÓN 0: DATASET -->
         <div class="section">
-            <h2 class="section-title"><span class="icon">🎯</span>¿Qué es este proyecto?</h2>
-            <p style="font-size: 1.2em; color: #555;">
-                Un asistente de codificación impulsado por IA que utiliza el modelo <strong>Llama 3.1 (8B)</strong> para analizar, 
-                corregir errores y refactorizar código en múltiples lenguajes de programación. Ofrece una interfaz web estilo IDE 
-                con diseño inspirado en VS Code.
-            </p>
-        </div>
+            <div class="section-title">
+                <div class="section-number">0</div>
+                <h2>El Dataset</h2>
+            </div>
+            
+            <div class="dataset-info">
+                <h3>📊 Mall_Customers.csv</h3>
+                <p><strong>Descripción:</strong> Dataset con información de clientes de un centro comercial que incluye datos demográficos y de comportamiento de compra.</p>
+            </div>
 
-        <div class="section">
-            <h2 class="section-title"><span class="icon">🏗️</span>Arquitectura del Sistema</h2>
-            <div class="architecture">
-                <div class="component">
-                    <h3>🌐 Frontend</h3>
-                    <ul>
-                        <li>HTML5 + CSS3</li>
-                        <li>JavaScript Vanilla</li>
-                        <li>Highlight.js</li>
-                        <li>Diseño tipo IDE</li>
-                        <li>Tema oscuro VS Code</li>
-                    </ul>
+            <h3 style="margin: 25px 0 15px 0;">Variables del Dataset:</h3>
+            <div class="variables-grid">
+                <div class="variable-card">
+                    <h4>🆔 CustomerID</h4>
+                    <p>Identificador único</p>
                 </div>
-                <div class="component">
-                    <h3>⚙️ Backend</h3>
-                    <ul>
-                        <li>Flask (Python)</li>
-                        <li>API REST</li>
-                        <li>Procesamiento LLM</li>
-                        <li>Gestión de prompts</li>
-                    </ul>
+                <div class="variable-card">
+                    <h4>👥 Gender</h4>
+                    <p>Género (Male/Female)</p>
                 </div>
-                <div class="component">
-                    <h3>🧠 Motor IA</h3>
-                    <ul>
-                        <li>Llama 3.1 (8B)</li>
-                        <li>Servidor local (LM Studio)</li>
-                        <li>Temperature: 0.3</li>
-                        <li>Max tokens: 2048</li>
-                    </ul>
+                <div class="variable-card">
+                    <h4>📅 Age</h4>
+                    <p>Edad del cliente</p>
+                </div>
+                <div class="variable-card">
+                    <h4>💰 Annual Income</h4>
+                    <p>Ingreso anual (k$)</p>
+                </div>
+                <div class="variable-card">
+                    <h4>🛒 Spending Score</h4>
+                    <p>Puntuación de gasto (1-100)</p>
                 </div>
             </div>
         </div>
 
+        <!-- SECCIÓN 1: PREPROCESAMIENTO -->
         <div class="section">
-            <h2 class="section-title"><span class="icon">🔄</span>Flujo de Trabajo</h2>
-            <div class="flow-diagram">
-                <div class="flow-step">
-                    <div class="flow-number">1</div>
-                    <div class="flow-content">
-                        <h3>Entrada de Código</h3>
-                        <p>El usuario pega su código en el editor y selecciona el lenguaje de programación</p>
-                    </div>
+            <div class="section-title">
+                <div class="section-number">1</div>
+                <h2>Preprocesamiento de Datos</h2>
+            </div>
+
+            <div class="process-flow">
+                <div class="process-step">
+                    <h4>📥 Carga</h4>
+                    <p>Lectura del dataset Mall_Customers.csv con pandas</p>
                 </div>
-                <div class="flow-step">
-                    <div class="flow-number">2</div>
-                    <div class="flow-content">
-                        <h3>Envío al Backend</h3>
-                        <p>La aplicación envía el código y metadatos a través de una petición POST al endpoint /process</p>
-                    </div>
+                <div class="process-step">
+                    <h4>🔄 Codificación</h4>
+                    <p>Género: Male → 0, Female → 1</p>
                 </div>
-                <div class="flow-step">
-                    <div class="flow-number">3</div>
-                    <div class="flow-content">
-                        <h3>Procesamiento LLM</h3>
-                        <p>El backend construye un prompt contextual y lo envía al modelo Llama 3.1 para análisis</p>
-                    </div>
+                <div class="process-step">
+                    <h4>📏 Normalización</h4>
+                    <p>StandardScaler para equiparar escalas</p>
                 </div>
-                <div class="flow-step">
-                    <div class="flow-number">4</div>
-                    <div class="flow-content">
-                        <h3>Análisis y Corrección</h3>
-                        <p>El modelo analiza el código, detecta errores y genera código optimizado/corregido</p>
-                    </div>
-                </div>
-                <div class="flow-step">
-                    <div class="flow-number">5</div>
-                    <div class="flow-content">
-                        <h3>Renderizado con Sintaxis</h3>
-                        <p>El frontend aplica resaltado de sintaxis con Highlight.js y muestra los cambios realizados</p>
-                    </div>
+                <div class="process-step">
+                    <h4>📉 PCA</h4>
+                    <p>Reducción a 2 componentes para visualización</p>
                 </div>
             </div>
-        </div>
 
-        <div class="section">
-            <h2 class="section-title"><span class="icon">✨</span>Características Principales</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">🔍</div>
-                    <h3>Análisis de Código</h3>
-                    <p>Detección automática de errores sintácticos y typos comunes</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🔧</div>
-                    <h3>Corrección Inteligente</h3>
-                    <p>Sugerencias de corrección sin modificar la lógica del código</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">♻️</div>
-                    <h3>Refactorización</h3>
-                    <p>Optimización de código Python para mejor legibilidad y eficiencia</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🎨</div>
-                    <h3>Interfaz IDE</h3>
-                    <p>Diseño inspirado en VS Code con tema oscuro profesional</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🌈</div>
-                    <h3>Resaltado de Sintaxis</h3>
-                    <p>Visualización colorizada del código con Highlight.js</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📝</div>
-                    <h3>Registro de Cambios</h3>
-                    <p>Documentación automática de todas las modificaciones realizadas</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2 class="section-title"><span class="icon">💻</span>Lenguajes Soportados</h2>
-            <div class="languages-list">
-                <div class="language-tag">🐍 Python</div>
-                <div class="language-tag">📜 JavaScript</div>
-                <div class="language-tag">☕ Java</div>
-                <div class="language-tag">⚡ C++</div>
-                <div class="language-tag">💎 C#</div>
-                <div class="language-tag">💎 Ruby</div>
-                <div class="language-tag">🔷 Go</div>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2 class="section-title"><span class="icon">🛠️</span>Stack Tecnológico</h2>
-            <div class="tech-stack">
-                <div class="tech-badge">Python 3.x</div>
-                <div class="tech-badge">Flask</div>
-                <div class="tech-badge">Llama 3.1 (8B)</div>
-                <div class="tech-badge">HTML5</div>
-                <div class="tech-badge">CSS3</div>
-                <div class="tech-badge">JavaScript ES6+</div>
-                <div class="tech-badge">Highlight.js</div>
-                <div class="tech-badge">REST API</div>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2 class="section-title"><span class="icon">🚀</span>Instalación y Uso</h2>
             <div class="code-snippet">
-# 1. Clonar el repositorio
-git clone [tu-repositorio]
+# Codificación de género<br>
+df["Gender"] = df["Gender"].map({"Male": 0, "Female": 1})<br><br>
+# Variables seleccionadas<br>
+X = df[["Gender", "Age", "Annual Income (k$)", "Spending Score (1-100)"]]<br><br>
+# Normalización con StandardScaler<br>
+X_scaled = scaler.fit_transform(X)<br><br>
+# PCA para visualización 2D<br>
+X_pca = pca.fit_transform(X_scaled)
+            </div>
 
-# 2. Instalar dependencias
-pip install flask requests
-
-# 3. Configurar LM Studio con Llama 3.1
-# Asegúrate de que el servidor esté corriendo en:
-# http://172.20.10.2:1234/v1/chat/completions
-
-# 4. Ejecutar la aplicación
-python app.py
-
-# 5. Abrir en el navegador
-# http://127.0.0.1:5000/
+            <div class="visualization-note">
+                <strong>💡 ¿Por qué PCA?</strong>
+                <p>Con 4 variables es difícil visualizar en un gráfico. PCA reduce las dimensiones a 2 componentes principales manteniendo la mayor varianza posible, permitiendo graficar los clusters en 2D.</p>
             </div>
         </div>
 
+        <!-- SECCIÓN 2: K-MEANS -->
         <div class="section">
-            <h2 class="section-title"><span class="icon">⚙️</span>Configuración del LLM</h2>
-            <p style="font-size: 1.1em; margin-bottom: 20px;">El sistema utiliza los siguientes parámetros para el modelo:</p>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <h3>Modelo</h3>
-                    <p><strong>meta-llama-3.1-8b-instruct</strong></p>
+            <div class="section-title">
+                <div class="section-number">2</div>
+                <h2>Algoritmo K-Means</h2>
+            </div>
+
+            <h3>🎯 ¿Qué hace K-Means?</h3>
+            <p>K-Means agrupa los datos en <span class="highlight">k clusters</span> minimizando la distancia de cada punto al centroide de su cluster. Es iterativo y eficiente para datasets grandes.</p>
+
+            <h3 style="margin-top: 30px;">🔍 Proceso de Optimización</h3>
+            <div class="metrics-grid">
+                <div class="metric-item">
+                    <h4>📐 Método del Codo</h4>
+                    <p>Evalúa la inercia (WCSS) para diferentes valores de k. Busca el "codo" donde la mejora se estabiliza.</p>
                 </div>
-                <div class="feature-card">
-                    <h3>Temperature</h3>
-                    <p><strong>0.3</strong> (respuestas consistentes)</p>
+                <div class="metric-item">
+                    <h4>🎭 Silhouette Score</h4>
+                    <p>Mide qué tan similar es un punto a su cluster vs otros clusters. Rango: [-1, 1], mayor es mejor.</p>
                 </div>
-                <div class="feature-card">
-                    <h3>Max Tokens</h3>
-                    <p><strong>2048</strong> (respuestas detalladas)</p>
+                <div class="metric-item">
+                    <h4>📊 Davies-Bouldin Index</h4>
+                    <p>Evalúa la separación entre clusters. Valores menores indican mejor separación.</p>
                 </div>
+            </div>
+
+            <div class="code-snippet">
+# Evaluación de k = 2 hasta k = 10<br>
+for k in range(2, 11):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;kmeans = KMeans(n_clusters=k, random_state=42)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;labels = kmeans.fit_predict(X_scaled)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;# Calcular métricas: inercia, silhouette, davies-bouldin<br><br>
+# Seleccionar k óptimo según silhouette<br>
+k_opt = np.argmax(silhouette_vals) + 2
+            </div>
+
+            <div class="dataset-info">
+                <strong>✨ Resultado típico:</strong> Para este dataset, el k óptimo suele ser <strong>5 clusters</strong>, que representan diferentes segmentos de clientes con patrones de ingreso y gasto distintivos.
             </div>
         </div>
 
-        <div class="footer">
-            <p style="font-size: 1.2em; margin-bottom: 10px;">🌟 Proyecto de Asistente de Codificación con IA</p>
-            <p>Desarrollado con Flask + Llama 3.1 | Interfaz estilo VS Code</p>
+        <!-- SECCIÓN 3: JERÁRQUICO -->
+        <div class="section">
+            <div class="section-title">
+                <div class="section-number">3</div>
+                <h2>Clustering Jerárquico</h2>
+            </div>
+
+            <h3>🌳 ¿Qué es el Clustering Jerárquico?</h3>
+            <p>Crea una jerarquía de clusters mediante un enfoque aglomerativo: comienza con cada punto como cluster individual y los va fusionando según su similitud. Se visualiza con un <span class="highlight">dendrograma</span>.</p>
+
+            <h3 style="margin-top: 30px;">🔗 Métodos de Enlace (Linkage)</h3>
+            <div class="variables-grid">
+                <div class="variable-card" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                    <h4>Ward</h4>
+                    <p>Minimiza la varianza intra-cluster</p>
+                </div>
+                <div class="variable-card" style="background: linear-gradient(135deg, #f5576c, #f093fb);">
+                    <h4>Complete</h4>
+                    <p>Máxima distancia entre puntos</p>
+                </div>
+                <div class="variable-card" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
+                    <h4>Average</h4>
+                    <p>Promedio de distancias</p>
+                </div>
+                <div class="variable-card" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">
+                    <h4>Single</h4>
+                    <p>Mínima distancia entre puntos</p>
+                </div>
+            </div>
+
+            <div class="code-snippet">
+# Prueba de diferentes métodos de enlace<br>
+for method in ["ward", "complete", "average", "single"]:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;hier = AgglomerativeClustering(n_clusters=5, linkage=method)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;labels = hier.fit_predict(X_scaled)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;# Evaluar con silhouette y davies-bouldin<br><br>
+# Seleccionar el mejor método<br>
+best_method = max(results_hier, key=lambda m: results_hier[m][0])
+            </div>
+
+            <div class="visualization-note">
+                <strong>📊 Dendrograma:</strong>
+                <p>El dendrograma muestra cómo se fusionan los clusters. La altura de las líneas indica la distancia en la que se unen. Cortar el dendrograma a diferentes alturas produce diferentes números de clusters.</p>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 4: DBSCAN -->
+        <div class="section">
+            <div class="section-title">
+                <div class="section-number">4</div>
+                <h2>Algoritmo DBSCAN</h2>
+            </div>
+
+            <h3>🔍 ¿Qué hace DBSCAN?</h3>
+            <p><strong>Density-Based Spatial Clustering</strong> agrupa puntos que están densamente conectados. A diferencia de K-Means, <span class="highlight">no requiere especificar k</span> y puede detectar formas arbitrarias y outliers (ruido).</p>
+
+            <h3 style="margin-top: 30px;">⚙️ Parámetros Clave</h3>
+            <div class="metrics-grid">
+                <div class="metric-item">
+                    <h4>📏 Epsilon (eps)</h4>
+                    <p>Radio de vecindad. Define qué tan cerca deben estar los puntos para ser considerados vecinos.</p>
+                </div>
+                <div class="metric-item">
+                    <h4>👥 min_samples</h4>
+                    <p>Número mínimo de puntos para formar una región densa (cluster).</p>
+                </div>
+            </div>
+
+            <div class="code-snippet">
+# Búsqueda del eps óptimo<br>
+eps_values = np.arange(0.2, 1.2, 0.1)<br><br>
+for eps in eps_values:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;db = DBSCAN(eps=eps, min_samples=5)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;labels = db.fit_predict(X_scaled)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;# Evaluar métricas (excluyendo casos de solo ruido)<br><br>
+# Seleccionar eps con mejor silhouette<br>
+best_eps = max(dbscan_results, key=lambda e: dbscan_results[e][0])
+            </div>
+
+            <div class="dataset-info">
+                <strong>⚠️ Consideración importante:</strong> DBSCAN puede etiquetar algunos puntos como <strong>ruido (-1)</strong> si no pertenecen a ninguna región densa. Esto es útil para detectar outliers pero puede afectar las métricas.
+            </div>
+        </div>
+
+        <!-- SECCIÓN 5: COMPARACIÓN -->
+        <div class="section">
+            <div class="section-title">
+                <div class="section-number">5</div>
+                <h2>Comparación de Algoritmos</h2>
+            </div>
+
+            <div class="algorithm-comparison">
+                <div class="algo-card">
+                    <h3>🎯 K-Means</h3>
+                    <div class="metric-box">
+                        <strong>Ventajas:</strong>
+                        <ul>
+                            <li>Rápido y escalable</li>
+                            <li>Simple de implementar</li>
+                            <li>Funciona bien con clusters esféricos</li>
+                        </ul>
+                    </div>
+                    <div class="metric-box">
+                        <strong>Desventajas:</strong>
+                        <ul>
+                            <li>Requiere especificar k</li>
+                            <li>Sensible a outliers</li>
+                            <li>Asume clusters de forma esférica</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="algo-card">
+                    <h3>🌳 Jerárquico</h3>
+                    <div class="metric-box">
+                        <strong>Ventajas:</strong>
+                        <ul>
+                            <li>No requiere especificar k inicialmente</li>
+                            <li>Dendrograma informativo</li>
+                            <li>Detecta jerarquías naturales</li>
+                        </ul>
+                    </div>
+                    <div class="metric-box">
+                        <strong>Desventajas:</strong>
+                        <ul>
+                            <li>Computacionalmente costoso (O(n³))</li>
+                            <li>No escala bien a grandes datasets</li>
+                            <li>Decisiones irreversibles</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="algo-card">
+                    <h3>🔍 DBSCAN</h3>
+                    <div class="metric-box">
+                        <strong>Ventajas:</strong>
+                        <ul>
+                            <li>No requiere especificar k</li>
+                            <li>Detecta formas arbitrarias</li>
+                            <li>Identifica outliers automáticamente</li>
+                        </ul>
+                    </div>
+                    <div class="metric-box">
+                        <strong>Desventajas:</strong>
+                        <ul>
+                            <li>Sensible a parámetros eps y min_samples</li>
+                            <li>Problemas con densidades variables</li>
+                            <li>Difícil con alta dimensionalidad</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="conclusion">
+                <h3>🏆 Conclusión del Análisis</h3>
+                <p>El estudio reveló tres hallazgos fundamentales: primero, la dimensionalidad es crítica - al incluir las 4 variables (Género, Edad, Ingreso y Spending Score) en lugar de solo 2, se descubrieron 10 micro-segmentos en lugar de los 5 tradicionales de la literatura clásica, demostrando que más variables permiten una segmentación más refinada. Segundo, K-Means demostró ser superior a los métodos jerárquicos y DBSCAN para este tipo de datos con variables mixtas (categóricas codificadas y numéricas). Tercero, DBSCAN resultó inadecuado porque al agregar dimensiones, los puntos se dispersan demasiado en el espacio vectorial, haciendo imposible formar clusters densos sin clasificar excesivos puntos como ruido.</p> <br>
+                <p>Como recomendación práctica, se sugiere adoptar el modelo de K-Means con 10 clusters para estrategias de micro-segmentación, a pesar de ser más complejo de gestionar que 5 grupos, ya que permite una personalización mucho mayor (por ejemplo, diferenciar campañas para Gen Z vs Baby Boomers dentro del mismo nivel de ingresos). El siguiente paso operativo debe ser analizar los centroides de estos 10 grupos para asignarles nombres comerciales descriptivos como "Ahorradores Jóvenes", "VIPs Senior" o "Gastadores Millennials".</p><br>
+                <p>El estudio presenta dos limitaciones importantes que requieren atención futura: primero, la codificación de Género como variable numérica (0/1) introduce un sesgo geométrico al asumir que la distancia entre géneros es comparable a diferencias de edad o ingreso - se recomienda explorar K-Prototypes, un algoritmo diseñado específicamente para mezclar datos numéricos y categóricos sin este sesgo. Segundo, el tamaño de muestra de solo 200 observaciones plantea riesgo de overfitting con 10 micro-segmentos, por lo que se necesita un dataset más grande para validar que estos clusters representan patrones reales y no artificios estadísticos del modelo.</p>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="section" style="background: #f8f9ff; text-align: center; border-bottom: none;">
+            <p style="color: #667eea; font-size: 1.1em;"><strong>💡 Aplicación Práctica:</strong> Este análisis permite al centro comercial identificar segmentos de clientes (por ejemplo: jóvenes de alto gasto, adultos conservadores, etc.) para personalizar promociones y mejorar la experiencia de compra.</p>
         </div>
     </div>
 </body>
